@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Data;
 
 namespace PublicaSA.DataAccess.Interfaces
 {
-    internal class IDbConnectionFactory
+    public interface IDbConnectionFactory
     {
+        IDbConnection CreateConnection();
     }
 }
