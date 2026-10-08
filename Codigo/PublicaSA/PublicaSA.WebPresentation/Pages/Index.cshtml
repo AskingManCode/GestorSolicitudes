@@ -1,11 +1,23 @@
-﻿@page
+@page
 @model IndexModel
 @{
     // Aquí va la bienvenida
-    ViewData["Title"] = "Home";
+    ViewData["Title"] = "Inicio";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8 text-center">
+        <div class="card shadow-sm border-0 p-4">
+            <div class="card-body">
+                <img src="~/images/logo.png" alt="Logo" class="mb-3" style="max-height: 80px;" />
+                <h1 class="h3 mb-3 text-gray-800">Sistema de Gestión de Solicitudes</h1>
+                <p class="text-muted mb-4">Bienvenido al sistema de administración de solicitudes de Pública S.A.</p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a asp-page="/Solicitudes/Index" class="btn btn-primary px-4 py-2">
+                        <i class="fas fa-file-alt me-2"></i>Ir a Mantenimiento de Solicitudes (SOL1)
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
