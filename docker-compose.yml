@@ -1,0 +1,30 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: publicasa-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: gestorsolicitudes_db
+      MYSQL_USER: publicasa_user
+      MYSQL_PASSWORD: publicasa_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - "./Scripts SQL:/docker-entrypoint-initdb.d:ro"
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: publicasa-phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
