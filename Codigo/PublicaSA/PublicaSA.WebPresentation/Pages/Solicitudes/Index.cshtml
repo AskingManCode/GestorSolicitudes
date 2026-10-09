@@ -102,6 +102,9 @@
                                     <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "-")</td>
                                     <td class="text-center">
                                         <div class="btn-group btn-group-sm" role="group">
+                                            <a asp-page="/Solicitudes/Desgloses/Index" asp-route-idSolicitud="@item.IdSolicitud" class="btn btn-outline-info" title="Administrar Desglose">
+                                                <i class="fas fa-list-alt"></i> Desglose
+                                            </a>
                                             <a asp-page="/Solicitudes/Editar" asp-route-id="@item.IdSolicitud" class="btn btn-outline-primary" title="Editar">
                                                 <i class="fas fa-edit"></i> Editar
                                             </a>
