@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="PublicaSA.BusinessLogic/PublicaSA.BusinessLogic.csproj" />
+  <Project Path="PublicaSA.DataAccess/PublicaSA.DataAccess.csproj" />
+  <Project Path="PublicaSA.Entities/PublicaSA.Entities.csproj" />
+  <Project Path="PublicaSA.WebPresentation/PublicaSA.WebPresentation.csproj" />
+</Solution>

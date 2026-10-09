@@ -1,0 +1,197 @@
+﻿:root {
+    --sidebar-bg: #4e73df;
+    --sidebar-hover: #2e59d9;
+    --sidebar-submenu: #3a66d4;
+    --sidebar-width: 225px;
+    --sidebar-width-collapsed: 70px;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: #f8f9fc;
+}
+
+#wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ========== SIDEBAR ========== */
+#sidebar-wrapper {
+    width: var(--sidebar-width);
+    min-height: 100vh;
+    background-color: var(--sidebar-bg);
+    transition: width 0.25s ease;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.bg-sidebar {
+    background-color: var(--sidebar-bg) !important;
+}
+
+.bg-sidebar-submenu {
+    background-color: var(--sidebar-submenu) !important;
+}
+
+/* Ítems del menú */
+#sidebar-wrapper .list-group-item {
+    border: none;
+    font-weight: 500;
+    padding: 0.55rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: white !important;
+    text-decoration: none;
+    min-height: 40px;
+}
+
+#sidebar-wrapper .list-group-item:hover {
+    background-color: var(--sidebar-hover) !important;
+}
+
+/* Iconos del menú */
+#sidebar-wrapper i.fa-fw {
+    width: 1.35rem;
+    text-align: center;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+.sidebar-text {
+    white-space: nowrap;
+    transition: opacity 0.15s ease;
+}
+
+/* ========== BRAND + LOGO ========== */
+.sidebar-heading {
+    min-height: 56px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-brand-icon {
+    flex-shrink: 0;
+}
+
+.sidebar-brand-text {
+    white-space: nowrap;
+    line-height: 1.2;
+    transition: opacity 0.15s ease;
+}
+
+.logo-img {
+    height: 34px;
+    width: 34px;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: white;
+    padding: 2px;
+    display: block;
+}
+
+/* ========== FOOTER DEL SIDEBAR ========== */
+.sidebar-footer {
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.9rem 0;
+}
+
+.sidebar-footer .btn {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* ========== CONTENIDO ========== */
+#page-content-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ========== ESTADO COLAPSADO ========== */
+body.sidebar-toggled #sidebar-wrapper {
+    width: var(--sidebar-width-collapsed);
+}
+
+body.sidebar-toggled .sidebar-text,
+body.sidebar-toggled .sidebar-brand-text {
+    display: none !important;
+}
+
+body.sidebar-toggled #sidebar-wrapper .list-group-item {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    gap: 0 !important;
+}
+
+body.sidebar-toggled .sidebar-heading {
+    justify-content: center !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+body.sidebar-toggled .sidebar-brand-icon {
+    margin-right: 0 !important;
+}
+
+body.sidebar-toggled .logo-img {
+    height: 32px;
+    width: 32px;
+}
+
+body.sidebar-toggled .fa-chevron-down {
+    display: none !important;
+}
+
+body.sidebar-toggled .collapse {
+    display: none !important;
+}
+
+/* ========== AVATAR ========== */
+.img-profile {
+    height: 2rem;
+    width: 2rem;
+    object-fit: cover;
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: calc(-1 * var(--sidebar-width));
+    }
+
+    body.sidebar-toggled #sidebar-wrapper {
+        margin-left: 0;
+        width: var(--sidebar-width);
+    }
+
+    body.sidebar-toggled .sidebar-text,
+    body.sidebar-toggled .sidebar-brand-text {
+        display: inline !important;
+    }
+
+    body.sidebar-toggled #sidebar-wrapper .list-group-item {
+        justify-content: flex-start !important;
+        padding-left: 1.1rem !important;
+        padding-right: 1.1rem !important;
+        gap: 0.7rem !important;
+    }
+}
+
+/* Avatar de la esquina superior izquierda */
+.topbar-avatar {
+    height: 38px;
+    width: 38px;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    padding: 2px;
+    border: 2px solid #4e73df;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
