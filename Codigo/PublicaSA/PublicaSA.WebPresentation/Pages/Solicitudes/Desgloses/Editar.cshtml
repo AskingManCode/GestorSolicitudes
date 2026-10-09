@@ -1,0 +1,151 @@
+@page "{id:int}"
+@model PublicaSA.WebPresentation.Pages.Solicitudes.Desgloses.EditarModel
+@{
+    ViewData["Title"] = "Editar Desglose";
+}
+
+<div class="container-fluid px-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">Editar Desglose</h1>
+            <p class="text-muted small mb-0">Modificar desglose de la solicitud <strong>@Model.Solicitud?.ConsecutivoOficio</strong></p>
+        </div>
+        <a asp-page="/Solicitudes/Desgloses/Index" asp-route-idSolicitud="@Model.Input.IdSolicitud" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+            <i class="fas fa-arrow-left"></i>
+            <span>Regresar a Desgloses</span>
+        </a>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            @Html.ValidationSummary(true, "", new { @class = "mb-0" })
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+            <h6 class="m-0 fw-bold text-primary">Formulario de Edición de Desglose</h6>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                <input type="hidden" asp-for="Input.IdDesglose" />
+                <input type="hidden" asp-for="Input.IdSolicitud" />
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="Input.Mes" class="form-label fw-semibold">
+                            Mes <span class="text-danger">*</span>
+                        </label>
+                        <select asp-for="Input.Mes" class="form-select">
+                            <option value="1">Enero</option>
+                            <option value="2">Febrero</option>
+                            <option value="3">Marzo</option>
+                            <option value="4">Abril</option>
+                            <option value="5">Mayo</option>
+                            <option value="6">Junio</option>
+                            <option value="7">Julio</option>
+                            <option value="8">Agosto</option>
+                            <option value="9">Septiembre</option>
+                            <option value="10">Octubre</option>
+                            <option value="11">Noviembre</option>
+                            <option value="12">Diciembre</option>
+                        </select>
+                        <span asp-validation-for="Input.Mes" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Input.Anio" class="form-label fw-semibold">
+                            Año <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Input.Anio" type="number" class="form-control" />
+                        <span asp-validation-for="Input.Anio" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Input.Horas" class="form-label fw-semibold">
+                            Horas Invertidas <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Input.Horas" type="number" step="0.25" min="0" class="form-control" />
+                        <span asp-validation-for="Input.Horas" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Input.Monto" class="form-label fw-semibold">
+                            Monto Base (₡) <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Input.Monto" id="inputMonto" type="number" step="0.01" min="0" class="form-control" />
+                        <span asp-validation-for="Input.Monto" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">
+                            IVA (13%) <span class="text-muted">(Calculado automático)</span>
+                        </label>
+                        <input id="inputIva" type="text" class="form-control bg-light" readonly value="0.00" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">
+                            Total (Monto + IVA) <span class="text-muted">(Calculado automático)</span>
+                        </label>
+                        <input id="inputTotal" type="text" class="form-control bg-light fw-bold text-primary" readonly value="0.00" />
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Input.PorcentajeCobro" class="form-label fw-semibold">
+                            Porcentaje de Cobro (%) <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            <input asp-for="Input.PorcentajeCobro" type="number" step="0.1" min="0" max="100" class="form-control" />
+                            <span class="input-group-text">%</span>
+                        </div>
+                        <span asp-validation-for="Input.PorcentajeCobro" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-12">
+                        <label asp-for="Input.Observaciones" class="form-label fw-semibold">Observaciones</label>
+                        <textarea asp-for="Input.Observaciones" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Input.Observaciones" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-page="/Solicitudes/Desgloses/Index" asp-route-idSolicitud="@Model.Input.IdSolicitud" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Salvar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const montoInput = document.getElementById("inputMonto");
+            const ivaInput = document.getElementById("inputIva");
+            const totalInput = document.getElementById("inputTotal");
+
+            function calcularMontos() {
+                const monto = parseFloat(montoInput.value) || 0;
+                const iva = monto * 0.13;
+                const total = monto + iva;
+
+                ivaInput.value = "₡" + iva.toFixed(2);
+                totalInput.value = "₡" + total.toFixed(2);
+            }
+
+            montoInput.addEventListener("input", calcularMontos);
+            calcularMontos();
+        });
+    </script>
+}
