@@ -1,0 +1,289 @@
+﻿:root {
+    --sidebar-bg: #4e73df;
+    --sidebar-hover: #2e59d9;
+    --sidebar-submenu: #3a66d4;
+    --sidebar-width: 225px;
+    --sidebar-width-collapsed: 70px;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: #f8f9fc;
+}
+
+#wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* ========== SIDEBAR ========== */
+/* Fija a la altura de la ventana: el menú y el botón de colapsar siempre quedan visibles,
+   aunque la página de contenido sea larga. */
+#sidebar-wrapper {
+    width: var(--sidebar-width);
+    flex-shrink: 0;
+    position: sticky;
+    top: 0;
+    align-self: flex-start;
+    height: 100vh;
+    height: 100dvh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background-color: var(--sidebar-bg);
+    transition: width 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.bg-sidebar {
+    background-color: var(--sidebar-bg) !important;
+}
+
+.bg-sidebar-submenu {
+    background-color: var(--sidebar-submenu) !important;
+}
+
+/* Ítems del menú */
+#sidebar-wrapper .list-group-item {
+    border: none;
+    font-weight: 500;
+    padding: 0.55rem 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    color: white !important;
+    text-decoration: none;
+    min-height: 40px;
+    cursor: pointer;
+}
+
+#sidebar-wrapper .list-group-item:hover,
+#sidebar-wrapper .list-group-item:active {
+    background-color: var(--sidebar-hover) !important;
+}
+
+/* Página actual: mismo color del hover + marca lateral para distinguirla */
+#sidebar-wrapper .list-group-item.is-active {
+    background-color: var(--sidebar-hover) !important;
+    box-shadow: inset 4px 0 0 0 white;
+}
+
+/* Foco visible para navegación con teclado */
+#sidebar-wrapper .list-group-item:focus-visible,
+#sidebar-wrapper .sidebar-footer .btn:focus-visible {
+    outline: 2px solid white;
+    outline-offset: -2px;
+}
+
+/* Iconos del menú (todos del mismo tamaño y sin encogerse) */
+#sidebar-wrapper svg.icon {
+    flex-shrink: 0;
+}
+
+#sidebar-wrapper i.fa-fw {
+    width: 1.35rem;
+    text-align: center;
+    font-size: 1.05rem;
+    flex-shrink: 0;
+}
+
+/* Etiqueta de grupo (icono + texto) */
+.sidebar-group-label {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    min-width: 0;
+}
+
+/* Subítems alineados con el texto del padre (1.1rem + 24px icono + 0.7rem gap) */
+#sidebar-wrapper .list-group-item.sidebar-subitem {
+    padding-left: 3.3rem !important;
+}
+
+/* Chevron que gira según el estado del submenú */
+.sidebar-chevron {
+    transition: transform 0.2s ease;
+}
+
+#sidebar-wrapper [aria-expanded="true"] .sidebar-chevron {
+    transform: rotate(180deg);
+}
+
+.sidebar-text {
+    white-space: nowrap;
+    transition: opacity 0.15s ease;
+}
+
+/* ========== BRAND + LOGO ========== */
+.sidebar-heading {
+    min-height: 56px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.sidebar-brand-icon {
+    flex-shrink: 0;
+}
+
+.sidebar-brand-text {
+    white-space: nowrap;
+    line-height: 1.2;
+    transition: opacity 0.15s ease;
+}
+
+.logo-img {
+    height: 34px;
+    width: 34px;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: white;
+    padding: 2px;
+    display: block;
+}
+
+/* ========== FOOTER DEL SIDEBAR ========== */
+.sidebar-footer {
+    margin-top: auto;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 0.9rem 0;
+}
+
+.sidebar-footer .btn {
+    width: 38px;
+    height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* ========== CONTENIDO ========== */
+#page-content-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ========== ESTADO COLAPSADO (solo escritorio) ========== */
+/* La clase vive en <html> para aplicarse antes del primer pintado y no parpadear. */
+@media (min-width: 768px) {
+    html.sidebar-collapsed #sidebar-wrapper {
+        width: var(--sidebar-width-collapsed);
+    }
+
+    html.sidebar-collapsed .sidebar-text,
+    html.sidebar-collapsed .sidebar-brand-text {
+        display: none !important;
+    }
+
+    html.sidebar-collapsed #sidebar-wrapper .list-group-item {
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        gap: 0 !important;
+    }
+
+    html.sidebar-collapsed .sidebar-group-label {
+        gap: 0;
+    }
+
+    html.sidebar-collapsed .sidebar-heading {
+        justify-content: center !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+
+    html.sidebar-collapsed .sidebar-brand-icon {
+        margin-right: 0 !important;
+    }
+
+    html.sidebar-collapsed .logo-img {
+        height: 32px;
+        width: 32px;
+    }
+
+    html.sidebar-collapsed .sidebar-chevron,
+    html.sidebar-collapsed #sidebar-wrapper .collapse {
+        display: none !important;
+    }
+
+    /* Con el menú colapsado el submenú no se ve: se marca el grupo "Reportes" como activo */
+    html.sidebar-collapsed #sidebar-wrapper .list-group-item.is-active-group {
+        background-color: var(--sidebar-hover) !important;
+        box-shadow: inset 4px 0 0 0 white;
+    }
+
+    html.sidebar-collapsed #sidebar-wrapper .list-group-item.is-active {
+        box-shadow: inset 4px 0 0 0 white;
+    }
+}
+
+/* ========== MÓVIL: menú deslizable sobre el contenido ========== */
+.sidebar-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1039;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.sidebar-backdrop[hidden] {
+    display: none;
+}
+
+@media (max-width: 767.98px) {
+    #sidebar-wrapper {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1040;
+        width: var(--sidebar-width);
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        visibility: hidden; /* fuera de pantalla, tampoco recibe foco con Tab */
+    }
+
+    body.sidebar-open #sidebar-wrapper {
+        transform: translateX(0);
+        visibility: visible;
+    }
+
+    body.sidebar-open {
+        overflow: hidden;
+    }
+
+    /* En móvil se abre con la hamburguesa y se cierra con el fondo, Esc o al navegar */
+    .sidebar-footer {
+        display: none;
+    }
+}
+
+/* ========== TOPBAR / AVATAR ========== */
+.topbar-user {
+    min-width: 0;
+}
+
+.img-profile {
+    height: 2rem;
+    width: 2rem;
+    object-fit: cover;
+}
+
+.topbar-avatar {
+    height: 38px;
+    width: 38px;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    padding: 2px;
+    border: 2px solid #4e73df;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+}
+
+/* ========== ACCESIBILIDAD ========== */
+@media (prefers-reduced-motion: reduce) {
+    #sidebar-wrapper,
+    .sidebar-chevron,
+    .sidebar-text,
+    .sidebar-brand-text {
+        transition: none !important;
+    }
+}
