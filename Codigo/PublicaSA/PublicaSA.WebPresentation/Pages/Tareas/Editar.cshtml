@@ -1,0 +1,82 @@
+﻿@page
+@model PublicaSA.WebPresentation.Pages.Tareas.EditarModel
+
+@{
+    ViewData["Title"] = "Editar tarea";
+}
+
+<h1>Editar tarea</h1>
+
+<p>Solicitud: @Model.IdSolicitud</p>
+
+@* Conserva los identificadores de la tarea que se está editando. *@
+<form method="post">
+    <input type="hidden" asp-for="IdSolicitud" />
+    <input type="hidden" asp-for="IdTarea" />
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Entrada.Descripcion" class="form-label">
+            Descripción de la tarea
+        </label>
+        <textarea asp-for="Entrada.Descripcion"
+                  class="form-control"
+                  maxlength="500"
+                  rows="3"></textarea>
+        <span asp-validation-for="Entrada.Descripcion"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Entrada.Fecha" class="form-label">
+            Fecha
+        </label>
+        <input asp-for="Entrada.Fecha"
+               type="date"
+               class="form-control" />
+        <span asp-validation-for="Entrada.Fecha"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Entrada.IdUsuario" class="form-label">
+            Usuario
+        </label>
+        <select asp-for="Entrada.IdUsuario"
+                asp-items="Model.Usuarios"
+                class="form-select">
+            <option value="">Seleccione un usuario</option>
+        </select>
+        <span asp-validation-for="Entrada.IdUsuario"
+              class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Entrada.HorasInvertidas" class="form-label">
+            Horas invertidas
+        </label>
+        <input asp-for="Entrada.HorasInvertidas"
+               type="number"
+               step="0.01"
+               class="form-control" />
+        <span asp-validation-for="Entrada.HorasInvertidas"
+              class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Guardar
+    </button>
+
+    @* Regresa al listado sin guardar las modificaciones. *@
+    <a asp-page="./Index"
+       asp-route-idSolicitud="@Model.IdSolicitud"
+       class="btn btn-secondary">
+        Regresar al listado
+    </a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
