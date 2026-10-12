@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PublicaSA.Entities\PublicaSA.Entities.csproj" />
+    <ProjectReference Include="..\PublicaSA.Services\PublicaSA.Services.csproj" />
+  </ItemGroup>
+
+</Project>
