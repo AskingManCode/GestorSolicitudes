@@ -60,9 +60,8 @@ namespace PublicaSA.Website.Pages.Solicitudes
             public string? Observaciones { get; set; }
 
             [Required(ErrorMessage = "Debe seleccionar un estado.")]
-            [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un estado válido.")]
             [Display(Name = "Estado")]
-            public int IdEstado { get; set; }
+            public string CodigoEstado { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "La fecha de ingreso es requerida.")]
             [DataType(DataType.Date)]
@@ -102,7 +101,7 @@ namespace PublicaSA.Website.Pages.Solicitudes
                 Descripcion = solicitud.Descripcion,
                 IdRepresentante = solicitud.IdRepresentante,
                 Observaciones = solicitud.Observaciones,
-                IdEstado = solicitud.IdEstado,
+                CodigoEstado = solicitud.CodigoEstado,
                 FechaIngreso = solicitud.FechaIngreso,
                 FechaRespuesta = solicitud.FechaRespuesta,
                 FechaInicio = solicitud.FechaInicio
@@ -130,7 +129,7 @@ namespace PublicaSA.Website.Pages.Solicitudes
                 Descripcion = Input.Descripcion,
                 IdRepresentante = Input.IdRepresentante,
                 Observaciones = Input.Observaciones,
-                IdEstado = Input.IdEstado,
+                CodigoEstado = Input.CodigoEstado,
                 FechaIngreso = Input.FechaIngreso,
                 FechaRespuesta = Input.FechaRespuesta,
                 FechaInicio = Input.FechaInicio
@@ -156,7 +155,7 @@ namespace PublicaSA.Website.Pages.Solicitudes
             RepresentantesSelectList = new SelectList(representantes, "IdRepresentante", "Nombre", Input.IdRepresentante);
 
             var estados = await _solicitudService.ObtenerEstadosAsync();
-            EstadosSelectList = new SelectList(estados, "IdEstado", "Nombre", Input.IdEstado);
+            EstadosSelectList = new SelectList(estados, "CodigoEstado", "Nombre", Input.CodigoEstado);
         }
     }
 }

@@ -62,11 +62,10 @@ namespace PublicaSA.Services.Services
                 if (existente != null)
                     return ResultadoOperacion.Error($"El consecutivo de oficio '{solicitud.ConsecutivoOficio}' ya se encuentra registrado.");
 
-                // Estado por defecto: "Nueva" (Id = 1)
-                if (solicitud.IdEstado <= 0)
+                // Estado por defecto: "NUEVA"
+                if (string.IsNullOrWhiteSpace(solicitud.CodigoEstado))
                 {
-                    var estadoNueva = await _estadoRepository.GetByNombreAsync("Nueva");
-                    solicitud.IdEstado = estadoNueva?.IdEstado ?? 1;
+                    solicitud.CodigoEstado = "NUEVA";
                 }
 
                 solicitud.ConsecutivoOficio = solicitud.ConsecutivoOficio.Trim();
@@ -111,7 +110,7 @@ namespace PublicaSA.Services.Services
                 if (solicitud.IdRepresentante <= 0)
                     return ResultadoOperacion.Error("Debe seleccionar un representante válido.");
 
-                if (solicitud.IdEstado <= 0)
+                if (string.IsNullOrWhiteSpace(solicitud.CodigoEstado))
                     return ResultadoOperacion.Error("Debe seleccionar un estado válido.");
 
                 var existente = await _solicitudRepository.GetByIdAsync(solicitud.IdSolicitud);

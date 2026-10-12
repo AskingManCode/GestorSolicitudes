@@ -24,11 +24,12 @@ namespace PublicaSA.Repository.Repositories
                 SELECT s.*, r.Nombre AS NombreRepresentante, r.Email AS EmailRepresentante, e.Nombre AS NombreEstado
                 FROM Solicitudes s
                 INNER JOIN Representantes r ON s.IdRepresentante = r.IdRepresentante
-                INNER JOIN EstadosSolicitud e ON s.IdEstado = e.IdEstado
+                INNER JOIN EstadosSolicitud e ON s.CodigoEstado = e.CodigoEstado
+                WHERE s.Activo = TRUE
                 ORDER BY s.IdSolicitud DESC
                 LIMIT @Offset, @PageSize;
 
-                SELECT COUNT(1) FROM Solicitudes;";
+                SELECT COUNT(1) FROM Solicitudes WHERE Activo = TRUE;";
 
             using var multi = await connection.QueryMultipleAsync(sql, new { Offset = offset, PageSize = pageSize });
             var items = await multi.ReadAsync<Solicitud>();
@@ -44,7 +45,7 @@ namespace PublicaSA.Repository.Repositories
                 SELECT s.*, r.Nombre AS NombreRepresentante, r.Email AS EmailRepresentante, e.Nombre AS NombreEstado
                 FROM Solicitudes s
                 INNER JOIN Representantes r ON s.IdRepresentante = r.IdRepresentante
-                INNER JOIN EstadosSolicitud e ON s.IdEstado = e.IdEstado
+                INNER JOIN EstadosSolicitud e ON s.CodigoEstado = e.CodigoEstado
                 WHERE s.IdSolicitud = @Id;";
 
             return await connection.QueryFirstOrDefaultAsync<Solicitud>(sql, new { Id = id });
@@ -57,7 +58,7 @@ namespace PublicaSA.Repository.Repositories
                 SELECT s.*, r.Nombre AS NombreRepresentante, r.Email AS EmailRepresentante, e.Nombre AS NombreEstado
                 FROM Solicitudes s
                 INNER JOIN Representantes r ON s.IdRepresentante = r.IdRepresentante
-                INNER JOIN EstadosSolicitud e ON s.IdEstado = e.IdEstado
+                INNER JOIN EstadosSolicitud e ON s.CodigoEstado = e.CodigoEstado
                 WHERE s.ConsecutivoOficio = @Consecutivo;";
 
             return await connection.QueryFirstOrDefaultAsync<Solicitud>(sql, new { Consecutivo = consecutivo });
@@ -70,12 +71,12 @@ namespace PublicaSA.Repository.Repositories
                 INSERT INTO Solicitudes (
                     ConsecutivoOficio, DocumentoRespuesta, DocumentoInicio,
                     Titulo, Descripcion, IdRepresentante, Observaciones,
-                    IdEstado, FechaIngreso, FechaRespuesta, FechaInicio, FechaCreacion
+                    CodigoEstado, FechaIngreso, FechaRespuesta, FechaInicio, Activo, FechaCreacion
                 )
                 VALUES (
                     @ConsecutivoOficio, @DocumentoRespuesta, @DocumentoInicio,
                     @Titulo, @Descripcion, @IdRepresentante, @Observaciones,
-                    @IdEstado, @FechaIngreso, @FechaRespuesta, @FechaInicio, NOW()
+                    @CodigoEstado, @FechaIngreso, @FechaRespuesta, @FechaInicio, TRUE, NOW()
                 );
                 SELECT LAST_INSERT_ID();";
 
@@ -94,7 +95,7 @@ namespace PublicaSA.Repository.Repositories
                     Descripcion = @Descripcion,
                     IdRepresentante = @IdRepresentante,
                     Observaciones = @Observaciones,
-                    IdEstado = @IdEstado,
+                    CodigoEstado = @CodigoEstado,
                     FechaIngreso = @FechaIngreso,
                     FechaRespuesta = @FechaRespuesta,
                     FechaInicio = @FechaInicio

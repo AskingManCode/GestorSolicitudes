@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 using System;
 
 namespace PublicaSA.Entities
@@ -16,10 +12,11 @@ namespace PublicaSA.Entities
         public string? Descripcion { get; set; }
         public int IdRepresentante { get; set; }
         public string? Observaciones { get; set; }
-        public int IdEstado { get; set; }
+        public string CodigoEstado { get; set; } = "NUEVA";
         public DateTime FechaIngreso { get; set; } = DateTime.Today;
         public DateTime? FechaRespuesta { get; set; }
         public DateTime? FechaInicio { get; set; }
+        public bool Activo { get; set; } = true;
         public DateTime FechaCreacion { get; set; } = DateTime.Now;
 
         // Propiedades de navegación / lectura
@@ -28,17 +25,16 @@ namespace PublicaSA.Entities
         public string? NombreEstado { get; set; }
 
         // Propiedad calculada para el estado de semáforo
-        // "danger" (Vencida), "warning" (Vence hoy), "success" (Nueva), "default" (Otra)
         public string SemaforoColor
         {
             get
             {
-                if (NombreEstado == "Vencida")
+                if (NombreEstado == "Vencida" || CodigoEstado == "VENCIDA")
                     return "table-danger";
 
                 if (FechaRespuesta.HasValue)
                 {
-                    if (NombreEstado == "Nueva")
+                    if (NombreEstado == "Nueva" || CodigoEstado == "NUEVA")
                         return "table-success";
                     return "";
                 }
@@ -55,7 +51,7 @@ namespace PublicaSA.Entities
                 {
                     return "table-warning";
                 }
-                else if (NombreEstado == "Nueva")
+                else if (NombreEstado == "Nueva" || CodigoEstado == "NUEVA")
                 {
                     return "table-success";
                 }
@@ -68,7 +64,7 @@ namespace PublicaSA.Entities
         {
             get
             {
-                if (NombreEstado == "Vencida")
+                if (NombreEstado == "Vencida" || CodigoEstado == "VENCIDA")
                     return "Vencida";
 
                 if (!FechaRespuesta.HasValue)

@@ -1,11 +1,8 @@
-﻿using PublicaSA.Entities;
-using PublicaSA.Repository.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Dapper;
+using PublicaSA.Entities;
+using PublicaSA.Repository.Interfaces;
 
 namespace PublicaSA.Repository.Repositories
 {
@@ -21,15 +18,15 @@ namespace PublicaSA.Repository.Repositories
         public async Task<IEnumerable<EstadoSolicitud>> GetAllAsync()
         {
             using var connection = _connectionFactory.CreateConnection();
-            const string sql = "SELECT * FROM EstadosSolicitud ORDER BY IdEstado ASC;";
+            const string sql = "SELECT * FROM EstadosSolicitud WHERE Activo = TRUE ORDER BY CodigoEstado ASC;";
             return await connection.QueryAsync<EstadoSolicitud>(sql);
         }
 
-        public async Task<EstadoSolicitud?> GetByIdAsync(int id)
+        public async Task<EstadoSolicitud?> GetByCodigoAsync(string codigo)
         {
             using var connection = _connectionFactory.CreateConnection();
-            const string sql = "SELECT * FROM EstadosSolicitud WHERE IdEstado = @Id;";
-            return await connection.QueryFirstOrDefaultAsync<EstadoSolicitud>(sql, new { Id = id });
+            const string sql = "SELECT * FROM EstadosSolicitud WHERE CodigoEstado = @Codigo;";
+            return await connection.QueryFirstOrDefaultAsync<EstadoSolicitud>(sql, new { Codigo = codigo });
         }
 
         public async Task<EstadoSolicitud?> GetByNombreAsync(string nombre)

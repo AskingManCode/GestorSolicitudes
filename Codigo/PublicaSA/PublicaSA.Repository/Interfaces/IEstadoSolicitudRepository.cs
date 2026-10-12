@@ -1,16 +1,13 @@
-﻿using PublicaSA.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
-using System.Collections.Generic;
+using PublicaSA.Entities;
 
 namespace PublicaSA.Repository.Interfaces
 {
-    public interface IEstadoSolicitudRepository // Adaptar o borrar interface
+    public interface IEstadoSolicitudRepository
     {
         Task<IEnumerable<EstadoSolicitud>> GetAllAsync();
-        Task<EstadoSolicitud?> GetByIdAsync(int id);
+        Task<EstadoSolicitud?> GetByCodigoAsync(string codigo);
         Task<EstadoSolicitud?> GetByNombreAsync(string nombre);
     }
 }
