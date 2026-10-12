@@ -1,4 +1,153 @@
 ﻿@page
 @model PublicaSA.Website.Pages.Usuarios.EditModel
 @{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<!-- Encabezado -->
+<div class="card border-0 shadow-sm mb-4 usuarios-header-card">
+    <div class="card-body py-3">
+
+        <!-- Botones circulares: Regresar / Guardar -->
+        <div class="d-flex gap-2 mb-3">
+            <a asp-page="Index"
+               class="btn btn-accion rounded-circle"
+               aria-label="Regresar al listado"
+               title="Regresar">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            </a>
+            <button type="submit"
+                    form="formUsuario"
+                    class="btn btn-accion rounded-circle"
+                    aria-label="Guardar cambios"
+                    title="Guardar">
+                <i class="fas fa-save" aria-hidden="true"></i>
+            </button>
+        </div>
+
+        <!-- Título del formulario -->
+        <h1 class="h5 fw-bold mb-0" style="color: #4e73df;">
+            Edición de Usuario
+        </h1>
+
+    </div>
+</div>
+
+<!-- Card del formulario -->
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        <!-- Título con espaciado -->
+        <div class="mb-4 pb-3 border-bottom">
+            <h5 class="fw-bold mb-0" style="color: #4e73df;">
+                Editar Usuario
+            </h5>
+        </div>
+
+        <form id="formUsuario" method="post">
+            <!-- Campo oculto para el ID -->
+            <input type="hidden" id="IdUsuario" name="IdUsuario" value="1" />
+
+            <div class="row g-3">
+
+                <!-- Fila 1: Credenciales (Usuario + Contraseña) -->
+                <div class="col-md-6">
+                    <label for="NombreUsuario" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Nombre de usuario <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="NombreUsuario" 
+                           name="NombreUsuario" 
+                           value="sebasjarrieta"
+                           required 
+                           maxlength="50" />
+                </div>
+
+                <div class="col-md-6">
+                    <label for="Contrasena" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Contraseña <span class="text-muted fw-normal">(Opcional)</span>
+                    </label>
+                    <div class="input-group">
+                        <input type="password" 
+                               class="form-control" 
+                               id="Contrasena" 
+                               name="Contrasena" 
+                               placeholder="Dejar en blanco para mantener la actual" 
+                               minlength="8" />
+                        <button class="btn btn-outline-secondary" 
+                                type="button" 
+                                id="btnTogglePassword" 
+                                title="Mostrar/Ocultar contraseña">
+                            <i class="fas fa-eye" id="iconTogglePassword" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <small class="text-muted" style="font-size: 0.75rem;">Solo complete si desea cambiarla</small>
+                </div>
+
+                <!-- Fila 2: Datos personales (Nombre completo + Correo) -->
+                <div class="col-md-6">
+                    <label for="NombreCompleto" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Nombre completo <span class="text-danger">*</span>
+                    </label>
+                    <input type="text" 
+                           class="form-control" 
+                           id="NombreCompleto" 
+                           name="NombreCompleto" 
+                           value="Sebastián Jiménez Arrieta"
+                           required 
+                           maxlength="150" />
+                </div>
+
+                <div class="col-md-6">
+                    <label for="Correo" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Correo electrónico <span class="text-danger">*</span>
+                    </label>
+                    <input type="email" 
+                           class="form-control" 
+                           id="Correo" 
+                           name="Correo" 
+                           value="sebas.jimenez@publica.com"
+                           required 
+                           maxlength="150" />
+                </div>
+
+                <!-- Fila 3: Estado (solo) -->
+                <div class="col-md-6">
+                    <label for="Estado" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Estado <span class="text-danger">*</span>
+                    </label>
+                    <select class="form-select" 
+                            id="Estado" 
+                            name="Estado" 
+                            required>
+                        <option value="Activo" selected>Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                        <option value="Bloqueado">Bloqueado</option>
+                    </select>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/Usuarios.css" asp-append-version="true" />
+    
+    <script>
+        // Mostrar / ocultar contraseña
+        document.getElementById('btnTogglePassword')?.addEventListener('click', function () {
+            const input = document.getElementById('Contrasena');
+            const icon = document.getElementById('iconTogglePassword');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.replace('fa-eye', 'fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.replace('fa-eye-slash', 'fa-eye');
+            }
+        });
+    </script>
 }
