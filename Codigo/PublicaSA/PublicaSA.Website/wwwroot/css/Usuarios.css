@@ -54,3 +54,66 @@
     text-transform: uppercase;
     letter-spacing: 0.3px;
 }
+
+.usuarios-table .col-id {
+    width: 70px;
+}
+
+.usuarios-table .col-estado {
+    width: 140px;
+}
+
+.usuarios-table .col-acciones {
+    width: 160px;
+}
+
+/* Paginación */
+.pagination .page-link {
+    color: var(--publica-primary);
+    border-radius: 0.35rem;
+    margin: 0 2px;
+    border: 1px solid #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--publica-primary);
+    border-color: var(--publica-primary);
+    color: white;
+}
+
+.pagination .page-link:hover {
+    background-color: #eaecf4;
+    color: var(--publica-primary);
+}
+
+/* Dropdown de cambio de estado */
+.btn-accion.dropdown-toggle::after {
+    display: none; /* Para que se vea circular limpio */
+}
+
+.dropdown-menu {
+    min-width: 180px;
+    font-size: 0.9rem;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    padding: 0.45rem 1rem;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fc;
+}
+
+/* Estado actual: marcado y no seleccionable */
+.dropdown-item.active-state:disabled {
+    color: inherit;
+    font-weight: 600;
+    opacity: 1;
+    background-color: #f8f9fc;
+}
+
+.dropdown-item.active-state .fa-check {
+    color: var(--publica-primary);
+}
