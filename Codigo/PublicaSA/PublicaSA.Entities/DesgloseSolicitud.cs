@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 
 namespace PublicaSA.Entities
 {
@@ -16,6 +14,25 @@ namespace PublicaSA.Entities
         public decimal Total { get; set; }
         public decimal PorcentajeCobro { get; set; }
         public string? Observaciones { get; set; }
+        public bool Activo { get; set; } = true;
         public DateTime FechaCreacion { get; set; } = DateTime.Now;
+
+        // Propiedad calculada para visualización amigable
+        public string NombreMes => Mes switch
+        {
+            1 => "Enero",
+            2 => "Febrero",
+            3 => "Marzo",
+            4 => "Abril",
+            5 => "Mayo",
+            6 => "Junio",
+            7 => "Julio",
+            8 => "Agosto",
+            9 => "Septiembre",
+            10 => "Octubre",
+            11 => "Noviembre",
+            12 => "Diciembre",
+            _ => Mes.ToString()
+        };
     }
 }
