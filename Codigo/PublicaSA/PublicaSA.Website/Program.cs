@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Connections;
 using PublicaSA.Repository.Interfaces;
 using PublicaSA.Repository.Repositories;
+using PublicaSA.Services.Interfaces;
+using PublicaSA.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,8 @@ builder.Services.AddRazorPages();
 
 // Inyección de dependencias
 builder.Services.AddSingleton<IDBConnectionFactory, DBConnectionFactory>();
+builder.Services.AddScoped<IEstadosUsuarioRepository, EstadosUsuarioRepository>();
+builder.Services.AddScoped<IEstadosUsuarioService, EstadosUsuarioService>(); 
 
 var app = builder.Build();
 
