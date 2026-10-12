@@ -1,2 +1,56 @@
-﻿body {
+﻿/* Color principal del sistema */
+:root {
+    --publica-primary: #4e73df;
+}
+
+/* Card superior con borde izquierdo azul */
+.usuarios-header-card {
+    border-left: 4px solid var(--publica-primary) !important;
+}
+
+.usuarios-header-card h1 {
+    color: var(--publica-primary);
+}
+
+/* Botón Nuevo */
+.btn-nuevo {
+    background-color: var(--publica-primary);
+    border-color: var(--publica-primary);
+    color: white;
+}
+
+.btn-nuevo:hover {
+    background-color: #2e59d9;
+    border-color: #2e59d9;
+    color: white;
+}
+
+/* Botones de acción circulares */
+.btn-accion {
+    width: 32px;
+    height: 32px;
+    background-color: var(--publica-primary);
+    border: none;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-accion:hover {
+    background-color: #2e59d9;
+    color: white;
+}
+
+/* Tabla */
+.usuarios-table thead {
+    background-color: #343a40;
+    color: white;
+}
+
+.usuarios-table th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
 }

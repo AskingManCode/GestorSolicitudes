@@ -1,4 +1,112 @@
 ﻿@page
 @model PublicaSA.Website.Pages.Usuarios.IndexModel
 @{
+    ViewData["Title"] = "Usuarios";
+}
+
+<!-- Bloque superior con borde azul -->
+<div class="card border-0 shadow-sm mb-4 usuarios-header-card">
+    <div class="card-body py-3">
+        <h1 class="h5 fw-bold mb-3">
+            Mantenimiento de Usuarios
+        </h1>
+
+        <a asp-page="Create" class="btn btn-sm btn-nuevo">
+            <i class="fas fa-plus me-1"></i> Nuevo
+        </a>
+    </div>
+</div>
+
+<!-- Card de Información -->
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <h5 class="h5 fw-bold" style="color: #4e73df;">
+            Información
+        </h5>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0 usuarios-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="ps-4" style="width: 70px;">ID</th>
+                        <th>Nombre de usuario</th>
+                        <th>Nombre completo</th>
+                        <th>Correo</th>
+                        <th style="width: 130px;">Estado</th>
+                        <th class="text-end pe-4" style="width: 130px;">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Fila 1 -->
+                    <tr>
+                        <td class="ps-4">1</td>
+                        <td>sebasjarrieta</td>
+                        <td>Sebastián Jiménez Arrieta</td>
+                        <td>sebas.jimenez@publica.com</td>
+                        <td>
+                            <span class="badge rounded-pill text-bg-success">Activo</span>
+                        </td>
+                        <td class="text-end pe-4">
+                            <div class="d-inline-flex gap-2">
+                                <button type="button" class="btn btn-sm rounded-circle btn-accion" title="Editar">
+                                    <i class="fas fa-pencil-alt fa-sm"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm rounded-circle btn-accion" title="Eliminar">
+                                    <i class="fas fa-trash-alt fa-sm"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Fila 2 -->
+                    <tr>
+                        <td class="ps-4">2</td>
+                        <td>mlopez</td>
+                        <td>María López Vargas</td>
+                        <td>maria.lopez@publica.com</td>
+                        <td>
+                            <span class="badge rounded-pill text-bg-secondary">Inactivo</span>
+                        </td>
+                        <td class="text-end pe-4">
+                            <div class="d-inline-flex gap-2">
+                                <button type="button" class="btn btn-sm rounded-circle btn-accion" title="Editar">
+                                    <i class="fas fa-pencil-alt fa-sm"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm rounded-circle btn-accion" title="Eliminar">
+                                    <i class="fas fa-trash-alt fa-sm"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <!-- Fila 3 -->
+                    <tr>
+                        <td class="ps-4">3</td>
+                        <td>cadmin</td>
+                        <td>Carlos Administrador</td>
+                        <td>admin@publica.com</td>
+                        <td>
+                            <span class="badge rounded-pill text-bg-danger">Bloqueado</span>
+                        </td>
+                        <td class="text-end pe-4">
+                            <div class="d-inline-flex gap-2">
+                                <button type="button" class="btn btn-sm rounded-circle btn-accion" title="Editar">
+                                    <i class="fas fa-pencil-alt fa-sm"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm rounded-circle btn-accion" title="Eliminar">
+                                    <i class="fas fa-trash-alt fa-sm"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/Usuarios.css" asp-append-version="true" />
 }

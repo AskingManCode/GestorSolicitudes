@@ -17,8 +17,6 @@ body {
 }
 
 /* ========== SIDEBAR ========== */
-/* Fija a la altura de la ventana: el menú y el botón de colapsar siempre quedan visibles,
-   aunque la página de contenido sea larga. */
 #sidebar-wrapper {
     width: var(--sidebar-width);
     flex-shrink: 0;
@@ -163,7 +161,6 @@ body {
 }
 
 /* ========== ESTADO COLAPSADO (solo escritorio) ========== */
-/* La clase vive en <html> para aplicarse antes del primer pintado y no parpadear. */
 @media (min-width: 768px) {
     html.sidebar-collapsed #sidebar-wrapper {
         width: var(--sidebar-width-collapsed);
