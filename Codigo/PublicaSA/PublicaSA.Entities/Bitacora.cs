@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace PublicaSA.Entities
 {
-    internal class Bitacora // Adaptar o borrar clase
+    public class Bitacora
     {
        
         public int IdBitacora { get; set; }

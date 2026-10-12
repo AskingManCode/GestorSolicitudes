@@ -1,17 +1,26 @@
 using Microsoft.AspNetCore.Connections;
 using PublicaSA.Repository.Interfaces;
 using PublicaSA.Repository.Repositories;
+using PublicaSA.Services.Interfaces;
+using PublicaSA.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// CORS (Permite que cualquier origen consuma el API)
+// CORS / Razor Pages
 builder.Services.AddRazorPages();
 
-// FluentValidation
-// builder.Services.AddValidatorsFromAssemblyContaining<Clase>();
-
-// Inyección de dependencias
+// Inyección de dependencias - Conexión DB
 builder.Services.AddSingleton<IDBConnectionFactory, DBConnectionFactory>();
+
+// Inyección de dependencias - Repositorios
+builder.Services.AddScoped<ISolicitudRepository, SolicitudRepository>();
+builder.Services.AddScoped<IRepresentanteRepository, RepresentanteRepository>();
+builder.Services.AddScoped<IEstadoSolicitudRepository, EstadoSolicitudRepository>();
+builder.Services.AddScoped<IBitacoraRepository, BitacoraRepository>();
+
+// Inyección de dependencias - Servicios
+builder.Services.AddScoped<IBitacoraService, BitacoraService>();
+builder.Services.AddScoped<ISolicitudService, SolicitudService>();
 
 var app = builder.Build();
 
