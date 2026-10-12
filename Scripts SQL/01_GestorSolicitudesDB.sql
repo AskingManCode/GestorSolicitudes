@@ -288,15 +288,15 @@ CREATE TABLE IF NOT EXISTS `Tareas` (
 CREATE TABLE IF NOT EXISTS `Bitacoras` (
 	`IdBitacora` INT AUTO_INCREMENT PRIMARY KEY,
 	`FechaBitacora` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	`UsuarioEjecuta` VARCHAR(50) NOT NULL,
+	`IdUsuario` INT NOT NULL,
 	`Accion` VARCHAR(100) NOT NULL,
 	`Detalle` LONGTEXT NOT NULL,
 	
 	INDEX `IX_Bitacoras_Fecha` (`FechaBitacora`),
-	INDEX `IX_Bitacoras_Usuario_Fecha` (`UsuarioEjecuta`, `FechaBitacora`),
 	
-	CONSTRAINT `CHK_Bitacoras_UsuarioEjecuta`
-	   CHECK (CHAR_LENGTH(TRIM(`UsuarioEjecuta`)) >= 1),
+	CONSTRAINT `FK_Bitacoras_Usuario`
+		FOREIGN KEY (`IdUsuario`)
+		REFERENCES `Usuarios` (`IdUsuario`),
 	
 	CONSTRAINT `CHK_Bitacoras_Accion`
 	   CHECK (CHAR_LENGTH(TRIM(`Accion`)) >= 1),
