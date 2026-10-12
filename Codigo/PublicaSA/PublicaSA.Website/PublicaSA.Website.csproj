@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\PublicaSA.Entities\PublicaSA.Entities.csproj" />
+    <ProjectReference Include="..\PublicaSA.Repository\PublicaSA.Repository.csproj" />
     <ProjectReference Include="..\PublicaSA.Services\PublicaSA.Services.csproj" />
   </ItemGroup>
 
