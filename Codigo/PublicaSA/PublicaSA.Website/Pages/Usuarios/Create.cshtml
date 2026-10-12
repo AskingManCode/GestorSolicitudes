@@ -114,9 +114,10 @@
                             id="Estado" 
                             name="Estado" 
                             required>
-                        <option value="Activo" selected>Activo</option>
-                        <option value="Inactivo">Inactivo</option>
-                        <option value="Bloqueado">Bloqueado</option>
+                        @foreach (var estado in Model.ListaEstados)
+                        {
+                            <option value="@estado.CodigoEstado" selected="@(estado.CodigoEstado == Model.EstadoActual)">@estado.Nombre</option>
+                        }
                     </select>
                 </div>
 

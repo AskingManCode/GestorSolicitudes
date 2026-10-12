@@ -59,27 +59,25 @@
                                             data-bs-toggle="dropdown"
                                             data-bs-popper-config='{"strategy":"fixed"}'
                                             aria-expanded="false"
-                                            aria-label="Cambiar estado de sebasjarrieta"
                                             title="Cambiar estado">
                                         <i class="fas fa-exchange-alt fa-sm" aria-hidden="true"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                        <li>
-                                            <button class="dropdown-item active-state" type="button" disabled aria-current="true">
-                                                <span class="badge rounded-pill text-bg-success me-2" aria-hidden="true">&nbsp;</span> Activar
-                                                <i class="fas fa-check ms-auto" aria-hidden="true"></i>
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item" type="button">
-                                                <span class="badge rounded-pill text-bg-secondary me-2" aria-hidden="true">&nbsp;</span> Inactivar
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item" type="button">
-                                                <span class="badge rounded-pill text-bg-danger me-2" aria-hidden="true">&nbsp;</span> Bloquear
-                                            </button>
-                                        </li>
+                                        @foreach (var estado in Model.ListaEstados)
+                                        {
+                                            // Aquí puedes comparar con el estado actual del usuario
+                                            // Por ahora lo dejamos simple
+                                            <li>
+                                                <button class="dropdown-item" type="button">
+                                                    <span class="badge rounded-pill 
+                                                        @(estado.CodigoEstado == "ACTIVO" ? "text-bg-success" : 
+                                                          estado.CodigoEstado == "INACTIVO" ? "text-bg-secondary" : "text-bg-danger") me-2">
+                                                        &nbsp;
+                                                    </span>
+                                                    @estado.Nombre
+                                                </button>
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
                                 <!-- Editar -->
@@ -116,32 +114,30 @@
                                             data-bs-toggle="dropdown"
                                             data-bs-popper-config='{"strategy":"fixed"}'
                                             aria-expanded="false"
-                                            aria-label="Cambiar estado de sebasjarrieta"
                                             title="Cambiar estado">
                                         <i class="fas fa-exchange-alt fa-sm" aria-hidden="true"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                        <li>
-                                            <button class="dropdown-item" type="button">
-                                                <span class="badge rounded-pill text-bg-success me-2" aria-hidden="true">&nbsp;</span> Activar
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item active-state" type="button" disabled aria-current="true">
-                                                <span class="badge rounded-pill text-bg-secondary me-2" aria-hidden="true">&nbsp;</span> Inactivar
-                                                <i class="fas fa-check ms-auto" aria-hidden="true"></i>
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item" type="button">
-                                                <span class="badge rounded-pill text-bg-danger me-2" aria-hidden="true">&nbsp;</span> Bloquear
-                                            </button>
-                                        </li>
+                                        @foreach (var estado in Model.ListaEstados)
+                                        {
+                                            // Aquí puedes comparar con el estado actual del usuario
+                                            // Por ahora lo dejamos simple
+                                            <li>
+                                                <button class="dropdown-item" type="button">
+                                                    <span class="badge rounded-pill 
+                                                        @(estado.CodigoEstado == "ACTIVO" ? "text-bg-success" : 
+                                                          estado.CodigoEstado == "INACTIVO" ? "text-bg-secondary" : "text-bg-danger") me-2">
+                                                        &nbsp;
+                                                    </span>
+                                                    @estado.Nombre
+                                                </button>
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
                                 <!-- Editar -->
-                                <a asp-page="Edit" asp-route-id="1" class="btn btn-sm rounded-circle btn-accion"
-                                   aria-label="Editar sebasjarrieta" title="Editar">
+                                <a asp-page="Edit" asp-route-id="2" class="btn btn-sm rounded-circle btn-accion"
+                                   aria-label="Editar mlopez" title="Editar">
                                     <i class="fas fa-pencil-alt fa-sm" aria-hidden="true"></i>
                                 </a>
                                 <!-- Eliminar -->
@@ -173,32 +169,30 @@
                                             data-bs-toggle="dropdown"
                                             data-bs-popper-config='{"strategy":"fixed"}'
                                             aria-expanded="false"
-                                            aria-label="Cambiar estado de sebasjarrieta"
                                             title="Cambiar estado">
                                         <i class="fas fa-exchange-alt fa-sm" aria-hidden="true"></i>
                                     </button>
                                     <ul class="dropdown-menu dropdown-menu-end shadow-sm">
-                                        <li>
-                                            <button class="dropdown-item" type="button">
-                                                <span class="badge rounded-pill text-bg-success me-2" aria-hidden="true">&nbsp;</span> Activar
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item" type="button">
-                                                <span class="badge rounded-pill text-bg-secondary me-2" aria-hidden="true">&nbsp;</span> Inactivar
-                                            </button>
-                                        </li>
-                                        <li>
-                                            <button class="dropdown-item active-state" type="button" disabled aria-current="true">
-                                                <span class="badge rounded-pill text-bg-danger me-2" aria-hidden="true">&nbsp;</span> Bloquear
-                                                <i class="fas fa-check ms-auto" aria-hidden="true"></i>
-                                            </button>
-                                        </li>
+                                        @foreach (var estado in Model.ListaEstados)
+                                        {
+                                            // Aquí puedes comparar con el estado actual del usuario
+                                            // Por ahora lo dejamos simple
+                                            <li>
+                                                <button class="dropdown-item" type="button">
+                                                    <span class="badge rounded-pill 
+                                                        @(estado.CodigoEstado == "ACTIVO" ? "text-bg-success" : 
+                                                          estado.CodigoEstado == "INACTIVO" ? "text-bg-secondary" : "text-bg-danger") me-2">
+                                                        &nbsp;
+                                                    </span>
+                                                    @estado.Nombre
+                                                </button>
+                                            </li>
+                                        }
                                     </ul>
                                 </div>
                                 <!-- Editar -->
-                                <a asp-page="Edit" asp-route-id="1" class="btn btn-sm rounded-circle btn-accion"
-                                   aria-label="Editar sebasjarrieta" title="Editar">
+                                <a asp-page="Edit" asp-route-id="3" class="btn btn-sm rounded-circle btn-accion"
+                                   aria-label="Editar cadmin" title="Editar">
                                     <i class="fas fa-pencil-alt fa-sm" aria-hidden="true"></i>
                                 </a>
                                 <!-- Eliminar -->

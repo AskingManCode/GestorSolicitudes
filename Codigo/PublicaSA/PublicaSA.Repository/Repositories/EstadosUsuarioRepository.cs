@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace PublicaSA.Repository.Repositories
 {
-    internal class EstadosUsuarioRepository : IEstadosUsuarioRepository
+    public class EstadosUsuarioRepository : IEstadosUsuarioRepository
     {
         private readonly IDBConnectionFactory _connectionFactory;
 
