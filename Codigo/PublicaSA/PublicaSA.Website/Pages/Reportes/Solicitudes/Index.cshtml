@@ -1,4 +1,138 @@
 ﻿@page
 @model PublicaSA.Website.Pages.Reportes.Solicitudes.IndexModel
+
 @{
+    ViewData["Title"] = "Reporte mensual de montos";
+}
+
+<h1>Reporte mensual de montos</h1>
+
+@* Solicita el mes y año para generar el reporte. *@
+<form method="post" class="mb-4">
+    <div asp-validation-summary="All"
+         class="text-danger mb-3"></div>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label asp-for="Mes" class="form-label">
+                Mes
+            </label>
+
+            <select asp-for="Mes" class="form-select">
+                <option value="">Seleccione el mes</option>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Septiembre</option>
+                <option value="10">Octubre</option>
+                <option value="11">Noviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+
+            <span asp-validation-for="Mes"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4">
+            <label asp-for="Anio" class="form-label">
+                Año
+            </label>
+
+            <input asp-for="Anio"
+                   type="number"
+                   min="2000"
+                   max="2150"
+                   step="1"
+                   class="form-control" />
+
+            <span asp-validation-for="Anio"
+                  class="text-danger"></span>
+        </div>
+
+        <div class="col-md-4 d-flex align-items-end">
+            <button type="submit" class="btn btn-primary">
+                Generar reporte
+            </button>
+        </div>
+    </div>
+</form>
+
+@if (Model.Reporte is not null)
+{
+    <p>
+        Período: @Model.Mes / @Model.Anio
+    </p>
+
+    @* Muestra los importes por solicitud y sus sumas finales. *@
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Consecutivo del oficio</th>
+                    <th>Título de la solicitud</th>
+                    <th>Mes</th>
+                    <th>Año</th>
+                    <th class="text-end">Monto</th>
+                    <th class="text-end">IVA</th>
+                    <th class="text-end">Total por solicitud</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var solicitud in Model.Reporte.Solicitudes)
+                {
+                    <tr>
+                        <td>@solicitud.ConsecutivoOficio</td>
+                        <td>@solicitud.Titulo</td>
+                        <td>@solicitud.Mes</td>
+                        <td>@solicitud.Anio</td>
+                        <td class="text-end">
+                            @solicitud.Monto.ToString("N2")
+                        </td>
+                        <td class="text-end">
+                            @solicitud.Iva.ToString("N2")
+                        </td>
+                        <td class="text-end">
+                            @solicitud.Total.ToString("N2")
+                        </td>
+                    </tr>
+                }
+
+                @if (!Model.Reporte.Solicitudes.Any())
+                {
+                    <tr>
+                        <td colspan="7" class="text-center">
+                            No hay datos para el período seleccionado.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+
+            <tfoot>
+                <tr class="fw-bold">
+                    <th colspan="4" scope="row">
+                        Sumas
+                    </th>
+                    <td class="text-end">
+                        @Model.Reporte.SumaMonto.ToString("N2")
+                    </td>
+                    <td class="text-end">
+                        @Model.Reporte.SumaIva.ToString("N2")
+                    </td>
+                    <td class="text-end">
+                        @Model.Reporte.SumaTotal.ToString("N2")
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
