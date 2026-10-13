@@ -21,6 +21,7 @@ builder.Services.AddScoped<IBitacoraRepository, BitacoraRepository>();
 // Inyección de dependencias - Servicios
 builder.Services.AddScoped<IBitacoraService, BitacoraService>();
 builder.Services.AddScoped<ISolicitudService, SolicitudService>();
+builder.Services.AddScoped<IRepresentanteService, RepresentanteService>();
 
 var app = builder.Build();
 
