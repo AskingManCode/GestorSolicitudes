@@ -15,6 +15,8 @@ namespace PublicaSA.Website.Pages.Usuarios
         
         public int TotalPaginas { get; set; } = 1;
         public int PaginaActual { get; set; } = 1;
+        public bool ShowSuccess { get; set; } = false;
+        public string? SuccessMessage { get; set; }
 
         public IndexModel(IUsuarioService usuarioService, IEstadosUsuarioService estadosUsuarioService)
         {
@@ -22,16 +24,20 @@ namespace PublicaSA.Website.Pages.Usuarios
             _estadosUsuarioService = estadosUsuarioService;
         }
 
-        public async Task OnGetAsync(int pagina = 1)
+        public async Task OnGetAsync(int pagina = 1, bool success = false, string? message = null)
         {
             // Carga estados para los dropdowns
             ListaEstados = await _estadosUsuarioService.ListarEstadosUsuario();
 
             // Carga usuarios paginados
-            var (usuarios, totalPaginas, paginaActual) = await _usuarioService.ListarUsuarios(pagina, 10);
-            ListaUsuarios = usuarios;
+            var (listaUsuarios, totalPaginas, paginaActual) = await _usuarioService.ListarUsuarios(pagina, 10);
+            ListaUsuarios = listaUsuarios;
             TotalPaginas = totalPaginas;
             PaginaActual = paginaActual;
+
+            // Leer parámetros de éxito desde querystring
+            ShowSuccess = success;
+            SuccessMessage = message;
         }
     }
 }

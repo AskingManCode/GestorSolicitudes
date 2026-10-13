@@ -10,9 +10,9 @@ DROP PROCEDURE IF EXISTS `sp_Usuarios_Crear`;
 DELIMITER $$
 
 CREATE PROCEDURE `sp_Usuarios_Crear`(
-	IN p_NombreUsuario VARCHAR(50),
 	IN p_NombreCompleto VARCHAR(150),
 	IN p_Correo VARCHAR(150),
+	IN p_NombreUsuario VARCHAR(50),
 	IN p_Contrasena VARCHAR(500),
 	IN p_CodigoEstado VARCHAR(20)
 )
@@ -34,8 +34,16 @@ BEGIN
 
 	INSERT INTO `Usuarios` (`NombreUsuario`, `NombreCompleto`, `Correo`, `Contrasena`, `CodigoEstado`)
 	VALUES (p_NombreUsuario, p_NombreCompleto, p_Correo, p_Contrasena, p_CodigoEstado);
-
-	SELECT LAST_INSERT_ID() AS `IdUsuario`;
+	
+	SELECT 
+		u.`IdUsuario`,
+		u.`NombreUsuario`,
+		u.`NombreCompleto`,
+		u.`Correo`,
+		eu.`Nombre` AS `Estado`
+	FROM `Usuarios` u
+	INNER JOIN `EstadosUsuario` eu ON eu.`CodigoEstado` = u.`CodigoEstado`
+	WHERE u.`IdUsuario` = LAST_INSERT_ID();
 END$$
 
 DELIMITER ;

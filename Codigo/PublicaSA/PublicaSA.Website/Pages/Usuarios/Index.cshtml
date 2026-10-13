@@ -145,7 +145,7 @@
 </div>
 
 <!-- Paginación compacta -->
-@if (Model.TotalPaginas == 1)
+@if (Model.TotalPaginas > 1)
 {
     <nav aria-label="Paginación de usuarios" class="mt-3">
         <ul class="pagination pagination-sm justify-content-end mb-0">
@@ -175,4 +175,14 @@
 
 @section Scripts {
     <link rel="stylesheet" href="~/css/Usuarios.css" asp-append-version="true" />
+    <script src="~/js/usuarios.js" asp-append-version="true"></script>
+
+    @if (Model.ShowSuccess)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Éxito', '@Html.Raw(Model.SuccessMessage ?? "")', 'success');
+            });
+        </script>
+    }
 }

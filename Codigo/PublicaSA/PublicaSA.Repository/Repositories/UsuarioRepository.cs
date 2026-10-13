@@ -32,5 +32,24 @@ namespace PublicaSA.Repository.Repositories
                 }
             }
         }
+
+        public async Task<UsuarioResponse> Crear(UsuarioRequest usuario)
+        {
+            using (IDbConnection db = _connectionFactory.CreateConnection())
+            {
+                return await db.QuerySingleAsync<UsuarioResponse>(
+                    "sp_Usuarios_Crear",
+                    new
+                    {
+                        p_NombreCompleto = usuario.NombreCompleto,
+                        p_Correo = usuario.Correo,
+                        p_NombreUsuario = usuario.NombreUsuario,
+                        p_Contrasena = usuario.Contrasena,
+                        p_CodigoEstado = usuario.CodigoEstado
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
     }
 }
