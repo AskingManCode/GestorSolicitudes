@@ -1,0 +1,69 @@
+@page
+@model PublicaSA.Website.Pages.Representantes.CrearModel
+@{
+    ViewData["Title"] = "Crear Representante";
+}
+
+<div class="container-fluid px-0">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="h3 mb-0 text-gray-800">Nuevo Representante</h1>
+            <p class="text-muted small mb-0">Ingrese los datos para registrar un nuevo representante</p>
+        </div>
+        <a asp-page="/Representantes/Index" class="btn btn-outline-secondary d-flex align-items-center gap-2">
+            <i class="fas fa-arrow-left"></i>
+            <span>Regresar al listado</span>
+        </a>
+    </div>
+
+    @if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            @Html.ValidationSummary(true, "", new { @class = "mb-0" })
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+            <h6 class="m-0 fw-bold text-primary">Formulario de Registro</h6>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="Input.Nombre" class="form-label fw-semibold">
+                            Nombre <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Input.Nombre" class="form-control" placeholder="Nombre completo del representante" />
+                        <span asp-validation-for="Input.Nombre" class="text-danger small"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Input.Email" class="form-label fw-semibold">
+                            Email <span class="text-danger">*</span>
+                        </label>
+                        <input asp-for="Input.Email" type="email" class="form-control" placeholder="correo@dominio.com" />
+                        <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a asp-page="/Representantes/Index" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Guardar Representante
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
