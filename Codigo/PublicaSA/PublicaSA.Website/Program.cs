@@ -16,7 +16,6 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Conserva la conexión y los componentes existentes del equipo.
 // Conserva la conexión a la base de datos del proyecto.
 builder.Services.AddSingleton<IDBConnectionFactory, DBConnectionFactory>();
 
