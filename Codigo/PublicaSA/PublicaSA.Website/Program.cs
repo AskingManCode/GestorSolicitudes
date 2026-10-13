@@ -21,6 +21,7 @@ builder.Services.AddScoped<IEstadosUsuarioService, EstadosUsuarioService>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+builder.Services.AddScoped<IValidator<UsuarioEditRequest>, UsuarioEditValidator>();
 
 var app = builder.Build();
 

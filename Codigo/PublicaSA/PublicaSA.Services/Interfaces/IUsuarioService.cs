@@ -10,5 +10,8 @@ namespace PublicaSA.Services.Interfaces
         Task<(IEnumerable<UsuarioResponse> ListaUsuarios, int TotalPaginas, int PaginaActual)> ListarUsuarios(int pagina, int tamanoPagina);
         Task<UsuarioResponse> Crear(UsuarioRequest request);
         Task<UsuarioResponse> CambiarEstado(int idUsuario, string codigoEstado);
+        Task<UsuarioRequest?> ObtenerPorId(int idUsuario);
+        Task<UsuarioResponse> Editar(UsuarioEditRequest request);
+        Task Eliminar(int idUsuario);
     }
 }

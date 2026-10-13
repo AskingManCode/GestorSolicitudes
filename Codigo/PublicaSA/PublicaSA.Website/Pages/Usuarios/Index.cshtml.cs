@@ -15,8 +15,10 @@ namespace PublicaSA.Website.Pages.Usuarios
         
         public int TotalPaginas { get; set; } = 1;
         public int PaginaActual { get; set; } = 1;
-        public bool ShowSuccess { get; set; } = false;
-        public string? SuccessMessage { get; set; }
+        public bool ShowAlert { get; set; } = false;
+        public string? AlertMessage { get; set; }
+        public string AlertType { get; set; } = "success"; // success | error | warning
+        public string AlertTitle { get; set; } = "Mensaje";
 
         public IndexModel(IUsuarioService usuarioService, IEstadosUsuarioService estadosUsuarioService)
         {
@@ -24,7 +26,7 @@ namespace PublicaSA.Website.Pages.Usuarios
             _estadosUsuarioService = estadosUsuarioService;
         }
 
-        public async Task OnGetAsync(int pagina = 1, bool success = false, string? message = null)
+        public async Task OnGetAsync(int pagina = 1, bool success = false, string? message = null, string? tipo = null, string? title = null)
         {
             // Carga estados para los dropdowns
             ListaEstados = await _estadosUsuarioService.ListarEstadosUsuario();
@@ -35,9 +37,11 @@ namespace PublicaSA.Website.Pages.Usuarios
             TotalPaginas = totalPaginas;
             PaginaActual = paginaActual;
 
-            // Leer parámetros de éxito
-            ShowSuccess = success;
-            SuccessMessage = message;
+            // Leer parámetros de alerta
+            ShowAlert = success;
+            AlertMessage = message;
+            AlertType = string.IsNullOrWhiteSpace(tipo) ? "success" : tipo;
+            AlertTitle = string.IsNullOrWhiteSpace(title) ? (AlertType == "success" ? "Ok" : AlertType == "warning" ? "Advertencia" : "Error") : title;
         }
 
         public async Task<IActionResult> OnPostCambiarEstadoAsync(int idUsuario, string codigoEstado)
@@ -48,7 +52,9 @@ namespace PublicaSA.Website.Pages.Usuarios
                 return RedirectToPage("./Index", new
                 {
                     success = true,
-                    message = "Estado actualizado correctamente."
+                    message = "Estado actualizado correctamente.",
+                    tipo = "success",
+                    title = "Ok"
                 });
             }
             catch (Exception ex)
@@ -56,7 +62,44 @@ namespace PublicaSA.Website.Pages.Usuarios
                 return RedirectToPage("./Index", new
                 {
                     success = true,
-                    message = $"Error: {ex.Message}"
+                    message = $"Error: {ex.Message}",
+                    tipo = "error",
+                    title = "Error"
+                });
+            }
+        }
+
+        public async Task<IActionResult> OnPostEliminarAsync(int idUsuario)
+        {
+            try
+            {
+                await _usuarioService.Eliminar(idUsuario);
+                return RedirectToPage("./Index", new
+                {
+                    success = true,
+                    message = "Usuario eliminado correctamente.",
+                    tipo = "success",
+                    title = "Ok"
+                });
+            }
+            catch (InvalidOperationException ex)
+            {
+                return RedirectToPage("./Index", new
+                {
+                    success = true,
+                    message = ex.Message,
+                    tipo = "warning",
+                    title = "Advertencia"
+                });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToPage("./Index", new
+                {
+                    success = true,
+                    message = $"Error: {ex.Message}",
+                    tipo = "error",
+                    title = "Error"
                 });
             }
         }

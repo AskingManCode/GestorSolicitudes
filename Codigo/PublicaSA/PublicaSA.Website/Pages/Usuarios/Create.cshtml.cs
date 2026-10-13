@@ -42,9 +42,10 @@ namespace PublicaSA.Website.Pages.Usuarios
             catch (ValidationException ex)
             {
                 var mensajes = string.Join("<br/>", ex.Errors.Select(e => e.ErrorMessage));
+                // Validación => advertencia (amarillo)
                 TempData["ModalMessage"] = mensajes;
-                TempData["ModalType"] = "error";
-                TempData["ModalTitle"] = "Error";
+                TempData["ModalType"] = "warning";
+                TempData["ModalTitle"] = "Advertencia";
                 return Page();
             }
             catch (Exception ex)

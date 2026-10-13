@@ -47,3 +47,55 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 });
+
+
+
+
+// Toggle para contraseña actual
+document.getElementById('btnTogglePasswordActual')?.addEventListener('click', function () {
+    const input = document.getElementById('ContrasenaActual');
+    const icon = document.getElementById('iconTogglePasswordActual');
+    togglePassword(input, icon);
+});
+
+// Toggle para nueva contraseña
+document.getElementById('btnTogglePasswordNueva')?.addEventListener('click', function () {
+    const input = document.getElementById('ContrasenaNueva');
+    const icon = document.getElementById('iconTogglePasswordNueva');
+    togglePassword(input, icon);
+});
+
+// Toggle para confirmar contraseña
+document.getElementById('btnTogglePasswordConfirmar')?.addEventListener('click', function () {
+    const input = document.getElementById('ConfirmarContrasena');
+    const icon = document.getElementById('iconTogglePasswordConfirmar');
+    togglePassword(input, icon);
+});
+
+function togglePassword(input, icon) {
+    if (!input || !icon) return;
+
+    if (input.type === 'password') {
+        input.type = 'text';
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+    } else {
+        input.type = 'password';
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+    }
+}
+
+
+// Configurar modal de eliminación
+document.addEventListener('DOMContentLoaded', function () {
+    const modalEliminar = document.getElementById('modalEliminar');
+    if (!modalEliminar) return;
+
+    modalEliminar.addEventListener('show.bs.modal', function (event) {
+        const button = event.relatedTarget;
+        const idUsuario = button.getAttribute('data-id');
+        const nombreUsuario = button.getAttribute('data-nombre');
+
+        document.getElementById('idUsuarioEliminar').value = idUsuario;
+        document.getElementById('nombreUsuarioEliminar').textContent = nombreUsuario;
+    });
+});

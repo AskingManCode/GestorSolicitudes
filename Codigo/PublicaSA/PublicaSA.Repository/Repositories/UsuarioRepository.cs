@@ -1,10 +1,12 @@
-﻿using PublicaSA.Entities;
+﻿using Dapper;
+using MySqlConnector;
+using PublicaSA.Entities;
 using PublicaSA.Repository.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Text;
-using Dapper;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PublicaSA.Repository.Repositories
 {
@@ -67,5 +69,70 @@ namespace PublicaSA.Repository.Repositories
                 );
             }
         }
+
+        public async Task<UsuarioRequest?> ObtenerPorId(int idUsuario)
+        {
+            using (IDbConnection db = _connectionFactory.CreateConnection())
+            {
+                return await db.QueryFirstOrDefaultAsync<UsuarioRequest>(
+                    "sp_Usuarios_Obtener",
+                    new { p_IdUsuario = idUsuario },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
+        public async Task<UsuarioResponse> Editar(UsuarioEditRequest request)
+        {
+            using (IDbConnection db = _connectionFactory.CreateConnection())
+            {
+                return await db.QuerySingleAsync<UsuarioResponse>(
+                    "sp_Usuarios_Editar",
+                    new
+                    {
+                        p_IdUsuario = request.IdUsuario,
+                        p_NombreCompleto = request.NombreCompleto,
+                        p_Correo = request.Correo,
+                        p_NombreUsuario = request.NombreUsuario,
+                        p_CodigoEstado = request.CodigoEstado,
+                        p_ContrasenaNueva = request.ContrasenaNueva
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
+
+        public async Task<string> ObtenerContrasenaUsuario(int idUsuario)
+        {
+            using (IDbConnection db = _connectionFactory.CreateConnection())
+            {
+                return await db.QuerySingleAsync<string>(
+                    "SELECT Contrasena FROM Usuarios WHERE IdUsuario = @IdUsuario",
+                    new { IdUsuario = idUsuario }
+                );
+            }
+        }
+
+        public async Task<bool> Eliminar(int idUsuario)
+        {
+            using (IDbConnection db = _connectionFactory.CreateConnection())
+            {
+                try
+                {
+                    var filasAfectadas = await db.ExecuteAsync(
+                        "sp_Usuarios_Eliminar",
+                        new { p_IdUsuario = idUsuario },
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    return filasAfectadas > 0;
+                }
+                catch (MySqlException ex) when (ex.Number == 1644)
+                {
+                    throw new InvalidOperationException(ex.Message);
+                }
+
+            }
+        }
+
     }
 }
