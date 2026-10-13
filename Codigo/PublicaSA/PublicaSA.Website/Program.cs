@@ -1,18 +1,16 @@
-using Microsoft.AspNetCore.Connections;
 using PublicaSA.Repository.Interfaces;
 using PublicaSA.Repository.Repositories;
 using PublicaSA.Services.Interfaces;
 using PublicaSA.Services.Services;
+using PublicaSA.Website.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// CORS / Razor Pages
 builder.Services.AddRazorPages();
 
-// Inyección de dependencias - Conexión DB
+// Conserva la conexión a la base de datos del proyecto.
 builder.Services.AddSingleton<IDBConnectionFactory, DBConnectionFactory>();
 
-// Inyección de dependencias - Repositorios
 builder.Services.AddScoped<ISolicitudRepository, SolicitudRepository>();
 builder.Services.AddScoped<IRepresentanteRepository, RepresentanteRepository>();
 builder.Services.AddScoped<IEstadoSolicitudRepository, EstadoSolicitudRepository>();
@@ -25,14 +23,22 @@ builder.Services.AddScoped<IBitacoraService, BitacoraService>();
 builder.Services.AddScoped<ISolicitudService, SolicitudService>();
 builder.Services.AddScoped<IRepresentanteService, RepresentanteService>();
 
+// Registra el acceso a datos y la lógica del vencimiento: SOL5.
+builder.Services.AddScoped<ISolicitudVencimientoRepository,
+    SolicitudVencimientoRepository>();
+
+builder.Services.AddScoped<ISolicitudVencimientoService,
+    SolicitudVencimientoService>();
+
+// Ejecuta la revisión automática al iniciar la aplicación.
+builder.Services.AddHostedService<
+    SolicitudVencimientoBackgroundService>();
+
 var app = builder.Build();
 
 app.UseStaticFiles();
-
 app.UseRouting();
-
 app.UseAuthorization();
-
 app.MapRazorPages();
 
 app.Run();
