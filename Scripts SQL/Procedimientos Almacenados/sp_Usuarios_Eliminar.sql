@@ -24,9 +24,9 @@ BEGIN
     -- Verificar si tiene asignaciones
     SELECT COUNT(*) INTO v_TieneAsignaciones
     FROM (
-        SELECT 1 FROM `Tareas` WHERE `IdUsuario` = 16
+        SELECT 1 FROM `Tareas` WHERE `IdUsuario` = p_IdUsuario
         UNION ALL
-        SELECT 1 FROM `Bitacoras` WHERE `IdUsuario` = 16
+        SELECT 1 FROM `Bitacoras` WHERE `IdUsuario` = p_IdUsuario
     ) AS Asignaciones;
     
     -- Si tiene asignaciones, no permitir eliminación

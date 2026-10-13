@@ -58,14 +58,11 @@ builder.Services.AddScoped<ISolicitudVencimientoService,
 builder.Services.AddHostedService<
     SolicitudVencimientoBackgroundService>();
 
-// Registra el repositorio y servicio de SOL7.
 builder.Services.AddScoped<IReporteMontosRepository,
     ReporteMontosRepository>();
 
 builder.Services.AddScoped<IReporteMontosService,
     ReporteMontosService>();
-
-
 
 var app = builder.Build();
 
