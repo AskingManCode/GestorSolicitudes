@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Connections;
 using PublicaSA.Repository.Interfaces;
 using PublicaSA.Repository.Repositories;
 using PublicaSA.Services.Interfaces;
@@ -6,30 +5,40 @@ using PublicaSA.Services.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// CORS / Razor Pages
 builder.Services.AddRazorPages();
 
-// Inyección de dependencias - Conexión DB
+// Permite guardar el identificador del usuario en la sesión.
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+// Conserva la conexión y los componentes existentes del equipo.
 builder.Services.AddSingleton<IDBConnectionFactory, DBConnectionFactory>();
 
-// Inyección de dependencias - Repositorios
 builder.Services.AddScoped<ISolicitudRepository, SolicitudRepository>();
 builder.Services.AddScoped<IRepresentanteRepository, RepresentanteRepository>();
 builder.Services.AddScoped<IEstadoSolicitudRepository, EstadoSolicitudRepository>();
 builder.Services.AddScoped<IBitacoraRepository, BitacoraRepository>();
 
-// Inyección de dependencias - Servicios
 builder.Services.AddScoped<IBitacoraService, BitacoraService>();
 builder.Services.AddScoped<ISolicitudService, SolicitudService>();
+
+// Conecta las pantallas de TAR1 con su servicio y repositorio.
+builder.Services.AddScoped<ITareaRepository, TareaRepository>();
+builder.Services.AddScoped<ITareaService, TareaService>();
 
 var app = builder.Build();
 
 app.UseStaticFiles();
-
 app.UseRouting();
 
-app.UseAuthorization();
+// Habilita HttpContext.Session antes de ejecutar las páginas.
+app.UseSession();
 
+app.UseAuthorization();
 app.MapRazorPages();
 
 app.Run();
