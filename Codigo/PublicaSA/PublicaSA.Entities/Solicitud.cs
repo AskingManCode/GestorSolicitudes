@@ -19,12 +19,12 @@ namespace PublicaSA.Entities
         public bool Activo { get; set; } = true;
         public DateTime FechaCreacion { get; set; } = DateTime.Now;
 
-        // Propiedades de navegación / lectura
+        // Datos relacionados que se muestran en pantalla.
         public string? NombreRepresentante { get; set; }
         public string? EmailRepresentante { get; set; }
         public string? NombreEstado { get; set; }
 
-        // Propiedad calculada para el estado de semáforo
+        // Determina el color del semáforo.
         public string SemaforoColor
         {
             get
@@ -36,12 +36,15 @@ namespace PublicaSA.Entities
                 {
                     if (NombreEstado == "Nueva" || CodigoEstado == "NUEVA")
                         return "table-success";
+
                     return "";
                 }
 
-                // Cálculo de 5 días hábiles a partir de FechaIngreso
                 DateTime limite = CalcularQuintoDiaHabil(FechaIngreso);
-                DateTime hoy = DateTime.Today;
+
+                // Usa la fecha de Costa Rica, igual que SOL5.
+                DateTime hoy = DateTimeOffset.UtcNow
+                    .ToOffset(TimeSpan.FromHours(-6)).Date;
 
                 if (hoy > limite)
                 {
@@ -60,6 +63,7 @@ namespace PublicaSA.Entities
             }
         }
 
+        // Determina el texto del semáforo.
         public string EstadoSemaforoEtiqueta
         {
             get
@@ -70,27 +74,40 @@ namespace PublicaSA.Entities
                 if (!FechaRespuesta.HasValue)
                 {
                     DateTime limite = CalcularQuintoDiaHabil(FechaIngreso);
-                    DateTime hoy = DateTime.Today;
-                    if (hoy > limite) return "Vencida";
-                    if (hoy == limite) return "Vence Hoy";
+
+                    // Usa la misma fecha que el cálculo del color.
+                    DateTime hoy = DateTimeOffset.UtcNow
+                        .ToOffset(TimeSpan.FromHours(-6)).Date;
+
+                    if (hoy > limite)
+                        return "Vencida";
+
+                    if (hoy == limite)
+                        return "Vence Hoy";
                 }
 
                 return NombreEstado ?? "Nueva";
             }
         }
 
+        // Cuenta cinco días desde el día siguiente al ingreso,
+        // excluyendo sábados y domingos.
         public static DateTime CalcularQuintoDiaHabil(DateTime fechaInicio)
         {
             DateTime actual = fechaInicio;
             int diasHabiles = 0;
+
             while (diasHabiles < 5)
             {
                 actual = actual.AddDays(1);
-                if (actual.DayOfWeek != DayOfWeek.Saturday && actual.DayOfWeek != DayOfWeek.Sunday)
+
+                if (actual.DayOfWeek != DayOfWeek.Saturday
+                    && actual.DayOfWeek != DayOfWeek.Sunday)
                 {
                     diasHabiles++;
                 }
             }
+
             return actual.Date;
         }
     }
