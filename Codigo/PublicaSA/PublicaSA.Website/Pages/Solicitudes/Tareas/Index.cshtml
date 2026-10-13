@@ -1,4 +1,193 @@
 ﻿@page
 @model PublicaSA.Website.Pages.Solicitudes.Tareas.IndexModel
+
 @{
+    ViewData["Title"] = "Tareas de la solicitud";
+}
+
+<h1>Tareas de la solicitud</h1>
+
+<p>Solicitud: @Model.IdSolicitud</p>
+
+@* Muestra el resultado de las operaciones del mantenimiento. *@
+@if (TempData["MensajeExitoTareas"] is string mensajeExito)
+{
+    <div class="alert alert-success" role="alert">
+        @mensajeExito
+    </div>
+}
+
+@if (TempData["MensajeErrorTareas"] is string mensajeError)
+{
+    <div class="alert alert-danger" role="alert">
+        @mensajeError
+    </div>
+}
+
+<a asp-page="/Solicitudes/Index"
+   class="btn btn-secondary mb-3">
+    Regresar a solicitudes
+</a>
+
+@if (Model.Error is not null)
+{
+    <div class="alert alert-danger" role="alert">
+        @Model.Error
+    </div>
+}
+else
+{
+    <a asp-page="./Nuevo"
+       asp-route-idSolicitud="@Model.IdSolicitud"
+       class="btn btn-primary mb-3">
+        Nuevo
+    </a>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Descripción</th>
+                    <th>Fecha</th>
+                    <th>Usuario</th>
+                    <th>Horas invertidas</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var tarea in Model.Tareas)
+                {
+                    <tr>
+                        <td>@tarea.Descripcion</td>
+                        <td>@tarea.Fecha.ToString("dd/MM/yyyy")</td>
+                        <td>@tarea.NombreUsuario</td>
+                        <td>@tarea.HorasInvertidas.ToString("0.00")</td>
+                        <td>
+                            <a asp-page="./Editar"
+                               asp-route-idTarea="@tarea.IdTarea"
+                               asp-route-idSolicitud="@Model.IdSolicitud"
+                               class="btn btn-outline-primary btn-sm">
+                                Editar
+                            </a>
+
+                            @* Envía al diálogo el identificador de esta tarea. *@
+                            <button type="button"
+                                    class="btn btn-outline-danger btn-sm"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#modalEliminarTarea"
+                                    data-id-tarea="@tarea.IdTarea">
+                                Eliminar
+                            </button>
+                        </td>
+                    </tr>
+                }
+
+                @if (!Model.Tareas.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            No hay tareas en esta página.
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @* Mantiene la solicitud seleccionada al cambiar de página. *@
+    <nav aria-label="Paginación de tareas">
+        <ul class="pagination">
+            @if (Model.Pagina > 1)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-page="./Index"
+                       asp-route-idSolicitud="@Model.IdSolicitud"
+                       asp-route-pagina="@(Model.Pagina - 1)">
+                        Anterior
+                    </a>
+                </li>
+            }
+
+            <li class="page-item disabled">
+                <span class="page-link">
+                    Página @Model.Pagina de @Model.TotalPaginas
+                </span>
+            </li>
+
+            @if (Model.Pagina < Model.TotalPaginas)
+            {
+                <li class="page-item">
+                    <a class="page-link"
+                       asp-page="./Index"
+                       asp-route-idSolicitud="@Model.IdSolicitud"
+                       asp-route-pagina="@(Model.Pagina + 1)">
+                        Siguiente
+                    </a>
+                </li>
+            }
+        </ul>
+    </nav>
+
+    <div class="modal fade"
+         id="modalEliminarTarea"
+         tabindex="-1"
+         aria-labelledby="tituloEliminarTarea"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tituloEliminarTarea">
+                        Confirmar eliminación
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Cerrar"></button>
+                </div>
+
+                <div class="modal-body">
+                    ¿Realmente desea eliminar el elemento seleccionado?
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button"
+                            class="btn btn-secondary"
+                            data-bs-dismiss="modal">
+                        No
+                    </button>
+
+                    <form method="post" asp-page-handler="Eliminar">
+                        <input type="hidden"
+                               name="IdSolicitud"
+                               value="@Model.IdSolicitud" />
+
+                        <input type="hidden"
+                               name="idTarea"
+                               id="idTareaEliminar" />
+
+                        <button type="submit" class="btn btn-danger">
+                            Sí
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        // Prepara el formulario antes de mostrar la confirmación.
+        document.getElementById("modalEliminarTarea")
+            ?.addEventListener("show.bs.modal", function (event) {
+                const boton = event.relatedTarget;
+                const campo = document.getElementById("idTareaEliminar");
+
+                if (boton && campo) {
+                    campo.value = boton.getAttribute("data-id-tarea");
+                }
+            });
+    </script>
 }
