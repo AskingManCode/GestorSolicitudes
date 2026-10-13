@@ -100,6 +100,17 @@
                                             <a asp-page="/Solicitudes/Editar" asp-route-id="@item.IdSolicitud" class="btn btn-outline-primary" title="Editar">
                                                 <i class="fas fa-edit"></i> Editar
                                             </a>
+
+                                            @* Abre las tareas asociadas a la solicitud de esta fila. *@
+                                            <a asp-page="/Solicitudes/Tareas/Index"
+                                               asp-route-idSolicitud="@item.IdSolicitud"
+                                               class="btn btn-outline-secondary"
+                                               title="Tareas">
+                                                <i class="fas fa-tasks"></i> Tareas
+                                            </a>
+
+
+
                                             <button type="button" class="btn btn-outline-danger" 
                                                     onclick="confirmarEliminar(@item.IdSolicitud, '@item.ConsecutivoOficio')" 
                                                     title="Eliminar">
