@@ -48,6 +48,10 @@
     color: white;
 }
 
+.table-responsive {
+    overflow: visible !important;
+}
+
 .usuarios-table th {
     font-weight: 600;
     font-size: 0.85rem;

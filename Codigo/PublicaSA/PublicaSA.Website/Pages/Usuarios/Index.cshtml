@@ -84,7 +84,7 @@
                                             <button class="btn btn-sm rounded-circle btn-accion dropdown-toggle"
                                                     type="button"
                                                     data-bs-toggle="dropdown"
-                                                    data-bs-popper-config='{"strategy":"fixed"}'
+                                                    data-bs-boundary="viewport"
                                                     aria-expanded="false"
                                                     title="Cambiar estado">
                                                 <i class="fas fa-exchange-alt fa-sm" aria-hidden="true"></i>
@@ -100,19 +100,23 @@
                                                         _ => "text-bg-secondary"
                                                     };
                                                     var isActive = estado.Nombre.Equals(usuario.Estado, StringComparison.OrdinalIgnoreCase);
-                                                    
+            
                                                     <li>
-                                                        <button class="dropdown-item @(isActive ? "active-state" : "")" 
-                                                                type="button" 
-                                                                disabled="@isActive"
-                                                                aria-current="@(isActive ? "true" : null)">
-                                                            <span class="badge rounded-pill @estadoBadge me-2">&nbsp;</span>
-                                                            @estado.Nombre
-                                                            @if (isActive)
-                                                            {
-                                                                <i class="fas fa-check ms-auto" aria-hidden="true"></i>
-                                                            }
-                                                        </button>
+                                                        <form method="post" asp-page-handler="CambiarEstado" class="d-inline">
+                                                            <input type="hidden" name="idUsuario" value="@usuario.IdUsuario" />
+                                                            <input type="hidden" name="codigoEstado" value="@estado.CodigoEstado" />
+                                                            <button class="dropdown-item @(isActive ? "active-state" : "")" 
+                                                                    type="submit" 
+                                                                    disabled="@isActive"
+                                                                    aria-current="@(isActive ? "true" : null)">
+                                                                <span class="badge rounded-pill @estadoBadge me-2">&nbsp;</span>
+                                                                @estado.Nombre
+                                                                @if (isActive)
+                                                                {
+                                                                    <i class="fas fa-check ms-auto" aria-hidden="true"></i>
+                                                                }
+                                                            </button>
+                                                        </form>
                                                     </li>
                                                 }
                                             </ul>

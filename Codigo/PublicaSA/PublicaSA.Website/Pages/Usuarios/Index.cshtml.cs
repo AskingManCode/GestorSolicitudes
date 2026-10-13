@@ -35,9 +35,30 @@ namespace PublicaSA.Website.Pages.Usuarios
             TotalPaginas = totalPaginas;
             PaginaActual = paginaActual;
 
-            // Leer parámetros de éxito desde querystring
+            // Leer parámetros de éxito
             ShowSuccess = success;
             SuccessMessage = message;
+        }
+
+        public async Task<IActionResult> OnPostCambiarEstadoAsync(int idUsuario, string codigoEstado)
+        {
+            try
+            {
+                await _usuarioService.CambiarEstado(idUsuario, codigoEstado);
+                return RedirectToPage("./Index", new
+                {
+                    success = true,
+                    message = "Estado actualizado correctamente."
+                });
+            }
+            catch (Exception ex)
+            {
+                return RedirectToPage("./Index", new
+                {
+                    success = true,
+                    message = $"Error: {ex.Message}"
+                });
+            }
         }
     }
 }

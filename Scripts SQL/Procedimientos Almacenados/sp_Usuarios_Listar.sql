@@ -30,7 +30,7 @@ BEGIN
    FROM `Usuarios` u
    INNER JOIN `EstadosUsuario` e 
 		ON u.`CodigoEstado` = e.`CodigoEstado`
-   ORDER BY u.`IdUsuario` DESC
+   ORDER BY u.`IdUsuario` ASC
    LIMIT p_TamanoPagina OFFSET p_Offset;
 END$$
 

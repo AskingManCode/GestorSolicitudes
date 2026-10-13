@@ -46,5 +46,17 @@ namespace PublicaSA.Services.Services
 
             return await _repository.Crear(request);
         }
+
+        public async Task<UsuarioResponse> CambiarEstado(int idUsuario, string codigoEstado)
+        {
+            // Validación simple
+            if (idUsuario <= 0)
+                throw new ArgumentException("El ID de usuario no es válido.");
+
+            if (string.IsNullOrWhiteSpace(codigoEstado))
+                throw new ArgumentException("El estado es requerido.");
+
+            return await _repository.CambiarEstado(idUsuario, codigoEstado);
+        }
     }
 }

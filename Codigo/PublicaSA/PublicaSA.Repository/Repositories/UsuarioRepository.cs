@@ -51,5 +51,21 @@ namespace PublicaSA.Repository.Repositories
                 );
             }
         }
+
+        public async Task<UsuarioResponse> CambiarEstado(int idUsuario, string codigoEstado)
+        {
+            using (IDbConnection db = _connectionFactory.CreateConnection())
+            {
+                return await db.QuerySingleAsync<UsuarioResponse>(
+                    "sp_Usuarios_CambiarEstado",
+                    new
+                    {
+                        p_IdUsuario = idUsuario,
+                        p_CodigoEstado = codigoEstado
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
     }
 }
