@@ -21,9 +21,13 @@ builder.Services.AddScoped<ISolicitudRepository, SolicitudRepository>();
 builder.Services.AddScoped<IRepresentanteRepository, RepresentanteRepository>();
 builder.Services.AddScoped<IEstadoSolicitudRepository, EstadoSolicitudRepository>();
 builder.Services.AddScoped<IBitacoraRepository, BitacoraRepository>();
+builder.Services.AddScoped<IReporteTareaRepository, ReporteTareaRepository>();
 
+// Inyección de dependencias - Servicios
+builder.Services.AddScoped<IReporteTareaService, ReporteTareaService>();
 builder.Services.AddScoped<IBitacoraService, BitacoraService>();
 builder.Services.AddScoped<ISolicitudService, SolicitudService>();
+builder.Services.AddScoped<IRepresentanteService, RepresentanteService>();
 
 // Conecta la pantalla de SOL7 con su servicio y repositorio.
 builder.Services.AddScoped<IReporteMontosRepository,
