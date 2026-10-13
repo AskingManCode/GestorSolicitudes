@@ -17,10 +17,12 @@ builder.Services.AddScoped<ISolicitudRepository, SolicitudRepository>();
 builder.Services.AddScoped<IRepresentanteRepository, RepresentanteRepository>();
 builder.Services.AddScoped<IEstadoSolicitudRepository, EstadoSolicitudRepository>();
 builder.Services.AddScoped<IBitacoraRepository, BitacoraRepository>();
+builder.Services.AddScoped<IDesgloseRepository, DesgloseRepository>();
 
 // Inyección de dependencias - Servicios
 builder.Services.AddScoped<IBitacoraService, BitacoraService>();
 builder.Services.AddScoped<ISolicitudService, SolicitudService>();
+builder.Services.AddScoped<IDesgloseService, DesgloseService>();
 
 var app = builder.Build();
 
