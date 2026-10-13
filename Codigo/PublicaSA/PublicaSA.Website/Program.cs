@@ -2,6 +2,7 @@ using PublicaSA.Repository.Interfaces;
 using PublicaSA.Repository.Repositories;
 using PublicaSA.Services.Interfaces;
 using PublicaSA.Services.Services;
+using PublicaSA.Website.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
+// Conserva la conexión a la base de datos del proyecto.
 builder.Services.AddSingleton<IDBConnectionFactory, DBConnectionFactory>();
 
 builder.Services.AddScoped<ISolicitudRepository, SolicitudRepository>();
@@ -35,6 +37,16 @@ builder.Services.AddScoped<IReporteMontosRepository,
 
 builder.Services.AddScoped<IReporteMontosService,
     ReporteMontosService>();
+// Registra el acceso a datos y la lógica del vencimiento: SOL5.
+builder.Services.AddScoped<ISolicitudVencimientoRepository,
+    SolicitudVencimientoRepository>();
+
+builder.Services.AddScoped<ISolicitudVencimientoService,
+    SolicitudVencimientoService>();
+
+// Ejecuta la revisión automática al iniciar la aplicación.
+builder.Services.AddHostedService<
+    SolicitudVencimientoBackgroundService>();
 
 var app = builder.Build();
 
