@@ -58,6 +58,12 @@ builder.Services.AddScoped<ISolicitudVencimientoService,
 builder.Services.AddHostedService<
     SolicitudVencimientoBackgroundService>();
 
+builder.Services.AddScoped<IReporteMontosRepository,
+    ReporteMontosRepository>();
+
+builder.Services.AddScoped<IReporteMontosService,
+    ReporteMontosService>();
+
 var app = builder.Build();
 
 app.UseStaticFiles();
