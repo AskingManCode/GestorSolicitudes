@@ -12,7 +12,8 @@ namespace PublicaSA.Repository.Repositories
         public DBConnectionFactory(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection")
-                ?? throw new InvalidOperationException("Cadena de conexión 'DefaultConnection' no encontrada en la configuración.");
+                ?? throw new InvalidOperationException(
+                    "La cadena de conexión 'DefaultConnection' no se encontró en la configuración.");
         }
 
         public IDbConnection CreateConnection()

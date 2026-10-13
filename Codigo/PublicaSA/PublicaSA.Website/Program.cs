@@ -1,3 +1,6 @@
+using FluentValidation;
+using Microsoft.AspNetCore.Connections;
+using PublicaSA.Entities;
 using PublicaSA.Repository.Interfaces;
 using PublicaSA.Repository.Repositories;
 using PublicaSA.Services.Interfaces;
@@ -8,6 +11,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages();
 
+// FluentValidation
+builder.Services.AddValidatorsFromAssemblyContaining<UsuarioRequestValidator>();
 // Permite guardar el identificador del usuario en la sesión.
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
@@ -18,6 +23,12 @@ builder.Services.AddSession(options =>
 
 // Conserva la conexión a la base de datos del proyecto.
 builder.Services.AddSingleton<IDBConnectionFactory, DBConnectionFactory>();
+builder.Services.AddScoped<IEstadosUsuarioRepository, EstadosUsuarioRepository>();
+builder.Services.AddScoped<IEstadosUsuarioService, EstadosUsuarioService>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IEncryptionService, EncryptionService>();
+builder.Services.AddScoped<IValidator<UsuarioEditRequest>, UsuarioEditValidator>();
 
 builder.Services.AddScoped<ISolicitudRepository, SolicitudRepository>();
 builder.Services.AddScoped<IRepresentanteRepository, RepresentanteRepository>();
