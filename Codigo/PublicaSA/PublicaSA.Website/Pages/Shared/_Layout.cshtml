@@ -83,9 +83,15 @@
                     </a>
 
                     <a asp-page="/Reportes/Tareas/Index"
-                       class="list-group-item list-group-item-action bg-sidebar text-white sidebar-subitem @(IsActive("/Reportes/Tareas") ? "is-active" : "")"
-                       aria-current="@(IsActive("/Reportes/Tareas") ? "page" : null)">
-                        <span class="sidebar-text">Tareas</span>
+                       class="list-group-item list-group-item-action bg-sidebar text-white sidebar-subitem @(IsActive("/Reportes/Tareas/Index") ? "is-active" : "")"
+                       aria-current="@(IsActive("/Reportes/Tareas/Index") ? "page" : null)">
+                        <span class="sidebar-text">Tareas por usuario</span>
+                    </a>
+
+                    <a asp-page="/Reportes/Tareas/PorSolicitud"
+                       class="list-group-item list-group-item-action bg-sidebar text-white sidebar-subitem @(IsActive("/Reportes/Tareas/PorSolicitud") ? "is-active" : "")"
+                       aria-current="@(IsActive("/Reportes/Tareas/PorSolicitud") ? "page" : null)">
+                        <span class="sidebar-text">Tareas por solicitud</span>
                     </a>
                 </div>
 
