@@ -27,7 +27,7 @@ namespace PublicaSA.Repository.Repositories
                     commandType: CommandType.StoredProcedure))
                 {
                     var total = await multi.ReadFirstAsync<int>();
-                    var listaUsuarios = await multi.ReadAsync<UsuarioListadoDto>();
+                    var listaUsuarios = await multi.ReadAsync<UsuarioResponse>();
                     return (listaUsuarios, total);
                 }
             }

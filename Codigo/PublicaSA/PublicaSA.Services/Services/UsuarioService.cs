@@ -1,13 +1,14 @@
 ﻿using PublicaSA.Entities;
 using PublicaSA.Repository.Interfaces;
 using PublicaSA.Repository.Repositories;
+using PublicaSA.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace PublicaSA.Services.Services
 {
-    public class UsuarioService : IUsuarioRepository
+    public class UsuarioService : IUsuarioService
     {
         private readonly IUsuarioRepository _repository;
 
@@ -16,9 +17,9 @@ namespace PublicaSA.Services.Services
             _repository = repository;
         }
 
-        public async Task<(IEnumerable<UsuarioResponse> ListaUsuarios, int TotalRegistros)> ListarUsuarios(int pagina, int tamanoPagina)
+        public async Task<(IEnumerable<UsuarioResponse> ListaUsuarios, int TotalPaginas, int PaginaActual)> ListarUsuarios(int pagina, int tamanoPagina)
         {
-            var (listaUsuarios, totalRegistros) = await _usuarioRepository.ListarUsuarios(pagina, tamanoPagina);
+            var (listaUsuarios, totalRegistros) = await _repository.ListarUsuarios(pagina, tamanoPagina);
             var totalPaginas = (int)Math.Ceiling(totalRegistros / (double)tamanoPagina);
 
             return (listaUsuarios, totalPaginas, pagina);

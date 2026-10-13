@@ -7,6 +7,6 @@ namespace PublicaSA.Services.Interfaces
 {
     public interface IUsuarioService
     {
-        Task<(IEnumerable<UsuarioResponse> ListaUsuarios, int TotalRegistros)> ListarUsuarios(int pagina, int tamanoPagina);
+        Task<(IEnumerable<UsuarioResponse> ListaUsuarios, int TotalPaginas, int PaginaActual)> ListarUsuarios(int pagina, int tamanoPagina);
     }
 }

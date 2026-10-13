@@ -15,7 +15,9 @@ builder.Services.AddRazorPages();
 // Inyección de dependencias
 builder.Services.AddSingleton<IDBConnectionFactory, DBConnectionFactory>();
 builder.Services.AddScoped<IEstadosUsuarioRepository, EstadosUsuarioRepository>();
-builder.Services.AddScoped<IEstadosUsuarioService, EstadosUsuarioService>(); 
+builder.Services.AddScoped<IEstadosUsuarioService, EstadosUsuarioService>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
 
 var app = builder.Build();
 
