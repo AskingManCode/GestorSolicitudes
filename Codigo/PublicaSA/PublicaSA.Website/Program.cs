@@ -23,6 +23,7 @@ builder.Services.AddScoped<IReporteTareaRepository, ReporteTareaRepository>();
 builder.Services.AddScoped<IReporteTareaService, ReporteTareaService>();
 builder.Services.AddScoped<IBitacoraService, BitacoraService>();
 builder.Services.AddScoped<ISolicitudService, SolicitudService>();
+builder.Services.AddScoped<IRepresentanteService, RepresentanteService>();
 
 var app = builder.Build();
 
