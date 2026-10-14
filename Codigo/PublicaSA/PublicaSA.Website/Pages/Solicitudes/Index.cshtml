@@ -25,24 +25,14 @@
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     }
-
-    <!-- Leyenda de colores del semáforo -->
-    <div class="card mb-3 border-0 shadow-sm">
-        <div class="card-body py-2">
-            <div class="d-flex flex-wrap align-items-center gap-3 small">
-                <span class="fw-bold text-secondary">Semáforo de estado:</span>
-                <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
-                    <i class="fas fa-circle me-1 small"></i> Nueva
-                </span>
-                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1">
-                    <i class="fas fa-circle me-1 small"></i> Vence hoy (5 días hábiles)
-                </span>
-                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">
-                    <i class="fas fa-circle me-1 small"></i> Vencida (Más de 5 días hábiles sin respuesta)
-                </span>
-            </div>
+    @if (!string.IsNullOrEmpty(Model.MensajeError))
+    {
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            @Model.MensajeError
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
+    }
 
     <!-- Listado con tabla -->
     <div class="card shadow-sm border-0">
@@ -74,11 +64,11 @@
                                     <td>
                                         @if (semaforoClase == "table-danger")
                                         {
-                                            <span class="badge bg-danger">@item.EstadoSemaforoEtiqueta</span>
+                                            <span class="badge bg-danger">@item.NombreEstado</span>
                                         }
                                         else if (semaforoClase == "table-warning")
                                         {
-                                            <span class="badge bg-warning text-dark">@item.EstadoSemaforoEtiqueta</span>
+                                            <span class="badge bg-warning text-dark">@item.NombreEstado</span>
                                         }
                                         else if (item.NombreEstado == "Nueva")
                                         {
@@ -100,17 +90,6 @@
                                             <a asp-page="/Solicitudes/Editar" asp-route-id="@item.IdSolicitud" class="btn btn-outline-primary" title="Editar">
                                                 <i class="fas fa-edit"></i> Editar
                                             </a>
-
-                                            @* Abre las tareas asociadas a la solicitud de esta fila. *@
-                                            <a asp-page="/Solicitudes/Tareas/Index"
-                                               asp-route-idSolicitud="@item.IdSolicitud"
-                                               class="btn btn-outline-secondary"
-                                               title="Tareas">
-                                                <i class="fas fa-tasks"></i> Tareas
-                                            </a>
-
-
-
                                             <button type="button" class="btn btn-outline-danger" 
                                                     onclick="confirmarEliminar(@item.IdSolicitud, '@item.ConsecutivoOficio')" 
                                                     title="Eliminar">
@@ -188,33 +167,6 @@
     </div>
 </div>
 
-<!-- Modal de Notificación de Error al Eliminar (Datos Relacionados) -->
-@if (!string.IsNullOrEmpty(Model.MensajeError))
-{
-    <div class="modal fade" id="modalMensajeError" tabindex="-1" aria-labelledby="modalMensajeErrorLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content shadow border-0">
-                <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title" id="modalMensajeErrorLabel">
-                        <i class="fas fa-exclamation-triangle me-2"></i>Atención
-                    </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body text-center py-4">
-                    <div class="mb-3 text-danger">
-                        <i class="fas fa-times-circle fa-3x"></i>
-                    </div>
-                    <h5 class="fw-bold text-dark mb-2">No se puede eliminar la solicitud</h5>
-                    <p class="fs-6 text-muted mb-0">@Model.MensajeError</p>
-                </div>
-                <div class="modal-footer justify-content-center bg-light">
-                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Aceptar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-}
-
 @section Scripts {
     <script>
         function confirmarEliminar(id, consecutivo) {
@@ -222,19 +174,6 @@
             document.getElementById('lblConsecutivoEliminar').textContent = consecutivo;
             const modal = new bootstrap.Modal(document.getElementById('modalConfirmarEliminar'));
             modal.show();
-        }
-
-        @if (!string.IsNullOrEmpty(Model.MensajeError))
-        {
-            <text>
-            document.addEventListener('DOMContentLoaded', function () {
-                const modalErrorEl = document.getElementById('modalMensajeError');
-                if (modalErrorEl) {
-                    const modalError = new bootstrap.Modal(modalErrorEl);
-                    modalError.show();
-                }
-            });
-            </text>
         }
     </script>
 }

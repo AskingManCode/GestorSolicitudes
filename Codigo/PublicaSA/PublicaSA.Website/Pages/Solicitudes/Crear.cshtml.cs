@@ -24,7 +24,6 @@ namespace PublicaSA.Website.Pages.Solicitudes
         public InputModel Input { get; set; } = new InputModel();
 
         public SelectList RepresentantesSelectList { get; set; } = null!;
-        public SelectList EstadosSelectList { get; set; } = null!;
 
         [TempData]
         public string? MensajeError { get; set; }
@@ -60,8 +59,6 @@ namespace PublicaSA.Website.Pages.Solicitudes
             [Display(Name = "Observaciones")]
             public string? Observaciones { get; set; }
 
-            [Required(ErrorMessage = "Debe seleccionar un estado.")]
-            [Display(Name = "Estado")]
             public string CodigoEstado { get; set; } = "NUEVA";
 
             [Required(ErrorMessage = "La fecha de ingreso es requerida.")]
@@ -100,7 +97,7 @@ namespace PublicaSA.Website.Pages.Solicitudes
                 Descripcion = Input.Descripcion,
                 IdRepresentante = Input.IdRepresentante,
                 Observaciones = Input.Observaciones,
-                CodigoEstado = Input.CodigoEstado,
+                CodigoEstado = "NUEVA",
                 FechaIngreso = Input.FechaIngreso,
                 FechaRespuesta = Input.FechaRespuesta,
                 FechaInicio = Input.FechaInicio
@@ -124,13 +121,6 @@ namespace PublicaSA.Website.Pages.Solicitudes
         {
             var representantes = await _solicitudService.ObtenerRepresentantesAsync();
             RepresentantesSelectList = new SelectList(representantes, "IdRepresentante", "Nombre");
-
-            var estados = await _solicitudService.ObtenerEstadosAsync();
-            if (string.IsNullOrWhiteSpace(Input.CodigoEstado))
-            {
-                Input.CodigoEstado = "NUEVA";
-            }
-            EstadosSelectList = new SelectList(estados, "CodigoEstado", "Nombre", Input.CodigoEstado);
         }
     }
 }

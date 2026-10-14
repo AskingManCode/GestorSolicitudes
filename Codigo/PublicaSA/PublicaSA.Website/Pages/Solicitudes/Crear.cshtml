@@ -48,7 +48,7 @@
                         <span asp-validation-for="Input.Titulo" class="text-danger small"></span>
                     </div>
 
-                    <div class="col-md-6">
+                    <div class="col-md-12">
                         <label asp-for="Input.IdRepresentante" class="form-label fw-semibold">
                             Representante <span class="text-danger">*</span>
                         </label>
@@ -56,15 +56,6 @@
                             <option value="">-- Seleccione un representante --</option>
                         </select>
                         <span asp-validation-for="Input.IdRepresentante" class="text-danger small"></span>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label asp-for="Input.CodigoEstado" class="form-label fw-semibold">
-                            Estado de la Solicitud <span class="text-danger">*</span>
-                        </label>
-                        <select asp-for="Input.CodigoEstado" asp-items="Model.EstadosSelectList" class="form-select">
-                        </select>
-                        <span asp-validation-for="Input.CodigoEstado" class="text-danger small"></span>
                     </div>
 
                     <div class="col-md-4">

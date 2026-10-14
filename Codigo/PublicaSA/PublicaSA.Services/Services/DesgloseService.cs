@@ -24,12 +24,17 @@ namespace PublicaSA.Services.Services
             _bitacoraService = bitacoraService;
         }
 
-        public async Task<(IEnumerable<DesgloseSolicitud> Items, int TotalCount)> ObtenerPaginadoPorSolicitudAsync(int idSolicitud, int pagina, int registrosPorPagina)
+        public async Task<(IEnumerable<DesgloseSolicitud> Items, int TotalCount)> ObtenerPaginadoPorSolicitudAsync(int idSolicitud, int pagina, int registrosPorPagina, string usuario = "admin")
         {
             if (pagina < 1) pagina = 1;
             if (registrosPorPagina <= 0) registrosPorPagina = 10;
 
-            return await _desgloseRepository.GetPagedBySolicitudAsync(idSolicitud, pagina, registrosPorPagina);
+            var resultado = await _desgloseRepository.GetPagedBySolicitudAsync(idSolicitud, pagina, registrosPorPagina);
+
+            // Registrar en bitácora según requerimiento: "El usuario consulta <elemento>"
+            await _bitacoraService.RegistrarAccionAsync(usuario, "Consultar Desgloses", $"El usuario consulta desgloses de la solicitud {idSolicitud}");
+
+            return resultado;
         }
 
         public async Task<IEnumerable<DesgloseSolicitud>> ObtenerPorSolicitudIdAsync(int idSolicitud)
@@ -37,9 +42,16 @@ namespace PublicaSA.Services.Services
             return await _desgloseRepository.GetBySolicitudIdAsync(idSolicitud);
         }
 
-        public async Task<DesgloseSolicitud?> ObtenerPorIdAsync(int id)
+        public async Task<DesgloseSolicitud?> ObtenerPorIdAsync(int id, string usuario = "admin")
         {
-            return await _desgloseRepository.GetByIdAsync(id);
+            var resultado = await _desgloseRepository.GetByIdAsync(id);
+
+            if (resultado != null)
+            {
+                await _bitacoraService.RegistrarAccionAsync(usuario, "Consultar Desglose", $"El usuario consulta desglose {id}");
+            }
+
+            return resultado;
         }
 
         public async Task<ResultadoOperacion> CrearAsync(DesgloseSolicitud desglose, string usuario)
