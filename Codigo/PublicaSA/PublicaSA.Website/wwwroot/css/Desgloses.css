@@ -1,2 +1,76 @@
-﻿body {
+/* Color principal del sistema */
+:root {
+    --publica-primary: #4e73df;
+}
+
+/* Card superior con borde izquierdo azul */
+.desgloses-header-card {
+    border-left: 4px solid var(--publica-primary) !important;
+}
+
+.desgloses-header-card h1 {
+    color: var(--publica-primary);
+}
+
+/* Botón Nuevo */
+.btn-nuevo {
+    background-color: var(--publica-primary);
+    border-color: var(--publica-primary);
+    color: white;
+}
+
+.btn-nuevo:hover {
+    background-color: #2e59d9;
+    border-color: #2e59d9;
+    color: white;
+}
+
+/* Botones de acción circulares */
+.btn-accion {
+    width: 32px;
+    height: 32px;
+    background-color: var(--publica-primary);
+    border: none;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease-in-out;
+}
+
+.btn-accion:hover {
+    background-color: #2e59d9;
+    color: white;
+}
+
+/* Tabla */
+.desgloses-table thead {
+    background-color: #343a40;
+    color: white;
+}
+
+.desgloses-table th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+/* Paginación */
+.pagination .page-link {
+    color: var(--publica-primary);
+    border-radius: 0.35rem;
+    margin: 0 2px;
+    border: 1px solid #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--publica-primary);
+    border-color: var(--publica-primary);
+    color: white;
+}
+
+.pagination .page-link:hover {
+    background-color: #eaecf4;
+    color: var(--publica-primary);
 }
