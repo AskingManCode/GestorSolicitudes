@@ -19,8 +19,8 @@ namespace PublicaSA.Repository.Repositories
         {
             using var connection = _connectionFactory.CreateConnection();
             const string sql = @"
-                INSERT INTO Bitacoras (FechaBitacora, UsuarioEjecuta, Accion, Detalle)
-                VALUES (NOW(), @UsuarioEjecuta, @Accion, @Detalle);
+                INSERT INTO Bitacoras (FechaBitacora, UsuarioEjecuta, IdUsuario, Accion, Detalle)
+                VALUES (NOW(), @UsuarioEjecuta, @IdUsuario, @Accion, @Detalle);
                 SELECT LAST_INSERT_ID();";
 
             return await connection.ExecuteScalarAsync<int>(sql, bitacora);

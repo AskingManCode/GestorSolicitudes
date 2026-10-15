@@ -10,6 +10,7 @@ namespace PublicaSA.Entities
         public int IdBitacora { get; set; }
         public DateTime FechaBitacora { get; set; } = DateTime.Now;
         public string UsuarioEjecuta { get; set; } = string.Empty;
+        public int? IdUsuario { get; set; }
         public string Accion { get; set; } = string.Empty;
         public string Detalle { get; set; } = string.Empty;
         

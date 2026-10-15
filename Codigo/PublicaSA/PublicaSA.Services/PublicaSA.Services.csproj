@@ -11,4 +11,8 @@
     <ProjectReference Include="..\PublicaSA.Repository\PublicaSA.Repository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.13" />
+  </ItemGroup>
+
 </Project>
