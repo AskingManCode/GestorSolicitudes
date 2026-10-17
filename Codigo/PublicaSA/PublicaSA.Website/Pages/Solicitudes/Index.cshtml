@@ -4,16 +4,14 @@
     ViewData["Title"] = "Mantenimiento de Solicitudes";
 }
 
-<div class="container-fluid px-0">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0 text-gray-800">Administración de Solicitudes</h1>
-            <p class="text-muted small mb-0">Gestión y control de solicitudes registradas en el sistema</p>
+<div class="container-fluid px-0 solicitudes-page">
+    <div class="card border-0 shadow-sm mb-4 hu-header-card">
+        <div class="card-body py-3">
+            <h1 class="h5 fw-bold mb-3">Mantenimiento de Solicitudes</h1>
+            <a asp-page="/Solicitudes/Crear" class="btn btn-sm btn-hu-primary">
+                <i class="fas fa-file me-1" aria-hidden="true"></i>Nueva Solicitud
+            </a>
         </div>
-        <a asp-page="/Solicitudes/Crear" class="btn btn-primary d-flex align-items-center gap-2">
-            <i class="fas fa-plus"></i>
-            <span>Nuevo</span>
-        </a>
     </div>
 
     <!-- Alertas de mensajes -->
@@ -26,39 +24,24 @@
         </div>
     }
 
-    <!-- Leyenda de colores del semáforo -->
-    <div class="card mb-3 border-0 shadow-sm">
-        <div class="card-body py-2">
-            <div class="d-flex flex-wrap align-items-center gap-3 small">
-                <span class="fw-bold text-secondary">Semáforo de estado:</span>
-                <span class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1">
-                    <i class="fas fa-circle me-1 small"></i> Nueva
-                </span>
-                <span class="badge bg-warning-subtle text-warning-emphasis border border-warning-subtle px-2 py-1">
-                    <i class="fas fa-circle me-1 small"></i> Vence hoy (5 días hábiles)
-                </span>
-                <span class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1">
-                    <i class="fas fa-circle me-1 small"></i> Vencida (Más de 5 días hábiles sin respuesta)
-                </span>
-            </div>
-        </div>
-    </div>
-
     <!-- Listado con tabla -->
     <div class="card shadow-sm border-0">
+        <div class="card-header bg-white py-3">
+            <h2 class="h5 fw-bold hu-card-title">Información</h2>
+        </div>
         <div class="card-body p-0">
             <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
+                <table class="table table-striped table-hover align-middle mb-0 hu-table">
+                    <thead class="table-dark">
                         <tr>
-                            <th scope="col">Consecutivo</th>
+                            <th scope="col" class="ps-4">Consecutivo</th>
                             <th scope="col">Título</th>
                             <th scope="col">Representante</th>
                             <th scope="col">Estado</th>
                             <th scope="col">F. Ingreso</th>
                             <th scope="col">F. Respuesta</th>
                             <th scope="col">F. Inicio</th>
-                            <th scope="col" class="text-center">Acciones</th>
+                            <th scope="col" class="text-end pe-4 col-acciones">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -66,55 +49,51 @@
                         {
                             @foreach (var item in Model.Solicitudes)
                             {
-                                var semaforoClase = item.SemaforoColor;
-                                <tr class="@semaforoClase">
-                                    <td class="fw-semibold">@item.ConsecutivoOficio</td>
+                                <tr>
+                                    <td class="ps-4 fw-semibold">@item.ConsecutivoOficio</td>
                                     <td>@item.Titulo</td>
                                     <td>@item.NombreRepresentante</td>
                                     <td>
-                                        @if (semaforoClase == "table-danger")
-                                        {
-                                            <span class="badge bg-danger">@item.EstadoSemaforoEtiqueta</span>
-                                        }
-                                        else if (semaforoClase == "table-warning")
-                                        {
-                                            <span class="badge bg-warning text-dark">@item.EstadoSemaforoEtiqueta</span>
-                                        }
-                                        else if (item.NombreEstado == "Nueva")
-                                        {
-                                            <span class="badge bg-success">@item.NombreEstado</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="badge bg-primary">@item.NombreEstado</span>
-                                        }
+                                        @{
+    var colorEstado = item.CodigoEstado.ToUpperInvariant() switch
+    {
+        "NUEVA" => "text-bg-primary",
+        "RESPONDIDA" => "text-bg-success",
+        "VENCIDA" => "text-bg-danger",
+        _ => "text-bg-secondary"
+    };
+}
+<span class="badge rounded-pill @colorEstado">
+    @(item.NombreEstado ?? item.CodigoEstado)
+</span>
                                     </td>
                                     <td>@item.FechaIngreso.ToString("dd/MM/yyyy")</td>
                                     <td>@(item.FechaRespuesta.HasValue ? item.FechaRespuesta.Value.ToString("dd/MM/yyyy") : "-")</td>
                                     <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "-")</td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-group-sm" role="group">
-                                            <a asp-page="/Solicitudes/Desgloses/Index" asp-route-idSolicitud="@item.IdSolicitud" class="btn btn-outline-info" title="Administrar Desglose">
-                                                <i class="fas fa-list-alt"></i> Desglose
+                                    <td class="text-end pe-4 hu-actions">
+                                        <div class="d-inline-flex gap-2" role="group" aria-label="Acciones de la solicitud">
+                                            <a asp-page="/Solicitudes/Desgloses/Index" asp-route-idSolicitud="@item.IdSolicitud" class="btn btn-sm btn-hu-action" title="Administrar Desglose" aria-label="Administrar Desglose de la solicitud @item.ConsecutivoOficio">
+                                                <i class="fas fa-list-alt fa-sm" aria-hidden="true"></i>
                                             </a>
-                                            <a asp-page="/Solicitudes/Editar" asp-route-id="@item.IdSolicitud" class="btn btn-outline-primary" title="Editar">
-                                                <i class="fas fa-edit"></i> Editar
+                                            <a asp-page="/Solicitudes/Editar" asp-route-id="@item.IdSolicitud" class="btn btn-sm btn-hu-action" title="Editar" aria-label="Editar de la solicitud @item.ConsecutivoOficio">
+                                                <i class="fas fa-pencil-alt fa-sm" aria-hidden="true"></i>
                                             </a>
 
                                             @* Abre las tareas asociadas a la solicitud de esta fila. *@
                                             <a asp-page="/Solicitudes/Tareas/Index"
                                                asp-route-idSolicitud="@item.IdSolicitud"
-                                               class="btn btn-outline-secondary"
-                                               title="Tareas">
-                                                <i class="fas fa-tasks"></i> Tareas
+                                               class="btn btn-sm btn-hu-action"
+                                               title="Tareas" aria-label="Tareas de la solicitud @item.ConsecutivoOficio">
+                                                <i class="fas fa-tasks fa-sm" aria-hidden="true"></i>
                                             </a>
 
 
 
-                                            <button type="button" class="btn btn-outline-danger" 
-                                                    onclick="confirmarEliminar(@item.IdSolicitud, '@item.ConsecutivoOficio')" 
-                                                    title="Eliminar">
-                                                <i class="fas fa-trash-alt"></i> Eliminar
+                                            <button type="button" class="btn btn-sm btn-hu-action"
+                                                    onclick="confirmarEliminar(this.dataset.id, this.dataset.consecutivo)"
+                                                    data-id="@item.IdSolicitud" data-consecutivo="@item.ConsecutivoOficio"
+                                                    title="Eliminar" aria-label="Eliminar de la solicitud @item.ConsecutivoOficio">
+                                                <i class="fas fa-trash-alt fa-sm" aria-hidden="true"></i>
                                             </button>
                                         </div>
                                     </td>
@@ -138,14 +117,14 @@
         <!-- Paginación (Máximo 5 elementos por página) -->
         @if (Model.TotalPaginas > 1)
         {
-            <div class="card-footer bg-white d-flex justify-content-between align-items-center py-3">
+            <div class="card-footer bg-white d-flex flex-wrap justify-content-between align-items-center gap-2 py-3">
                 <div class="small text-muted">
                     Página @Model.PaginaActual de @Model.TotalPaginas (Mostrando máximo 5 solicitudes por página)
                 </div>
                 <nav aria-label="Navegación de páginas">
-                    <ul class="pagination pagination-sm mb-0">
+                    <ul class="pagination pagination-sm justify-content-end mb-0">
                         <li class="page-item @(Model.PaginaActual <= 1 ? "disabled" : "")">
-                            <a class="page-link" asp-page="/Solicitudes/Index" asp-route-pagina="@(Model.PaginaActual - 1)">Anterior</a>
+                            <a class="page-link" asp-page="/Solicitudes/Index" asp-route-pagina="@(Model.PaginaActual - 1)" aria-label="Anterior"><i class="fas fa-chevron-left" aria-hidden="true"></i></a>
                         </li>
                         @for (int i = 1; i <= Model.TotalPaginas; i++)
                         {
@@ -154,14 +133,13 @@
                             </li>
                         }
                         <li class="page-item @(Model.PaginaActual >= Model.TotalPaginas ? "disabled" : "")">
-                            <a class="page-link" asp-page="/Solicitudes/Index" asp-route-pagina="@(Model.PaginaActual + 1)">Siguiente</a>
+                            <a class="page-link" asp-page="/Solicitudes/Index" asp-route-pagina="@(Model.PaginaActual + 1)" aria-label="Siguiente"><i class="fas fa-chevron-right" aria-hidden="true"></i></a>
                         </li>
                     </ul>
                 </nav>
             </div>
         }
     </div>
-</div>
 
 <!-- Modal de Confirmación de Eliminación -->
 <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true">
@@ -215,7 +193,10 @@
     </div>
 }
 
+</div>
+
 @section Scripts {
+    <link rel="stylesheet" href="~/css/Solicitudes.css" asp-append-version="true" />
     <script>
         function confirmarEliminar(id, consecutivo) {
             document.getElementById('inputEliminarId').value = id;
