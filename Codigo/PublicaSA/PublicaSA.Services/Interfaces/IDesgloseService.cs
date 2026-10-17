@@ -7,9 +7,9 @@ namespace PublicaSA.Services.Interfaces
 {
     public interface IDesgloseService
     {
-        Task<(IEnumerable<DesgloseSolicitud> Items, int TotalCount)> ObtenerPaginadoPorSolicitudAsync(int idSolicitud, int pagina, int registrosPorPagina);
+        Task<(IEnumerable<DesgloseSolicitud> Items, int TotalCount)> ObtenerPaginadoPorSolicitudAsync(int idSolicitud, int pagina, int registrosPorPagina, string usuario = "admin");
         Task<IEnumerable<DesgloseSolicitud>> ObtenerPorSolicitudIdAsync(int idSolicitud);
-        Task<DesgloseSolicitud?> ObtenerPorIdAsync(int id);
+        Task<DesgloseSolicitud?> ObtenerPorIdAsync(int id, string usuario = "admin");
         Task<ResultadoOperacion> CrearAsync(DesgloseSolicitud desglose, string usuario);
         Task<ResultadoOperacion> ActualizarAsync(DesgloseSolicitud desglose, string usuario);
         Task<ResultadoOperacion> EliminarAsync(int id, string usuario);

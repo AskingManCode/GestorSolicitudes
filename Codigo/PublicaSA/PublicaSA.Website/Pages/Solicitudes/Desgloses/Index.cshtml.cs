@@ -44,7 +44,8 @@ namespace PublicaSA.Website.Pages.Solicitudes.Desgloses
             }
 
             IdSolicitud = idSolicitud;
-            Solicitud = await _solicitudService.ObtenerPorIdAsync(idSolicitud);
+            string usuario = User.Identity?.Name ?? "admin";
+            Solicitud = await _solicitudService.ObtenerPorIdAsync(idSolicitud, usuario);
             if (Solicitud == null)
             {
                 TempData["MensajeError"] = "La solicitud indicada no existe.";
@@ -53,7 +54,7 @@ namespace PublicaSA.Website.Pages.Solicitudes.Desgloses
 
             PaginaActual = pagina < 1 ? 1 : pagina;
 
-            var (items, total) = await _desgloseService.ObtenerPaginadoPorSolicitudAsync(idSolicitud, PaginaActual, RegistrosPorPagina);
+            var (items, total) = await _desgloseService.ObtenerPaginadoPorSolicitudAsync(idSolicitud, PaginaActual, RegistrosPorPagina, usuario);
             Desgloses = items;
             TotalRegistros = total;
             TotalPaginas = (int)Math.Ceiling(total / (double)RegistrosPorPagina);
