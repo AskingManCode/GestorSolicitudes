@@ -67,14 +67,15 @@ namespace PublicaSA.Website.Pages.Solicitudes.Desgloses
                 return RedirectToPage("/Solicitudes/Index");
             }
 
-            var desglose = await _desgloseService.ObtenerPorIdAsync(id);
+            string usuario = User.Identity?.Name ?? "admin";
+            var desglose = await _desgloseService.ObtenerPorIdAsync(id, usuario);
             if (desglose == null)
             {
                 TempData["MensajeError"] = "El desglose especificado no existe.";
                 return RedirectToPage("/Solicitudes/Index");
             }
 
-            Solicitud = await _solicitudService.ObtenerPorIdAsync(desglose.IdSolicitud);
+            Solicitud = await _solicitudService.ObtenerPorIdAsync(desglose.IdSolicitud, usuario);
 
             Input = new EditInputModel
             {

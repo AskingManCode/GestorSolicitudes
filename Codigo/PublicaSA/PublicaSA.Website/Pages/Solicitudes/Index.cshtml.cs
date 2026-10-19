@@ -32,8 +32,9 @@ namespace PublicaSA.Website.Pages.Solicitudes
         public async Task OnGetAsync(int pagina = 1)
         {
             PaginaActual = pagina < 1 ? 1 : pagina;
+            string usuario = User.Identity?.Name ?? "admin";
 
-            var (items, total) = await _solicitudService.ObtenerPaginadoAsync(PaginaActual, RegistrosPorPagina);
+            var (items, total) = await _solicitudService.ObtenerPaginadoAsync(PaginaActual, RegistrosPorPagina, usuario);
             Solicitudes = items;
             TotalRegistros = total;
             TotalPaginas = (int)Math.Ceiling(total / (double)RegistrosPorPagina);

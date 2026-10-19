@@ -7,8 +7,8 @@ namespace PublicaSA.Services.Interfaces
 {
     public interface ISolicitudService
     {
-        Task<(IEnumerable<Solicitud> Items, int TotalCount)> ObtenerPaginadoAsync(int pagina, int registrosPorPagina);
-        Task<Solicitud?> ObtenerPorIdAsync(int id);
+        Task<(IEnumerable<Solicitud> Items, int TotalCount)> ObtenerPaginadoAsync(int pagina, int registrosPorPagina, string usuario = "admin");
+        Task<Solicitud?> ObtenerPorIdAsync(int id, string usuario = "admin");
         Task<ResultadoOperacion> CrearAsync(Solicitud solicitud, string usuario);
         Task<ResultadoOperacion> ActualizarAsync(Solicitud solicitud, string usuario);
         Task<ResultadoOperacion> EliminarAsync(int id, string usuario);

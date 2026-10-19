@@ -27,17 +27,29 @@ namespace PublicaSA.Services.Services
             _bitacoraService = bitacoraService;
         }
 
-        public async Task<(IEnumerable<Solicitud> Items, int TotalCount)> ObtenerPaginadoAsync(int pagina, int registrosPorPagina)
+        public async Task<(IEnumerable<Solicitud> Items, int TotalCount)> ObtenerPaginadoAsync(int pagina, int registrosPorPagina, string usuario = "admin")
         {
             if (pagina < 1) pagina = 1;
             if (registrosPorPagina <= 0) registrosPorPagina = 5;
 
-            return await _solicitudRepository.GetPagedAsync(pagina, registrosPorPagina);
+            var resultado = await _solicitudRepository.GetPagedAsync(pagina, registrosPorPagina);
+
+            // Registrar en bitácora según requerimiento: "El usuario consulta <elemento>"
+            await _bitacoraService.RegistrarAccionAsync(usuario, "Consultar Solicitudes", "El usuario consulta solicitudes");
+
+            return resultado;
         }
 
-        public async Task<Solicitud?> ObtenerPorIdAsync(int id)
+        public async Task<Solicitud?> ObtenerPorIdAsync(int id, string usuario = "admin")
         {
-            return await _solicitudRepository.GetByIdAsync(id);
+            var resultado = await _solicitudRepository.GetByIdAsync(id);
+
+            if (resultado != null)
+            {
+                await _bitacoraService.RegistrarAccionAsync(usuario, "Consultar Solicitud", $"El usuario consulta solicitud {resultado.ConsecutivoOficio}");
+            }
+
+            return resultado;
         }
 
         public async Task<ResultadoOperacion> CrearAsync(Solicitud solicitud, string usuario)
