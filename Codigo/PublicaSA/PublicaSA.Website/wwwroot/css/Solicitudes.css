@@ -1,113 +1,90 @@
-/* Estilo visual basado en Usuarios.css. Limitado a esta pantalla. */
-.solicitudes-page {
-    --hu-primary: #4e73df;
-    --hu-primary-hover: #2e59d9;
+/* Color principal del sistema */
+:root {
+    --publica-primary: #4e73df;
 }
-.solicitudes-page .hu-header-card {
-    border-left: 4px solid var(--hu-primary) !important;
+
+/* Card superior con borde izquierdo azul */
+.solicitudes-header-card {
+    border-left: 4px solid var(--publica-primary) !important;
 }
-.solicitudes-page .hu-header-card h1,
-.solicitudes-page .hu-card-title {
-    color: var(--hu-primary);
+
+.solicitudes-header-card h1 {
+    color: var(--publica-primary);
 }
-.solicitudes-page .btn-hu-primary {
-    --bs-btn-color: #fff;
-    --bs-btn-bg: var(--hu-primary);
-    --bs-btn-border-color: var(--hu-primary);
-    --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: var(--hu-primary-hover);
-    --bs-btn-hover-border-color: var(--hu-primary-hover);
-    --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: var(--hu-primary-hover);
-    --bs-btn-active-border-color: var(--hu-primary-hover);
+
+/* Botón Nuevo */
+.btn-nuevo {
+    background-color: var(--publica-primary);
+    border-color: var(--publica-primary);
+    color: white;
 }
-.solicitudes-page .btn-hu-action {
+
+.btn-nuevo:hover {
+    background-color: #2e59d9;
+    border-color: #2e59d9;
+    color: white;
+}
+
+/* Botones de acción circulares */
+.btn-accion {
     width: 32px;
     height: 32px;
-    padding: 0;
-    flex-shrink: 0;
+    background-color: var(--publica-primary);
     border: none;
-    border-radius: 50%;
-    background-color: var(--hu-primary);
-    color: #fff;
+    color: white;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    transition: background-color 0.15s ease-in-out;
 }
-.solicitudes-page .btn-hu-action:hover,
-.solicitudes-page .btn-hu-action:active {
-    background-color: var(--hu-primary-hover);
-    color: #fff;
+
+.btn-accion:hover {
+    background-color: #2e59d9;
+    color: white;
 }
-.solicitudes-page .btn-hu-action:focus-visible {
-    outline: 3px solid var(--hu-primary);
-    outline-offset: 3px;
+
+/* Tabla */
+.solicitudes-table thead {
+    background-color: #343a40;
+    color: white;
 }
-.solicitudes-page .hu-table th {
+
+.solicitudes-table th {
     font-weight: 600;
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.3px;
-    white-space: nowrap;
 }
-.solicitudes-page .hu-table td {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-}
-.solicitudes-page .hu-table .col-id { width: 70px; }
-.solicitudes-page .hu-table .col-acciones { width: 120px; }
-.solicitudes-page .hu-actions { white-space: nowrap; }
-.solicitudes-page .hu-number {
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-}
-.solicitudes-page .pagination .page-link {
-    color: var(--hu-primary);
+
+/* Paginación */
+.pagination .page-link {
+    color: var(--publica-primary);
     border-radius: 0.35rem;
     margin: 0 2px;
     border: 1px solid #dee2e6;
 }
-.solicitudes-page .pagination .page-item.active .page-link {
-    background-color: var(--hu-primary);
-    border-color: var(--hu-primary);
-    color: #fff;
-}
-.solicitudes-page .pagination .page-link:hover {
-    background-color: #eaecf4;
-    color: var(--hu-primary);
-}
-.solicitudes-page .pagination .page-item.disabled .page-link { color: #6c757d; }
-.solicitudes-page .hu-form .form-label { font-weight: 600; }
-.solicitudes-page .hu-form .form-control:focus,
-.solicitudes-page .hu-form .form-select:focus {
-    border-color: #a7b9ef;
-    box-shadow: 0 0 0 0.2rem rgb(78 115 223 / 20%);
-}
-.solicitudes-page .hu-form-footer {
-    border-top: 1px solid #e3e6f0;
-    padding-top: 1.25rem;
-    margin-top: 1.5rem;
-}
-.solicitudes-page .field-validation-error,
-.solicitudes-page .validation-summary-errors { font-size: 0.875rem; }
-.solicitudes-page .input-validation-error { border-color: #dc3545; }
-.solicitudes-page .table-responsive { overflow-x: auto; }
-@media (max-width: 575.98px) {
-    .solicitudes-page .hu-header-actions { gap: 0.5rem; }
-    .solicitudes-page .hu-form-footer { justify-content: stretch !important; }
-    .solicitudes-page .hu-form-footer .btn { flex: 1; }
+
+.pagination .page-item.active .page-link {
+    background-color: var(--publica-primary);
+    border-color: var(--publica-primary);
+    color: white;
 }
 
-.solicitudes-page .hu-table { min-width: 1120px; }
-.solicitudes-page .hu-table .col-acciones { width: 184px; }
-.solicitudes-page .hu-table .badge { white-space: nowrap; }
-/* Conserva la prioridad de los colores del semáforo sobre las filas alternadas. */
-.solicitudes-page .hu-table > tbody > tr.table-success > * {
-    --bs-table-bg-type: var(--bs-table-bg);
+.pagination .page-link:hover {
+    background-color: #eaecf4;
+    color: var(--publica-primary);
 }
-.solicitudes-page .hu-table > tbody > tr.table-warning > * {
-    --bs-table-bg-type: var(--bs-table-bg);
+
+/* Espacio para las cuatro acciones y desplazamiento en pantallas pequeñas. */
+.solicitudes-table {
+    min-width: 1120px;
 }
-.solicitudes-page .hu-table > tbody > tr.table-danger > * {
-    --bs-table-bg-type: var(--bs-table-bg);
+
+.solicitudes-table td:last-child {
+    white-space: nowrap;
+}
+
+.solicitudes-table .btn-accion:focus-visible {
+    outline: 3px solid var(--publica-primary);
+    outline-offset: 3px;
 }

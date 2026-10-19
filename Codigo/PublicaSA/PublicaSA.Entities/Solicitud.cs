@@ -63,32 +63,6 @@ namespace PublicaSA.Entities
             }
         }
 
-        // Determina el texto del semáforo.
-        public string EstadoSemaforoEtiqueta
-        {
-            get
-            {
-                if (NombreEstado == "Vencida" || CodigoEstado == "VENCIDA")
-                    return "Vencida";
-
-                if (!FechaRespuesta.HasValue)
-                {
-                    DateTime limite = CalcularQuintoDiaHabil(FechaIngreso);
-
-                    // Usa la misma fecha que el cálculo del color.
-                    DateTime hoy = DateTimeOffset.UtcNow
-                        .ToOffset(TimeSpan.FromHours(-6)).Date;
-
-                    if (hoy > limite)
-                        return "Vencida";
-
-                    if (hoy == limite)
-                        return "Vence Hoy";
-                }
-
-                return NombreEstado ?? "Nueva";
-            }
-        }
 
         // Cuenta cinco días desde el día siguiente al ingreso,
         // excluyendo sábados y domingos.

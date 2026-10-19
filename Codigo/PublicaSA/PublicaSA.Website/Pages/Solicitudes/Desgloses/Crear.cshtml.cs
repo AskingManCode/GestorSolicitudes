@@ -72,7 +72,8 @@ namespace PublicaSA.Website.Pages.Solicitudes.Desgloses
                 return RedirectToPage("/Solicitudes/Index");
             }
 
-            Solicitud = await _solicitudService.ObtenerPorIdAsync(idSolicitud);
+            string usuario = User.Identity?.Name ?? "admin";
+            Solicitud = await _solicitudService.ObtenerPorIdAsync(idSolicitud, usuario);
             if (Solicitud == null)
             {
                 TempData["MensajeError"] = "La solicitud indicada no existe.";
