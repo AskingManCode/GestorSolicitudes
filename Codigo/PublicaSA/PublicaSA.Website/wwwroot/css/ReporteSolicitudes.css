@@ -1,2 +1,106 @@
-﻿body {
+/* Estilo visual basado en Usuarios.css. Limitado a esta pantalla. */
+.reporte-solicitudes-page {
+    --hu-primary: #4e73df;
+    --hu-primary-hover: #2e59d9;
+}
+.reporte-solicitudes-page .hu-header-card {
+    border-left: 4px solid var(--hu-primary) !important;
+}
+.reporte-solicitudes-page .hu-header-card h1,
+.reporte-solicitudes-page .hu-card-title {
+    color: var(--hu-primary);
+}
+.reporte-solicitudes-page .btn-hu-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: var(--hu-primary);
+    --bs-btn-border-color: var(--hu-primary);
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: var(--hu-primary-hover);
+    --bs-btn-hover-border-color: var(--hu-primary-hover);
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: var(--hu-primary-hover);
+    --bs-btn-active-border-color: var(--hu-primary-hover);
+}
+.reporte-solicitudes-page .btn-hu-action {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    flex-shrink: 0;
+    border: none;
+    border-radius: 50%;
+    background-color: var(--hu-primary);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.reporte-solicitudes-page .btn-hu-action:hover,
+.reporte-solicitudes-page .btn-hu-action:active {
+    background-color: var(--hu-primary-hover);
+    color: #fff;
+}
+.reporte-solicitudes-page .btn-hu-action:focus-visible {
+    outline: 3px solid var(--hu-primary);
+    outline-offset: 3px;
+}
+.reporte-solicitudes-page .hu-table th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+}
+.reporte-solicitudes-page .hu-table td {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.reporte-solicitudes-page .hu-table .col-id { width: 70px; }
+.reporte-solicitudes-page .hu-table .col-acciones { width: 120px; }
+.reporte-solicitudes-page .hu-actions { white-space: nowrap; }
+.reporte-solicitudes-page .hu-number {
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+.reporte-solicitudes-page .pagination .page-link {
+    color: var(--hu-primary);
+    border-radius: 0.35rem;
+    margin: 0 2px;
+    border: 1px solid #dee2e6;
+}
+.reporte-solicitudes-page .pagination .page-item.active .page-link {
+    background-color: var(--hu-primary);
+    border-color: var(--hu-primary);
+    color: #fff;
+}
+.reporte-solicitudes-page .pagination .page-link:hover {
+    background-color: #eaecf4;
+    color: var(--hu-primary);
+}
+.reporte-solicitudes-page .pagination .page-item.disabled .page-link { color: #6c757d; }
+.reporte-solicitudes-page .hu-form .form-label { font-weight: 600; }
+.reporte-solicitudes-page .hu-form .form-control:focus,
+.reporte-solicitudes-page .hu-form .form-select:focus {
+    border-color: #a7b9ef;
+    box-shadow: 0 0 0 0.2rem rgb(78 115 223 / 20%);
+}
+.reporte-solicitudes-page .hu-form-footer {
+    border-top: 1px solid #e3e6f0;
+    padding-top: 1.25rem;
+    margin-top: 1.5rem;
+}
+.reporte-solicitudes-page .field-validation-error,
+.reporte-solicitudes-page .validation-summary-errors { font-size: 0.875rem; }
+.reporte-solicitudes-page .input-validation-error { border-color: #dc3545; }
+.reporte-solicitudes-page .table-responsive { overflow-x: auto; }
+@media (max-width: 575.98px) {
+    .reporte-solicitudes-page .hu-header-actions { gap: 0.5rem; }
+    .reporte-solicitudes-page .hu-form-footer { justify-content: stretch !important; }
+    .reporte-solicitudes-page .hu-form-footer .btn { flex: 1; }
+}
+
+.reporte-solicitudes-page .hu-table { min-width: 860px; }
+.reporte-solicitudes-page .hu-table tfoot > tr > * {
+    background-color: #eaecf4;
+    color: #343a40;
+    font-weight: 700;
 }

@@ -74,3 +74,17 @@
     background-color: #eaecf4;
     color: var(--publica-primary);
 }
+
+/* Espacio para las cuatro acciones y desplazamiento en pantallas pequeñas. */
+.solicitudes-table {
+    min-width: 1120px;
+}
+
+.solicitudes-table td:last-child {
+    white-space: nowrap;
+}
+
+.solicitudes-table .btn-accion:focus-visible {
+    outline: 3px solid var(--publica-primary);
+    outline-offset: 3px;
+}
