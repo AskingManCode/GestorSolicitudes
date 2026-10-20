@@ -1,2 +1,80 @@
-﻿body {
+:root {
+    --publica-primary: #4e73df;
+}
+
+body.login-body {
+    background-color: #f8f9fc;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.login-box {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    padding: 2.5rem 2rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e3e6f0;
+}
+
+.login-logo {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--publica-primary);
+    padding: 3px;
+    background: white;
+    margin-bottom: 0.75rem;
+}
+
+.login-brand {
+    color: var(--publica-primary);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0.25rem 0 0.15rem 0;
+}
+
+.form-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #5a5c69;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin-bottom: 0.35rem;
+}
+
+.form-control {
+    border-radius: 0.375rem;
+}
+
+.form-control:focus {
+    border-color: var(--publica-primary);
+    box-shadow: 0 0 0 0.2rem rgba(78, 115, 223, 0.15);
+}
+
+.btn-aceptar {
+    background-color: var(--publica-primary);
+    border-color: var(--publica-primary);
+    font-weight: 600;
+    padding: 0.65rem;
+    border-radius: 0.375rem;
+}
+
+.btn-aceptar:hover {
+    background-color: #2e59d9;
+    border-color: #2e59d9;
+}
+
+.input-group .btn-outline-secondary {
+    border-color: #dee2e6;
+}
+
+.input-group .btn-outline-secondary:hover {
+    background-color: #f8f9fc;
 }

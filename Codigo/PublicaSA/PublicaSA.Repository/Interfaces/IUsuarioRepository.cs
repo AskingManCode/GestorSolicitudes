@@ -14,5 +14,7 @@ namespace PublicaSA.Repository.Interfaces
         Task<UsuarioResponse> Editar(UsuarioEditRequest request);
         Task<string> ObtenerContrasenaUsuario(int idUsuario);
         Task<bool> Eliminar(int idUsuario);
+        Task<UsuarioLogin?> ObtenerPorNombreUsuarioAsync(string nombreUsuario);
+        Task ActualizarIntentosYEstadoAsync(int idUsuario, int intentosFallidos, string? codigoEstado = null);
     } 
 }

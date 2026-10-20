@@ -18,4 +18,8 @@
     <ProjectReference Include="..\PublicaSA.Services\PublicaSA.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Login\" />
+  </ItemGroup>
+
 </Project>

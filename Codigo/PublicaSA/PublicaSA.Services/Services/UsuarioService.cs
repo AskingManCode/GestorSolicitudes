@@ -113,5 +113,6 @@ namespace PublicaSA.Services.Services
             if (!eliminado)
                 throw new InvalidOperationException("No se pudo eliminar el usuario.");
         }
+        
     }
 }
