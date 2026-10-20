@@ -69,7 +69,7 @@ namespace PublicaSA.Services.Services
 
             if (contrasenaDescifrada == contrasena)
             {
-                // Login exitoso → reiniciar intentos
+                // Login exitoso -> reiniciar intentos
                 await _usuarioRepository.ActualizarIntentosYEstadoAsync(usuario.IdUsuario, 0);
 
                 return new ResultadoAutenticacion
@@ -82,7 +82,7 @@ namespace PublicaSA.Services.Services
                 };
             }
 
-            // Login fallido → incrementar intentos
+            // Login fallido -> incrementar intentos
             int nuevosIntentos = usuario.IntentosFallidos + 1;
             string? nuevoEstado = null;
 

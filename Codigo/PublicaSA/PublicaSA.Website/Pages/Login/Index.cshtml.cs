@@ -59,5 +59,11 @@ namespace PublicaSA.Website.Pages.Login
 
             return RedirectToPage("/Index");
         }
+
+        public IActionResult OnPostLogout()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToPage("/Login/Index");
+        }
     }
 }
