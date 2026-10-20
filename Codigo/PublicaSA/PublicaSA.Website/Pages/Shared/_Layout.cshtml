@@ -189,20 +189,24 @@
                 <div class="container-fluid">
 
                     <!-- Hamburguesa: solo visible en móvil -->
-                    <!-- <button type="button" class="btn btn-link text-secondary p-0 d-md-none" id="sidebarOpen"
+                    <button type="button" class="btn btn-link text-secondary p-0 d-md-none" id="sidebarOpen"
                             aria-label="Abrir menú" aria-controls="sidebar-wrapper" aria-expanded="false">
                         <i class="fas fa-bars fa-lg" aria-hidden="true"></i>
-                    </button> -->
+                    </button>
 
-                    <!-- Avatar + Nombre -->
+                    <!-- Avatar + Nombre + Logout -->
                     <div class="d-flex align-items-center ms-auto topbar-user">
                         <span class="fw-semibold text-secondary me-2 text-truncate d-none d-sm-inline">
-                            <!-- @User.Identity?.Name -->
-                            Nombre del Usuario
+                            @(Context.Session.GetString("NombreCompleto") ?? "Usuario")
                         </span>
-                        <img src="~/images/avatar-default.png"
-                             alt="Avatar del usuario"
-                             class="topbar-avatar" />
+
+                        <form method="post" asp-page="/Login/Index" asp-page-handler="Logout" class="d-inline">
+                            <button type="submit" class="btn p-0 border-0 bg-transparent" title="Cerrar sesión">
+                                <img src="~/images/avatar-default.png"
+                                     alt="Avatar del usuario"
+                                     class="topbar-avatar" />
+                            </button>
+                        </form>
                     </div>
 
                 </div>

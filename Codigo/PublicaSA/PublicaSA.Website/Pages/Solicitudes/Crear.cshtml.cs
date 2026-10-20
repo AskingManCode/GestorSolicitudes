@@ -11,7 +11,7 @@ using PublicaSA.Services.Interfaces;
 
 namespace PublicaSA.Website.Pages.Solicitudes
 {
-    public class CrearModel : PageModel
+    public class CrearModel : PageModelAutenticado
     {
         private readonly ISolicitudService _solicitudService;
 

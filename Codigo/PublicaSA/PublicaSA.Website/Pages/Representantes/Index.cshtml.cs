@@ -8,7 +8,7 @@ using PublicaSA.Entities;
 
 namespace PublicaSA.Website.Pages.Representantes
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelAutenticado
     {
         private readonly IRepresentanteService _representanteService;
 

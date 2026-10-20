@@ -134,5 +134,34 @@ namespace PublicaSA.Repository.Repositories
             }
         }
 
+        public async Task<UsuarioLogin?> ObtenerPorNombreUsuarioAsync(string nombreUsuario)
+        {
+            using (IDbConnection db = _connectionFactory.CreateConnection())
+            {
+                return await db.QueryFirstOrDefaultAsync<UsuarioLogin>(
+                    "sp_Usuarios_ObtenerPorNombreUsuario",
+                    new { p_NombreUsuario = nombreUsuario },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
+
+        public async Task ActualizarIntentosYEstadoAsync(int idUsuario, int intentosFallidos, string? codigoEstado = null)
+        {
+            using (IDbConnection db = _connectionFactory.CreateConnection())
+            {
+                await db.ExecuteAsync(
+                    "sp_Usuarios_ActualizarIntentosYEstado",
+                    new
+                    {
+                        p_IdUsuario = idUsuario,
+                        p_IntentosFallidos = intentosFallidos,
+                        p_CodigoEstado = codigoEstado
+                    },
+                    commandType: CommandType.StoredProcedure
+                );
+            }
+        }
+
     }
 }

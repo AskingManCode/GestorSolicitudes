@@ -5,7 +5,7 @@ using PublicaSA.Repository.Interfaces;
 using PublicaSA.Repository.Repositories;
 using PublicaSA.Services.Interfaces;
 using PublicaSA.Services.Services;
-using PublicaSA.Website.BackgroundServices;
+using PublicaSA.Services.BackgroundServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +54,9 @@ builder.Services.AddScoped<ISolicitudVencimientoRepository,
 builder.Services.AddScoped<ISolicitudVencimientoService,
     SolicitudVencimientoService>();
 
+builder.Services.AddScoped<IAutenticacionService, 
+    AutenticacionService>();
+
 // Ejecuta la revisión automática al iniciar la aplicación.
 builder.Services.AddHostedService<
     SolicitudVencimientoBackgroundService>();
@@ -73,6 +76,7 @@ app.UseRouting();
 app.UseSession();
 
 app.UseAuthorization();
+//app.MapGet("/", () => Results.Redirect("/Login"));
 app.MapRazorPages();
 
 app.Run();

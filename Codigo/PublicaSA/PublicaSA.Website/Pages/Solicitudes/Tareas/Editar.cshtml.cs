@@ -7,7 +7,7 @@ using PublicaSA.Services.Interfaces;
 
 namespace PublicaSA.Website.Pages.Solicitudes.Tareas
 {
-    public class EditarModel : PageModel
+    public class EditarModel : PageModelAutenticado
     {
         private readonly ITareaService _tareas;
 

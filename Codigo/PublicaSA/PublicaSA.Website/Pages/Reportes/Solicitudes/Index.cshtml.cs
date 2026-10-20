@@ -7,7 +7,7 @@ using PublicaSA.Services.Interfaces;
 
 namespace PublicaSA.Website.Pages.Reportes.Solicitudes
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelAutenticado
     {
         private readonly IReporteMontosService _reportes;
 

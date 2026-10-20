@@ -5,7 +5,7 @@ using PublicaSA.Services.Interfaces;
 
 namespace PublicaSA.Website.Pages.Usuarios
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelAutenticado
     {
         private readonly IUsuarioService _usuarioService;
         private readonly IEstadosUsuarioService _estadosUsuarioService;
