@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace PublicaSA.Website.Pages.Estados
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelAutenticado
     {
         public void OnGet()
         {

@@ -7,7 +7,7 @@ using PublicaSA.Entities;
 
 namespace PublicaSA.Website.Pages.Representantes
 {
-    public class EditarModel : PageModel
+    public class EditarModel : PageModelAutenticado
     {
         private readonly IRepresentanteService _representanteService;
 

@@ -27,7 +27,13 @@ namespace PublicaSA.Website.Pages.Login
             // Logout automático al entrar a la página de login
             HttpContext.Session.Clear();
 
-            if (!string.IsNullOrWhiteSpace(mensaje))
+            // Prioridad: TempData (desde protección de páginas) → query string
+            if (TempData["Mensaje"] is string tempMensaje && !string.IsNullOrWhiteSpace(tempMensaje))
+            {
+                MostrarError = true;
+                MensajeError = tempMensaje;
+            }
+            else if (!string.IsNullOrWhiteSpace(mensaje))
             {
                 MostrarError = true;
                 MensajeError = mensaje;

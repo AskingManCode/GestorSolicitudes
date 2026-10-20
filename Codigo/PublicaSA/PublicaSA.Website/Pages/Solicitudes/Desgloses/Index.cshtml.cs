@@ -8,7 +8,7 @@ using PublicaSA.Services.Interfaces;
 
 namespace PublicaSA.Website.Pages.Solicitudes.Desgloses
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelAutenticado
     {
         private readonly IDesgloseService _desgloseService;
         private readonly ISolicitudService _solicitudService;
