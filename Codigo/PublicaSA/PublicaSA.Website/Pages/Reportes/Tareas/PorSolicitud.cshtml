@@ -4,24 +4,25 @@
     ViewData["Title"] = "Reporte de Tareas por Solicitud";
 }
 
-<div class="container-fluid px-0">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0 text-gray-800">Reporte de Tareas por Solicitud</h1>
-            <p class="text-muted small mb-0">Tareas asociadas a una solicitud en un mes y año determinado</p>
+<div class="reporte-tareas-page">
+
+    <!-- Encabezado con borde azul -->
+    <div class="card border-0 shadow-sm mb-4 hu-header-card">
+        <div class="card-body py-3">
+            <h1 class="h5 fw-bold mb-0">Reporte de Tareas por Solicitud</h1>
         </div>
     </div>
 
     <!-- Parámetros del reporte -->
     <div class="card shadow-sm border-0 mb-4">
         <div class="card-header bg-white py-3">
-            <h6 class="m-0 fw-bold text-primary">Parámetros del Reporte</h6>
+            <h2 class="h5 fw-bold mb-0 hu-card-title">Parámetros del Reporte</h2>
         </div>
         <div class="card-body p-4">
-            <form method="get">
+            <form method="get" class="hu-form">
                 <div class="row g-3 align-items-end">
-                    <div class="col-md-5">
-                        <label asp-for="IdSolicitud" class="form-label fw-semibold">
+                    <div class="col-md-4">
+                        <label asp-for="IdSolicitud" class="form-label">
                             Solicitud <span class="text-danger">*</span>
                         </label>
                         <select asp-for="IdSolicitud" asp-items="Model.SolicitudesSelectList" class="form-select">
@@ -31,7 +32,7 @@
                     </div>
 
                     <div class="col-md-3">
-                        <label asp-for="Mes" class="form-label fw-semibold">
+                        <label asp-for="Mes" class="form-label">
                             Mes <span class="text-danger">*</span>
                         </label>
                         <select asp-for="Mes" asp-items="Model.MesesSelectList" class="form-select">
@@ -41,16 +42,16 @@
                     </div>
 
                     <div class="col-md-2">
-                        <label asp-for="Anio" class="form-label fw-semibold">
+                        <label asp-for="Anio" class="form-label">
                             Año <span class="text-danger">*</span>
                         </label>
                         <input asp-for="Anio" type="number" class="form-control" />
                         <span asp-validation-for="Anio" class="text-danger small"></span>
                     </div>
 
-                    <div class="col-md-2 d-grid">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-search me-1"></i> Generar
+                    <div class="col-md-3 d-grid">
+                        <button type="submit" class="btn btn-hu-primary">
+                            <i class="fas fa-search me-1" aria-hidden="true"></i>Generar Reporte
                         </button>
                     </div>
                 </div>
@@ -62,20 +63,21 @@
     @if (Model.ReporteGenerado)
     {
         <div class="card shadow-sm border-0">
-            <div class="card-header bg-white py-3">
-                <h6 class="m-0 fw-bold text-primary">Tareas de la Solicitud</h6>
+            <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <h2 class="h5 fw-bold mb-0 hu-card-title">Información</h2>
+                <span class="text-muted small">Período: @Model.Mes / @Model.Anio</span>
             </div>
             <div class="card-body p-0">
                 <div class="table-responsive">
-                    <table class="table table-hover align-middle mb-0">
-                        <thead class="table-light">
+                    <table class="table table-striped table-hover align-middle mb-0 hu-table">
+                        <thead class="table-dark">
                             <tr>
-                                <th scope="col">Usuario</th>
+                                <th scope="col" class="ps-4">Usuario</th>
                                 <th scope="col">Fecha</th>
                                 <th scope="col">Descripción de la Tarea</th>
-                                <th scope="col" class="text-end">Horas Invertidas</th>
+                                <th scope="col" class="text-end hu-number">Horas Invertidas</th>
                                 <th scope="col">Consecutivo</th>
-                                <th scope="col">Título de la Solicitud</th>
+                                <th scope="col" class="pe-4">Título de la Solicitud</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,12 +86,12 @@
                                 @foreach (var item in Model.Tareas)
                                 {
                                     <tr>
-                                        <td>@item.NombreUsuario</td>
+                                        <td class="ps-4">@item.NombreUsuario</td>
                                         <td>@item.Fecha.ToString("dd/MM/yyyy")</td>
                                         <td>@item.Descripcion</td>
-                                        <td class="text-end">@item.HorasInvertidas.ToString("N2")</td>
+                                        <td class="text-end hu-number">@item.HorasInvertidas.ToString("N2")</td>
                                         <td class="fw-semibold">@item.ConsecutivoOficio</td>
-                                        <td>@item.Titulo</td>
+                                        <td class="pe-4">@item.Titulo</td>
                                     </tr>
                                 }
                             }
@@ -97,17 +99,16 @@
                             {
                                 <tr>
                                     <td colspan="6" class="text-center py-4 text-muted">
-                                        <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
                                         No se encontraron tareas para los parámetros seleccionados.
                                     </td>
                                 </tr>
                             }
                         </tbody>
-                        <tfoot class="table-light">
-                            <tr>
-                                <th colspan="3" class="text-end">Total de horas invertidas en la solicitud:</th>
-                                <th class="text-end">@Model.TotalHoras.ToString("N2")</th>
-                                <th colspan="2"></th>
+                        <tfoot>
+                            <tr class="fw-bold">
+                                <th colspan="3" scope="row" class="ps-4">Total de horas invertidas en la solicitud</th>
+                                <td class="text-end hu-number">@Model.TotalHoras.ToString("N2")</td>
+                                <td colspan="2"></td>
                             </tr>
                         </tfoot>
                     </table>
@@ -116,3 +117,7 @@
         </div>
     }
 </div>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/ReposrteTareas.css" asp-append-version="true" />
+}
