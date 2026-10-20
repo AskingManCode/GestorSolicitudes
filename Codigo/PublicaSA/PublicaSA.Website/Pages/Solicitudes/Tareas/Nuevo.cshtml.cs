@@ -8,7 +8,7 @@ using PublicaSA.Services.Interfaces;
 
 namespace PublicaSA.Website.Pages.Solicitudes.Tareas
 {
-    public class NuevoModel : PageModel
+    public class NuevoModel : PageModelAutenticado
     {
         private readonly ITareaService _tareas;
 

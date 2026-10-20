@@ -12,7 +12,7 @@ using PublicaSA.Entities;
 
 namespace PublicaSA.Website.Pages.Reportes.Tareas
 {
-    public class IndexModel : PageModel
+    public class IndexModel : PageModelAutenticado
     {
         private readonly IReporteTareaService _reporteTareaService;
 
