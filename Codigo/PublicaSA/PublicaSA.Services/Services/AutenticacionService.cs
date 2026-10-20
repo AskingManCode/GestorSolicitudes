@@ -32,6 +32,16 @@ namespace PublicaSA.Services.Services
                 };
             }
 
+            // Usuario inactivo
+            if (usuario.CodigoEstado == "INACTIVO")
+            {
+                return new ResultadoAutenticacion
+                {
+                    Exitoso = false,
+                    Mensaje = "El usuario se encuentra inactivo."
+                };
+            }
+
             // Usuario bloqueado
             if (usuario.CodigoEstado == "BLOQUEADO")
             {
