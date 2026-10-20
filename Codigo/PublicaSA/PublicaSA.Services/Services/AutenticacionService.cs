@@ -8,14 +8,17 @@ namespace PublicaSA.Services.Services
     {
         private readonly IUsuarioRepository _usuarioRepository;
         private readonly IEncryptionService _encryptionService;
+        private readonly IBitacoraService _bitacoraService;
         private const int MaxIntentos = 3;
 
         public AutenticacionService(
             IUsuarioRepository usuarioRepository,
-            IEncryptionService encryptionService)
+            IEncryptionService encryptionService,
+            IBitacoraService bitacoraService)
         {
             _usuarioRepository = usuarioRepository;
             _encryptionService = encryptionService;
+            _bitacoraService = bitacoraService;
         }
 
         public async Task<ResultadoAutenticacion> AutenticarAsync(string nombreUsuario, string contrasena)
@@ -25,6 +28,11 @@ namespace PublicaSA.Services.Services
             // Usuario no existe
             if (usuario == null)
             {
+                await _bitacoraService.RegistrarAccionAsync(
+                    nombreUsuario,
+                    "LOGIN_FALLIDO",
+                    new { Motivo = "Usuario no encontrado" });
+
                 return new ResultadoAutenticacion
                 {
                     Exitoso = false,
@@ -35,6 +43,11 @@ namespace PublicaSA.Services.Services
             // Usuario inactivo
             if (usuario.CodigoEstado == "INACTIVO")
             {
+                await _bitacoraService.RegistrarAccionAsync(
+                    usuario.NombreUsuario,
+                    "LOGIN_FALLIDO",
+                    new { Motivo = "Usuario inactivo", usuario.IdUsuario });
+
                 return new ResultadoAutenticacion
                 {
                     Exitoso = false,
@@ -45,6 +58,11 @@ namespace PublicaSA.Services.Services
             // Usuario bloqueado
             if (usuario.CodigoEstado == "BLOQUEADO")
             {
+                await _bitacoraService.RegistrarAccionAsync(
+                    usuario.NombreUsuario,
+                    "LOGIN_FALLIDO",
+                    new { Motivo = "Usuario bloqueado", usuario.IdUsuario });
+
                 return new ResultadoAutenticacion
                 {
                     Exitoso = false,
@@ -60,6 +78,11 @@ namespace PublicaSA.Services.Services
             }
             catch
             {
+                await _bitacoraService.RegistrarErrorAsync(
+                    usuario.NombreUsuario,
+                    "LOGIN",
+                    "Error al descifrar la contraseña");
+
                 return new ResultadoAutenticacion
                 {
                     Exitoso = false,
@@ -71,6 +94,11 @@ namespace PublicaSA.Services.Services
             {
                 // Login exitoso -> reiniciar intentos
                 await _usuarioRepository.ActualizarIntentosYEstadoAsync(usuario.IdUsuario, 0);
+
+                await _bitacoraService.RegistrarAccionAsync(
+                    usuario.NombreUsuario,
+                    "LOGIN_EXITOSO",
+                    new { IdUsuario = usuario.IdUsuario, NombreCompleto = usuario.NombreCompleto });
 
                 return new ResultadoAutenticacion
                 {
@@ -92,6 +120,16 @@ namespace PublicaSA.Services.Services
             }
 
             await _usuarioRepository.ActualizarIntentosYEstadoAsync(usuario.IdUsuario, nuevosIntentos, nuevoEstado);
+
+            await _bitacoraService.RegistrarAccionAsync(
+                usuario.NombreUsuario,
+                nuevosIntentos >= MaxIntentos ? "USUARIO_BLOQUEADO" : "LOGIN_FALLIDO",
+                new
+                {
+                    IdUsuario = usuario.IdUsuario,
+                    Intentos = nuevosIntentos,
+                    Motivo = "Contraseña incorrecta"
+                });
 
             return new ResultadoAutenticacion
             {
