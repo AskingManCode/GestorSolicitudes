@@ -1,2 +1,89 @@
-﻿body {
+﻿/* Estilo de Representantes basado en Solicitudes.css */
+:root {
+    --publica-primary: #4e73df;
+}
+
+/* Card superior con borde izquierdo azul */
+.representantes-header-card {
+    border-left: 4px solid var(--publica-primary) !important;
+}
+
+    .representantes-header-card h1,
+    .representantes-card-title {
+        color: var(--publica-primary);
+    }
+
+/* Botón Nuevo */
+.btn-nuevo {
+    background-color: var(--publica-primary);
+    border-color: var(--publica-primary);
+    color: white;
+}
+
+    .btn-nuevo:hover {
+        background-color: #2e59d9;
+        border-color: #2e59d9;
+        color: white;
+    }
+
+/* Botones de acción circulares */
+.btn-accion {
+    width: 32px;
+    height: 32px;
+    background-color: var(--publica-primary);
+    border: none;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease-in-out;
+}
+
+    .btn-accion:hover {
+        background-color: #2e59d9;
+        color: white;
+    }
+
+    .btn-accion:focus-visible {
+        outline: 3px solid var(--publica-primary);
+        outline-offset: 3px;
+    }
+
+/* Tabla */
+.representantes-table th {
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+}
+
+.representantes-table td:last-child {
+    white-space: nowrap;
+}
+
+/* Etiquetas del formulario */
+.representantes-label {
+    color: #5a5c69;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Paginación */
+.pagination .page-link {
+    color: var(--publica-primary);
+    border-radius: 0.35rem;
+    margin: 0 2px;
+    border: 1px solid #dee2e6;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--publica-primary);
+    border-color: var(--publica-primary);
+    color: white;
+}
+
+.pagination .page-link:hover {
+    background-color: #eaecf4;
+    color: var(--publica-primary);
 }

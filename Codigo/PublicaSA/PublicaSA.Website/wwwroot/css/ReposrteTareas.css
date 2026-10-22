@@ -1,2 +1,76 @@
-﻿body {
+﻿
+.reporte-tareas-page {
+    --hu-primary: #4e73df;
+    --hu-primary-hover: #2e59d9;
 }
+
+    .reporte-tareas-page .hu-header-card {
+        border-left: 4px solid var(--hu-primary) !important;
+    }
+
+        .reporte-tareas-page .hu-header-card h1,
+        .reporte-tareas-page .hu-card-title {
+            color: var(--hu-primary);
+        }
+
+    .reporte-tareas-page .btn-hu-primary {
+        --bs-btn-color: #fff;
+        --bs-btn-bg: var(--hu-primary);
+        --bs-btn-border-color: var(--hu-primary);
+        --bs-btn-hover-color: #fff;
+        --bs-btn-hover-bg: var(--hu-primary-hover);
+        --bs-btn-hover-border-color: var(--hu-primary-hover);
+        --bs-btn-active-color: #fff;
+        --bs-btn-active-bg: var(--hu-primary-hover);
+        --bs-btn-active-border-color: var(--hu-primary-hover);
+    }
+
+    .reporte-tareas-page .hu-table th {
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 0.3px;
+        white-space: nowrap;
+    }
+
+    .reporte-tareas-page .hu-table td {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    .reporte-tareas-page .hu-number {
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+    }
+
+    .reporte-tareas-page .hu-form .form-label {
+        font-weight: 600;
+    }
+
+    .reporte-tareas-page .hu-form .form-control:focus,
+    .reporte-tareas-page .hu-form .form-select:focus {
+        border-color: #a7b9ef;
+        box-shadow: 0 0 0 0.2rem rgb(78 115 223 / 20%);
+    }
+
+    .reporte-tareas-page .field-validation-error {
+        font-size: 0.875rem;
+    }
+
+    .reporte-tareas-page .input-validation-error {
+        border-color: #dc3545;
+    }
+
+    .reporte-tareas-page .table-responsive {
+        overflow-x: auto;
+    }
+
+    .reporte-tareas-page .hu-table {
+        min-width: 860px;
+    }
+
+        .reporte-tareas-page .hu-table tfoot > tr > * {
+            background-color: #eaecf4;
+            color: #343a40;
+            font-weight: 700;
+        }
