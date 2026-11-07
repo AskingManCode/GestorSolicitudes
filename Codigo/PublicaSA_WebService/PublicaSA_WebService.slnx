@@ -1,3 +1,6 @@
 <Solution>
-  <Project Path="PublicaSA_WebService/PublicaSA_WebService.csproj" />
+  <Project Path="BusinessLogic/BusinessLogic.csproj" Id="b5147324-1851-4aa9-8851-77e31a8a8a75" />
+  <Project Path="DataAccess/DataAccess.csproj" Id="efd5e160-24e9-4bee-aa4e-b2e3daa791ed" />
+  <Project Path="Models/Models.csproj" Id="7f1e392b-34c0-4f93-be31-2d1cdf5dfe9f" />
+  <Project Path="PublicaSA_WebService/PublicaSA_WebService.csproj" Id="f19da23b-8da5-4ec9-bce7-ad3ee58b1700" />
 </Solution>
