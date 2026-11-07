@@ -1,0 +1,146 @@
+﻿@page
+@model PublicaSA.Website.Pages.Usuarios.EditModel
+@{
+    ViewData["Title"] = "Editar Usuario";
+}
+
+<!-- Encabezado -->
+<div class="card border-0 shadow-sm mb-4 usuarios-header-card">
+    <div class="card-body py-3">
+        <div class="d-flex gap-2 mb-3">
+            <a asp-page="Index"
+               class="btn btn-accion rounded-circle"
+               aria-label="Regresar al listado"
+               title="Regresar">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            </a>
+            <button type="submit"
+                    form="formEditUsuario"
+                    class="btn btn-accion rounded-circle"
+                    aria-label="Guardar cambios"
+                    title="Guardar">
+                <i class="fas fa-save" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Card del formulario -->
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        <div class="mb-4 pb-3 border-bottom">
+            <h5 class="fw-bold mb-0" style="color: #4e73df;">
+                Editar Usuario
+            </h5>
+        </div>
+
+        <form id="formEditUsuario" method="post">
+            <input type="hidden" asp-for="Usuario.IdUsuario" />
+            
+            <div class="row g-3">
+
+                <!-- Nombre completo -->
+                <div class="col-md-6">
+                    <label asp-for="Usuario.NombreCompleto" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Nombre completo <span class="text-danger">*</span>
+                    </label>
+                    <input asp-for="Usuario.NombreCompleto" class="form-control" maxlength="150" />
+                </div>
+
+                <!-- Correo -->
+                <div class="col-md-6">
+                    <label asp-for="Usuario.Correo" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Correo electrónico <span class="text-danger">*</span>
+                    </label>
+                    <input asp-for="Usuario.Correo" class="form-control" maxlength="150" />
+                </div>
+
+                <!-- Nombre de usuario -->
+                <div class="col-md-6">
+                    <label asp-for="Usuario.NombreUsuario" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Nombre de usuario <span class="text-danger">*</span>
+                    </label>
+                    <input asp-for="Usuario.NombreUsuario" class="form-control" maxlength="50" />
+                </div>
+
+                <!-- Estado -->
+                <div class="col-md-6">
+                    <label asp-for="Usuario.CodigoEstado" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Estado <span class="text-danger">*</span>
+                    </label>
+                    <select asp-for="Usuario.CodigoEstado" class="form-select">
+                        @foreach (var estado in Model.ListaEstados)
+                        {
+                            <option value="@estado.CodigoEstado">@estado.Nombre</option>
+                        }
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Sección de cambio de contraseña -->
+            <div class="row g-3 mt-4">
+                <div class="col-12">
+                    <hr />
+                    <h6 class="fw-bold text-muted mb-3">Cambiar Contraseña</h6>
+                    <small class="text-muted d-block mb-3">Deje estos campos vacíos si no desea cambiar la contraseña.</small>
+                </div>
+
+                <!-- Contraseña actual -->
+                <div class="col-md-4">
+                    <label asp-for="Usuario.ContrasenaActual" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Contraseña actual
+                    </label>
+                    <div class="input-group">
+                        <input asp-for="Usuario.ContrasenaActual" type="password" class="form-control" id="ContrasenaActual" />
+                        <button class="btn btn-outline-secondary" type="button" id="btnTogglePasswordActual" title="Mostrar/Ocultar contraseña">
+                            <i class="fas fa-eye" id="iconTogglePasswordActual" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Nueva contraseña -->
+                <div class="col-md-4">
+                    <label asp-for="Usuario.ContrasenaNueva" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Nueva contraseña
+                    </label>
+                    <div class="input-group">
+                        <input asp-for="Usuario.ContrasenaNueva" type="password" class="form-control" id="ContrasenaNueva" />
+                        <button class="btn btn-outline-secondary" type="button" id="btnTogglePasswordNueva" title="Mostrar/Ocultar contraseña">
+                            <i class="fas fa-eye" id="iconTogglePasswordNueva" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Confirmar contraseña -->
+                <div class="col-md-4">
+                    <label asp-for="Usuario.ConfirmarContrasena" class="form-label fw-bold mb-1" style="color: #5a5c69; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                        Confirmar contraseña
+                    </label>
+                    <div class="input-group">
+                        <input asp-for="Usuario.ConfirmarContrasena" type="password" class="form-control" id="ConfirmarContrasena" />
+                        <button class="btn btn-outline-secondary" type="button" id="btnTogglePasswordConfirmar" title="Mostrar/Ocultar contraseña">
+                            <i class="fas fa-eye" id="iconTogglePasswordConfirmar" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/Usuarios.css" asp-append-version="true" />
+    <script src="~/js/usuarios.js" asp-append-version="true"></script>
+
+    @if (TempData["ModalMessage"] != null)
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('@(TempData["ModalTitle"] ?? "Mensaje")', '@Html.Raw(TempData["ModalMessage"])', '@(TempData["ModalType"] ?? "info")');
+            });
+        </script>
+    }
+}

@@ -1,0 +1,186 @@
+@page
+@model PublicaSA.Website.Pages.Representantes.IndexModel
+@{
+    ViewData["Title"] = "Representantes";
+}
+
+<!-- Bloque superior con borde azul -->
+<div class="card border-0 shadow-sm mb-4 representantes-header-card">
+    <div class="card-body py-3">
+        <h1 class="h5 fw-bold mb-3">
+            Mantenimiento de Representantes
+        </h1>
+
+        <a asp-page="/Representantes/Crear" class="btn btn-sm btn-nuevo">
+            <i class="fas fa-user-plus me-1"></i> Nuevo Representante
+        </a>
+    </div>
+</div>
+
+<!-- Alertas de mensajes -->
+@if (!string.IsNullOrEmpty(Model.MensajeExito))
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        @Model.MensajeExito
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<!-- Card de Información -->
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <h5 class="h5 fw-bold mb-0 representantes-card-title">
+            Información
+        </h5>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0 representantes-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="ps-4">Nombre</th>
+                        <th scope="col">Email</th>
+                        <th scope="col" class="text-end pe-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Representantes == null || !Model.Representantes.Any())
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center py-4 text-muted">
+                                No se encontraron representantes registrados.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.Representantes)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-semibold">@item.Nombre</td>
+                                <td>@item.Email</td>
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-2">
+                                        <!-- Editar -->
+                                        <a asp-page="/Representantes/Editar" asp-route-id="@item.IdRepresentante"
+                                           class="btn btn-sm rounded-circle btn-accion"
+                                           aria-label="Editar @item.Nombre" title="Editar">
+                                            <i class="fas fa-pencil-alt fa-sm" aria-hidden="true"></i>
+                                        </a>
+                                        <!-- Eliminar -->
+                                        <button type="button"
+                                                class="btn btn-sm rounded-circle btn-accion"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalConfirmarEliminar"
+                                                data-id="@item.IdRepresentante"
+                                                data-nombre="@item.Nombre"
+                                                aria-label="Eliminar @item.Nombre"
+                                                title="Eliminar">
+                                            <i class="fas fa-trash-alt fa-sm" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Paginación (máximo 10 elementos por página) -->
+    @if (Model.TotalPaginas > 1)
+    {
+        <div class="card-footer bg-white d-flex flex-wrap justify-content-between align-items-center gap-2 py-3">
+            <div class="small text-muted">
+                Página @Model.PaginaActual de @Model.TotalPaginas (Mostrando máximo 10 representantes por página)
+            </div>
+            <nav aria-label="Paginación de representantes">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item @(Model.PaginaActual <= 1 ? "disabled" : "")">
+                        <a class="page-link" asp-page="/Representantes/Index" asp-route-pagina="@(Model.PaginaActual - 1)"
+                           aria-label="Anterior">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    @for (int i = 1; i <= Model.TotalPaginas; i++)
+                    {
+                        <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                            <a class="page-link" asp-page="/Representantes/Index" asp-route-pagina="@i">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.PaginaActual >= Model.TotalPaginas ? "disabled" : "")">
+                        <a class="page-link" asp-page="/Representantes/Index" asp-route-pagina="@(Model.PaginaActual + 1)"
+                           aria-label="Siguiente">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
+</div>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalConfirmarEliminarLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">¿Realmente desea eliminar el elemento seleccionado?</p>
+                <p class="fw-bold mb-0" id="lblNombreEliminar"></p>
+                <small class="text-muted">Esta acción no se puede deshacer.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>No
+                </button>
+                <form method="post" asp-page-handler="Eliminar" class="d-inline">
+                    <input type="hidden" name="id" id="inputEliminarId" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash-alt me-1"></i>Sí
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Notificación de Error al Eliminar (Datos Relacionados) -->
+@if (!string.IsNullOrEmpty(Model.MensajeError))
+{
+    <div class="modal fade" id="modalMensajeError" tabindex="-1" aria-labelledby="modalMensajeErrorLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content shadow border-0">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="modalMensajeErrorLabel">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Atención
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body text-center py-4">
+                    <div class="mb-3 text-danger">
+                        <i class="fas fa-times-circle fa-3x"></i>
+                    </div>
+                    <h5 class="fw-bold text-dark mb-2">No se puede eliminar el representante</h5>
+                    <p class="fs-6 text-muted mb-0">@Model.MensajeError</p>
+                </div>
+                <div class="modal-footer justify-content-center bg-light">
+                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/Representantes.css" asp-append-version="true" />
+    <script src="~/js/Representantes.js" asp-append-version="true"></script>
+}
