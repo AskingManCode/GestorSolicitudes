@@ -2,6 +2,9 @@
 @model PublicaSA.Website.Pages.Representantes.CrearModel
 @{
     ViewData["Title"] = "Crear Representante";
+    var erroresValidacion = !ViewData.ModelState.IsValid
+        ? string.Join("<br/>", ViewData.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))
+        : null;
 }
 
 <!-- Encabezado -->
@@ -27,15 +30,6 @@
     </div>
 </div>
 
-@if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        @Html.ValidationSummary(true, "", new { @class = "mb-0" })
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
 <!-- Card del formulario -->
 <div class="card shadow-sm border-0">
     <div class="card-body p-4">
@@ -54,7 +48,6 @@
                         Nombre <span class="text-danger">*</span>
                     </label>
                     <input asp-for="Input.Nombre" class="form-control" placeholder="Nombre completo del representante" />
-                    <span asp-validation-for="Input.Nombre" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-6">
@@ -62,14 +55,23 @@
                         Email <span class="text-danger">*</span>
                     </label>
                     <input asp-for="Input.Email" type="email" class="form-control" placeholder="correo@dominio.com" />
-                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
+<!-- Usamos el modal global definido en _Layout.cshtml -->
+
 @section Scripts {
     <link rel="stylesheet" href="~/css/Representantes.css" asp-append-version="true" />
-    <partial name="_ValidationScriptsPartial" />
+
+    @if (!string.IsNullOrEmpty(erroresValidacion))
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(erroresValidacion)), 'warning');
+            });
+        </script>
+    }
 }

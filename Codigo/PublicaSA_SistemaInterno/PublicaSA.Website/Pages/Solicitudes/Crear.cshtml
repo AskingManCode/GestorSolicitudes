@@ -2,6 +2,9 @@
 @model PublicaSA.Website.Pages.Solicitudes.CrearModel
 @{
     ViewData["Title"] = "Nueva Solicitud";
+    var erroresValidacion = !ViewData.ModelState.IsValid
+        ? string.Join("<br/>", ViewData.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))
+        : null;
 }
 
 <!-- Encabezado -->
@@ -26,15 +29,6 @@
     </div>
 </div>
 
-@if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        @Html.ValidationSummary(true, "", new { @class = "mb-0" })
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
 <!-- Card del formulario -->
 <div class="card shadow-sm border-0">
     <div class="card-body p-4">
@@ -53,7 +47,6 @@
                         Consecutivo de Oficio <span class="text-danger">*</span>
                     </label>
                     <input asp-for="Input.ConsecutivoOficio" class="form-control" placeholder="Ej: OFI-2026-001" />
-                    <span asp-validation-for="Input.ConsecutivoOficio" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-6">
@@ -61,7 +54,6 @@
                         Título de la Solicitud <span class="text-danger">*</span>
                     </label>
                     <input asp-for="Input.Titulo" class="form-control" placeholder="Título descriptivo de la solicitud" />
-                    <span asp-validation-for="Input.Titulo" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-12">
@@ -71,7 +63,6 @@
                     <select asp-for="Input.IdRepresentante" asp-items="Model.RepresentantesSelectList" class="form-select">
                         <option value="">-- Seleccione un representante --</option>
                     </select>
-                    <span asp-validation-for="Input.IdRepresentante" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-4">
@@ -79,7 +70,6 @@
                         Fecha de Ingreso <span class="text-danger">*</span>
                     </label>
                     <input asp-for="Input.FechaIngreso" type="date" class="form-control" />
-                    <span asp-validation-for="Input.FechaIngreso" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-4">
@@ -87,7 +77,6 @@
                         Fecha de Inicio
                     </label>
                     <input asp-for="Input.FechaInicio" type="date" class="form-control" />
-                    <span asp-validation-for="Input.FechaInicio" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-4">
@@ -95,7 +84,6 @@
                         Fecha de Respuesta
                     </label>
                     <input asp-for="Input.FechaRespuesta" type="date" class="form-control" />
-                    <span asp-validation-for="Input.FechaRespuesta" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-6">
@@ -103,7 +91,6 @@
                         Documento de Inicio
                     </label>
                     <input asp-for="Input.DocumentoInicio" class="form-control" placeholder="Referencia o enlace del documento de inicio" />
-                    <span asp-validation-for="Input.DocumentoInicio" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-6">
@@ -111,7 +98,6 @@
                         Documento de Respuesta
                     </label>
                     <input asp-for="Input.DocumentoRespuesta" class="form-control" placeholder="Referencia o enlace del documento de respuesta" />
-                    <span asp-validation-for="Input.DocumentoRespuesta" class="text-danger small"></span>
                 </div>
 
                 <div class="col-12">
@@ -119,7 +105,6 @@
                         Descripción
                     </label>
                     <textarea asp-for="Input.Descripcion" class="form-control" rows="3" placeholder="Detalles de los requerimientos de la solicitud"></textarea>
-                    <span asp-validation-for="Input.Descripcion" class="text-danger small"></span>
                 </div>
 
                 <div class="col-12">
@@ -127,14 +112,23 @@
                         Observaciones
                     </label>
                     <textarea asp-for="Input.Observaciones" class="form-control" rows="2" placeholder="Notas u observaciones adicionales"></textarea>
-                    <span asp-validation-for="Input.Observaciones" class="text-danger small"></span>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
+<!-- Usamos el modal global definido en _Layout.cshtml -->
+
 @section Scripts {
     <link rel="stylesheet" href="~/css/Solicitudes.css" asp-append-version="true" />
-    <partial name="_ValidationScriptsPartial" />
+
+    @if (!string.IsNullOrEmpty(erroresValidacion))
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(erroresValidacion)), 'warning');
+            });
+        </script>
+    }
 }

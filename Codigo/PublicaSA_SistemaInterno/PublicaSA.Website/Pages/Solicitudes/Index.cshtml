@@ -17,24 +17,6 @@
     </div>
 </div>
 
-<!-- Alertas de mensajes -->
-@if (!string.IsNullOrEmpty(Model.MensajeExito))
-{
-    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
-        <i class="fas fa-check-circle me-2"></i>
-        @Model.MensajeExito
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-@if (!string.IsNullOrEmpty(Model.MensajeError))
-{
-    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        @Model.MensajeError
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
-
 <!-- Card de Información -->
 <div class="card shadow-sm border-0">
     <div class="card-header bg-white py-3">
@@ -125,7 +107,7 @@
                                 <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "-")</td>
                                 <td class="text-end pe-4">
                                     <div class="d-inline-flex gap-2">
-                                        <!-- Publicar a Proveedores -->
+                                        <!-- Publicar a Proveedores (EXT1) -->
                                         <button type="button"
                                                 class="btn btn-sm rounded-circle btn-accion"
                                                 data-bs-toggle="modal"
@@ -139,6 +121,14 @@
                                                 title="Publicar a proveedores">
                                             <i class="fas fa-globe fa-sm" aria-hidden="true"></i>
                                         </button>
+                                        <!-- Participaciones (EXT7) -->
+                                        <a asp-page="/Solicitudes/Participaciones/Index"
+                                           asp-route-idSolicitud="@item.IdSolicitud"
+                                           class="btn btn-sm rounded-circle btn-accion"
+                                           aria-label="Participaciones de @item.ConsecutivoOficio"
+                                           title="Participaciones">
+                                            <i class="fas fa-handshake fa-sm" aria-hidden="true"></i>
+                                        </a>
                                         <!-- Desglose -->
                                         <a asp-page="/Solicitudes/Desgloses/Index" asp-route-idSolicitud="@item.IdSolicitud"
                                            class="btn btn-sm rounded-circle btn-accion"
@@ -210,7 +200,7 @@
     </nav>
 }
 
-<!-- Modal Publicar a Proveedores -->
+<!-- Modal Publicar a Proveedores (EXT1) -->
 <div class="modal fade" id="modalPublicar" tabindex="-1" aria-labelledby="modalPublicarLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -300,4 +290,21 @@
 @section Scripts {
     <link rel="stylesheet" href="~/css/Solicitudes.css" asp-append-version="true" />
     <script src="~/js/Solicitudes.js" asp-append-version="true"></script>
+
+    @if (!string.IsNullOrEmpty(Model.MensajeExito))
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Ok', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MensajeExito)), 'success');
+            });
+        </script>
+    }
+    @if (!string.IsNullOrEmpty(Model.MensajeError))
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MensajeError)), 'warning');
+            });
+        </script>
+    }
 }

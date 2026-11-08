@@ -60,8 +60,20 @@ namespace PublicaSA.Services.Services
                 if (string.IsNullOrWhiteSpace(solicitud.ConsecutivoOficio))
                     return ResultadoOperacion.Error("El consecutivo de oficio es requerido.");
 
+                if (solicitud.ConsecutivoOficio.Trim().Length > 50)
+                    return ResultadoOperacion.Error("El consecutivo de oficio no puede exceder 50 caracteres.");
+
                 if (string.IsNullOrWhiteSpace(solicitud.Titulo))
                     return ResultadoOperacion.Error("El título de la solicitud es requerido.");
+
+                if (solicitud.Titulo.Trim().Length > 200)
+                    return ResultadoOperacion.Error("El título de la solicitud no puede exceder 200 caracteres.");
+
+                if (!string.IsNullOrEmpty(solicitud.DocumentoInicio) && solicitud.DocumentoInicio.Length > 255)
+                    return ResultadoOperacion.Error("El documento de inicio no puede exceder 255 caracteres.");
+
+                if (!string.IsNullOrEmpty(solicitud.DocumentoRespuesta) && solicitud.DocumentoRespuesta.Length > 255)
+                    return ResultadoOperacion.Error("El documento de respuesta no puede exceder 255 caracteres.");
 
                 if (solicitud.FechaIngreso == default)
                     solicitud.FechaIngreso = DateTime.Today;
@@ -116,8 +128,20 @@ namespace PublicaSA.Services.Services
                 if (string.IsNullOrWhiteSpace(solicitud.ConsecutivoOficio))
                     return ResultadoOperacion.Error("El consecutivo de oficio es requerido.");
 
+                if (solicitud.ConsecutivoOficio.Trim().Length > 50)
+                    return ResultadoOperacion.Error("El consecutivo de oficio no puede exceder 50 caracteres.");
+
                 if (string.IsNullOrWhiteSpace(solicitud.Titulo))
                     return ResultadoOperacion.Error("El título de la solicitud es requerido.");
+
+                if (solicitud.Titulo.Trim().Length > 200)
+                    return ResultadoOperacion.Error("El título de la solicitud no puede exceder 200 caracteres.");
+
+                if (!string.IsNullOrEmpty(solicitud.DocumentoInicio) && solicitud.DocumentoInicio.Length > 255)
+                    return ResultadoOperacion.Error("El documento de inicio no puede exceder 255 caracteres.");
+
+                if (!string.IsNullOrEmpty(solicitud.DocumentoRespuesta) && solicitud.DocumentoRespuesta.Length > 255)
+                    return ResultadoOperacion.Error("El documento de respuesta no puede exceder 255 caracteres.");
 
                 if (solicitud.IdRepresentante <= 0)
                     return ResultadoOperacion.Error("Debe seleccionar un representante válido.");

@@ -31,20 +31,16 @@ namespace PublicaSA.Website.Pages.Solicitudes
             public int IdSolicitud { get; set; }
 
             [Required(ErrorMessage = "El consecutivo de oficio es requerido.")]
-            [StringLength(50, ErrorMessage = "El consecutivo no puede exceder 50 caracteres.")]
             [Display(Name = "Consecutivo de Oficio")]
             public string ConsecutivoOficio { get; set; } = string.Empty;
 
-            [StringLength(255)]
             [Display(Name = "Documento de Respuesta")]
             public string? DocumentoRespuesta { get; set; }
 
-            [StringLength(255)]
             [Display(Name = "Documento de Inicio")]
             public string? DocumentoInicio { get; set; }
 
             [Required(ErrorMessage = "El título de la solicitud es requerido.")]
-            [StringLength(200, ErrorMessage = "El título no puede exceder 200 caracteres.")]
             [Display(Name = "Título")]
             public string Titulo { get; set; } = string.Empty;
 
@@ -52,7 +48,6 @@ namespace PublicaSA.Website.Pages.Solicitudes
             public string? Descripcion { get; set; }
 
             [Required(ErrorMessage = "Debe seleccionar un representante.")]
-            [Range(1, int.MaxValue, ErrorMessage = "Debe seleccionar un representante válido.")]
             [Display(Name = "Representante")]
             public int IdRepresentante { get; set; }
 

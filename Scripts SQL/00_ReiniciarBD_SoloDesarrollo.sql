@@ -10,6 +10,9 @@ USE `tiusr20pl_Publica_SA`;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS `DesglosesPropuestas`;
+DROP TABLE IF EXISTS `Propuestas`;
+DROP TABLE IF EXISTS `Proveedores`;
 DROP TABLE IF EXISTS `Bitacoras`;
 DROP TABLE IF EXISTS `Tareas`;
 DROP TABLE IF EXISTS `DesglosesSolicitud`;

@@ -30,22 +30,18 @@ namespace PublicaSA.Website.Pages.Solicitudes.Desgloses
             public int IdSolicitud { get; set; }
 
             [Required(ErrorMessage = "El mes es requerido.")]
-            [Range(1, 12, ErrorMessage = "El mes debe estar entre 1 y 12.")]
             [Display(Name = "Mes")]
             public int Mes { get; set; } = DateTime.Today.Month;
 
             [Required(ErrorMessage = "El año es requerido.")]
-            [Range(2000, 2150, ErrorMessage = "Ingrese un año válido.")]
             [Display(Name = "Año")]
             public int Anio { get; set; } = DateTime.Today.Year;
 
             [Required(ErrorMessage = "Las horas son requeridas.")]
-            [Range(0, 100000, ErrorMessage = "Las horas no pueden ser negativas.")]
             [Display(Name = "Horas")]
             public decimal Horas { get; set; }
 
             [Required(ErrorMessage = "El monto es requerido.")]
-            [Range(0, 10000000000, ErrorMessage = "El monto no puede ser negativo.")]
             [Display(Name = "Monto (₡)")]
             public decimal Monto { get; set; }
 
@@ -56,12 +52,10 @@ namespace PublicaSA.Website.Pages.Solicitudes.Desgloses
             public decimal Total { get; set; }
 
             [Required(ErrorMessage = "El porcentaje de cobro es requerido.")]
-            [Range(0, 100, ErrorMessage = "El porcentaje debe estar entre 0 y 100.")]
             [Display(Name = "Porcentaje de Cobro (%)")]
             public decimal PorcentajeCobro { get; set; } = 100;
 
             [Display(Name = "Observaciones")]
-            [StringLength(500, ErrorMessage = "Las observaciones no pueden exceder 500 caracteres.")]
             public string? Observaciones { get; set; }
         }
 

@@ -146,12 +146,11 @@ namespace PublicaSA.Website.Pages.Solicitudes.Tareas
             return RedirectToPage("/Login/Index");
         }
 
-        // Valida los campos del formulario antes de crear la tarea.
-        public class FormularioTarea : IValidatableObject
+        // Formulario de entrada de datos.
+        // Las validaciones de negocio se centralizan en TareaService.
+        public class FormularioTarea
         {
             [Required(ErrorMessage = "Ingrese la descripción de la tarea.")]
-            [MinLength(3, ErrorMessage =
-                "La descripción debe tener al menos tres caracteres.")]
             public string Descripcion { get; set; } = string.Empty;
 
             [Required(ErrorMessage = "Seleccione la fecha.")]
@@ -159,42 +158,10 @@ namespace PublicaSA.Website.Pages.Solicitudes.Tareas
             public DateTime? Fecha { get; set; }
 
             [Required(ErrorMessage = "Seleccione un usuario.")]
-            [Range(1, int.MaxValue, ErrorMessage =
-                "Seleccione un usuario válido.")]
             public int? IdUsuario { get; set; }
 
             [Required(ErrorMessage = "Ingrese las horas invertidas.")]
             public decimal? HorasInvertidas { get; set; }
-
-            public IEnumerable<ValidationResult> Validate(
-                ValidationContext validationContext)
-            {
-                if (!string.IsNullOrWhiteSpace(Descripcion)
-                    && Descripcion.Trim().Length < 3)
-                {
-                    yield return new ValidationResult(
-                        "La descripción debe tener al menos tres caracteres.",
-                        new[] { nameof(Descripcion) });
-                }
-
-                if (HorasInvertidas.HasValue
-                    && (HorasInvertidas.Value <= 0
-                        || HorasInvertidas.Value > 24))
-                {
-                    yield return new ValidationResult(
-                        "Las horas invertidas deben ser mayores que cero y hasta 24.",
-                        new[] { nameof(HorasInvertidas) });
-                }
-
-                if (Fecha.HasValue
-                    && (Fecha.Value.Date < new DateTime(2000, 1, 1)
-                        || Fecha.Value.Date > new DateTime(2150, 12, 31)))
-                {
-                    yield return new ValidationResult(
-                        "La fecha debe estar entre el 01/01/2000 y el 31/12/2150.",
-                        new[] { nameof(Fecha) });
-                }
-            }
         }
     }
 }
