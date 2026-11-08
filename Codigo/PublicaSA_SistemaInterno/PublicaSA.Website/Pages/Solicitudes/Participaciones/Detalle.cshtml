@@ -1,0 +1,134 @@
+@page
+@model PublicaSA.Website.Pages.Solicitudes.Participaciones.DetalleModel
+@{
+    ViewData["Title"] = "Detalle de Participación";
+    bool yaTieneAprobada = Model.Propuesta?.SolicitudTienePropuestaAprobada ?? false;
+}
+
+<!-- Bloque superior con borde azul -->
+<div class="card border-0 shadow-sm mb-4 desgloses-header-card">
+    <div class="card-body py-3">
+        <h1 class="h5 fw-bold mb-2">
+            Detalle del Desglose Propuesto (@Model.Propuesta?.ConsecutivoOficio - @Model.Propuesta?.TituloSolicitud)
+        </h1>
+
+        <p class="mb-3 text-secondary small">
+            <strong>Identificación del Proveedor:</strong> @Model.Propuesta?.CedulaJuridica
+            <span class="mx-2">|</span>
+            <strong>Nombre:</strong> @Model.Propuesta?.NombreProveedor
+            @if (Model.Propuesta?.Aprobada == true)
+            {
+                <span class="badge rounded-pill text-bg-success ms-2">
+                    <i class="fas fa-check-circle me-1" aria-hidden="true"></i>Propuesta Aprobada
+                </span>
+            }
+            else if (yaTieneAprobada)
+            {
+                <span class="badge rounded-pill text-bg-secondary ms-2">
+                    <i class="fas fa-info-circle me-1" aria-hidden="true"></i>Otra propuesta ya fue aprobada para esta solicitud
+                </span>
+            }
+        </p>
+
+        <div class="d-flex flex-wrap gap-2">
+            <a asp-page="/Solicitudes/Index" class="btn btn-sm btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1" aria-hidden="true"></i> Regresar
+            </a>
+
+            <a asp-page="./Index" asp-route-idSolicitud="@Model.IdSolicitud" class="btn btn-sm btn-outline-primary">
+                <i class="fas fa-handshake me-1" aria-hidden="true"></i> Ver Participaciones
+            </a>
+
+            <form method="post" asp-page-handler="Aprobar" class="d-inline">
+                <input type="hidden" name="idPropuesta" value="@Model.IdPropuesta" />
+                <input type="hidden" name="idSolicitud" value="@Model.IdSolicitud" />
+                <button type="submit"
+                        class="btn btn-sm btn-nuevo"
+                        disabled="@(yaTieneAprobada ? "disabled" : null)"
+                        title="@(yaTieneAprobada ? "Ya se aprobó una propuesta para esta solicitud" : "Aprobar esta propuesta y asociar su desglose a la solicitud")">
+                    <i class="fas fa-check me-1" aria-hidden="true"></i> Aprobar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Alertas -->
+@if (!string.IsNullOrEmpty(Model.MensajeExito))
+{
+    <div class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+        <i class="fas fa-check-circle me-2"></i>
+        @Model.MensajeExito
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+@if (!string.IsNullOrEmpty(Model.MensajeError))
+{
+    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i>
+        @Model.MensajeError
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+}
+
+<!-- Card de Información del Desglose Propuesto -->
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <h5 class="h5 fw-bold mb-0" style="color: #4e73df;">
+            Desglose Propuesto
+        </h5>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0 desgloses-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="ps-4">Mes</th>
+                        <th scope="col">Año</th>
+                        <th scope="col" class="text-end">Horas</th>
+                        <th scope="col" class="text-end">Monto Base</th>
+                        <th scope="col" class="text-end">IVA (13%)</th>
+                        <th scope="col" class="text-end">Total</th>
+                        <th scope="col" class="text-center">% Cobro</th>
+                        <th scope="col" class="pe-4">Observaciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Desgloses == null || !Model.Desgloses.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center py-4 text-muted">
+                                No hay desgloses propuestos registrados para esta participación.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.Desgloses)
+                        {
+                            <tr>
+                                <td class="ps-4 fw-semibold">@item.NombreMes</td>
+                                <td>@item.Anio</td>
+                                <td class="text-end">@item.Horas.ToString("N2")</td>
+                                <td class="text-end">₡@item.Monto.ToString("N2")</td>
+                                <td class="text-end text-muted">₡@item.Iva.ToString("N2")</td>
+                                <td class="text-end fw-bold text-primary">₡@item.Total.ToString("N2")</td>
+                                <td class="text-center">
+                                    <span class="badge rounded-pill text-bg-info">@item.PorcentajeCobro%</span>
+                                </td>
+                                <td class="small text-muted pe-4" title="@item.Observaciones">
+                                    @(string.IsNullOrWhiteSpace(item.Observaciones) ? "-" : item.Observaciones)
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/Desgloses.css" asp-append-version="true" />
+}
