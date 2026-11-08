@@ -79,6 +79,9 @@ namespace PublicaSA.Services.Services
                 if (desglose.PorcentajeCobro < 0 || desglose.PorcentajeCobro > 100)
                     return ResultadoOperacion.Error("El porcentaje de cobro debe estar entre 0% y 100%.");
 
+                if (!string.IsNullOrEmpty(desglose.Observaciones) && desglose.Observaciones.Length > 500)
+                    return ResultadoOperacion.Error("Las observaciones no pueden exceder 500 caracteres.");
+
                 // Cálculo automático de IVA (13%) y Total (Monto + IVA)
                 desglose.Iva = Math.Round(desglose.Monto * 0.13m, 2);
                 desglose.Total = Math.Round(desglose.Monto + desglose.Iva, 2);
@@ -131,6 +134,9 @@ namespace PublicaSA.Services.Services
 
                 if (desglose.PorcentajeCobro < 0 || desglose.PorcentajeCobro > 100)
                     return ResultadoOperacion.Error("El porcentaje de cobro debe estar entre 0% y 100%.");
+
+                if (!string.IsNullOrEmpty(desglose.Observaciones) && desglose.Observaciones.Length > 500)
+                    return ResultadoOperacion.Error("Las observaciones no pueden exceder 500 caracteres.");
 
                 // Recálculo automático de IVA (13%) y Total (Monto + IVA)
                 desglose.Iva = Math.Round(desglose.Monto * 0.13m, 2);
