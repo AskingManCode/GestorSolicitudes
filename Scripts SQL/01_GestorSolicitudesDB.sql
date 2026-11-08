@@ -320,3 +320,124 @@ CREATE TABLE IF NOT EXISTS `Bitacoras` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
+-- Tabla: Proveedores
+CREATE TABLE IF NOT EXISTS `Proveedores` (
+	`IdProveedor` INT AUTO_INCREMENT PRIMARY KEY,
+	`CedulaJuridica` VARCHAR(20) NOT NULL,
+	`Nombre` VARCHAR(150) NOT NULL,
+	`NombreRepresentante` VARCHAR(150) NOT NULL,
+	`Telefono` VARCHAR(30) NOT NULL,
+	`Correo` VARCHAR(150) NOT NULL,
+	`Activo` BOOLEAN NOT NULL DEFAULT TRUE,
+	`FechaCreacion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	
+	CONSTRAINT `UQ_Proveedores_CedulaJuridica`
+		UNIQUE (`CedulaJuridica`),
+	
+	CONSTRAINT `CHK_Proveedores_CedulaJuridica`
+		CHECK (`CedulaJuridica` REGEXP '^(3-[0-9]{3}-[0-9]{6}|[0-9]{10})$'),
+	
+	CONSTRAINT `CHK_Proveedores_Nombre`
+		CHECK (
+		   CHAR_LENGTH(TRIM(`Nombre`)) >= 2
+		   AND CHAR_LENGTH(`Nombre`) = CHAR_LENGTH(TRIM(`Nombre`))
+		),
+	
+	CONSTRAINT `CHK_Proveedores_NombreRepresentante`
+		CHECK (
+		   CHAR_LENGTH(TRIM(`NombreRepresentante`)) >= 3
+		   AND CHAR_LENGTH(`NombreRepresentante`) = CHAR_LENGTH(TRIM(`NombreRepresentante`))
+		   AND `NombreRepresentante` NOT REGEXP '[0-9]'
+		),
+	
+	CONSTRAINT `CHK_Proveedores_Telefono`
+		CHECK (
+		   CHAR_LENGTH(TRIM(`Telefono`)) >= 8
+		   AND `Telefono` REGEXP '^[0-9+() -]{8,30}$'
+		),
+	
+	CONSTRAINT `CHK_Proveedores_Correo`
+		CHECK (`Correo` REGEXP '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Tabla: Propuestas
+CREATE TABLE IF NOT EXISTS `Propuestas` (
+	`IdPropuesta` INT AUTO_INCREMENT PRIMARY KEY,
+	`IdSolicitud` INT NOT NULL,
+	`IdProveedor` INT NOT NULL,
+	`Aprobada` BOOLEAN NOT NULL DEFAULT FALSE,
+	`FechaPropuesta` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	`FechaAprobacion` DATETIME NULL,
+	`Activo` BOOLEAN NOT NULL DEFAULT TRUE,
+	
+	INDEX `IX_Propuestas_Solicitud` (`IdSolicitud`),
+	INDEX `IX_Propuestas_Proveedor` (`IdProveedor`),
+	
+	CONSTRAINT `FK_Propuestas_Solicitudes`
+		FOREIGN KEY (`IdSolicitud`)
+		REFERENCES `Solicitudes` (`IdSolicitud`)
+		ON DELETE RESTRICT ON UPDATE CASCADE,
+	
+	CONSTRAINT `FK_Propuestas_Proveedores`
+		FOREIGN KEY (`IdProveedor`)
+		REFERENCES `Proveedores` (`IdProveedor`)
+		ON DELETE RESTRICT ON UPDATE CASCADE,
+	
+	CONSTRAINT `UQ_Propuesta_Solicitud_Proveedor`
+		UNIQUE (`IdSolicitud`, `IdProveedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+-- Tabla: DesglosesPropuestas
+CREATE TABLE IF NOT EXISTS `DesglosesPropuestas` (
+	`IdDesglosePropuesta` INT AUTO_INCREMENT PRIMARY KEY,
+	`IdPropuesta` INT NOT NULL,
+	`Mes` INT NOT NULL,
+	`Anio` INT NOT NULL,
+	`Horas` DECIMAL(10,2) NOT NULL DEFAULT 0.00,
+	`Monto` DECIMAL(14,2) NOT NULL DEFAULT 0.00,
+	`Iva` DECIMAL(14,2) NOT NULL DEFAULT 0.00,
+	`Total` DECIMAL(14,2) NOT NULL DEFAULT 0.00,
+	`PorcentajeCobro` DECIMAL(5,2) NOT NULL DEFAULT 0.00,
+	`Observaciones` TEXT NULL,
+	`Activo` BOOLEAN NOT NULL DEFAULT TRUE,
+	`FechaCreacion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	
+	INDEX `IX_DesglosesPropuestas_Propuesta` (`IdPropuesta`),
+	
+	CONSTRAINT `FK_DesglosesPropuestas_Propuestas`
+		FOREIGN KEY (`IdPropuesta`)
+		REFERENCES `Propuestas` (`IdPropuesta`)
+		ON DELETE RESTRICT ON UPDATE CASCADE,
+	
+	CONSTRAINT `UQ_DesglosePropuesta_Propuesta_Mes_Anio`
+		UNIQUE (`IdPropuesta`, `Mes`, `Anio`),
+	
+	CONSTRAINT `CHK_DesglosesPropuestas_Mes`
+		CHECK (`Mes` BETWEEN 1 AND 12),
+	
+	CONSTRAINT `CHK_DesglosesPropuestas_Anio`
+		CHECK (`Anio` BETWEEN 2000 AND 2150),
+	
+	CONSTRAINT `CHK_DesglosesPropuestas_ValoresPositivos`
+		CHECK (
+		   `Horas` >= 0
+		   AND `Monto` >= 0
+		   AND `Iva` >= 0
+		   AND `Total` >= 0
+		   AND `PorcentajeCobro` >= 0
+		   AND `PorcentajeCobro` <= 100
+		),
+	
+	-- IVA = 13% del monto.
+	CONSTRAINT `CHK_DesglosesPropuestas_Iva`
+		CHECK (ABS(`Iva` - (`Monto` * 0.13)) <= 0.005),
+	
+	-- Total = Monto + IVA
+	CONSTRAINT `CHK_DesglosesPropuestas_Total`
+		CHECK (`Total` = `Monto` + `Iva`),
+	
+	CONSTRAINT `CHK_DesglosesPropuestas_Observaciones`
+		CHECK (`Observaciones` IS NULL OR CHAR_LENGTH(TRIM(`Observaciones`)) > 0)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
