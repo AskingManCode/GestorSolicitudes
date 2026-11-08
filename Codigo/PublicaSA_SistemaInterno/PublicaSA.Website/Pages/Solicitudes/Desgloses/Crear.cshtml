@@ -2,6 +2,9 @@
 @model PublicaSA.Website.Pages.Solicitudes.Desgloses.CrearModel
 @{
     ViewData["Title"] = "Nuevo Desglose";
+    var erroresValidacion = !ViewData.ModelState.IsValid
+        ? string.Join("<br/>", ViewData.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))
+        : null;
 }
 
 <!-- Encabezado -->
@@ -25,15 +28,6 @@
         </div>
     </div>
 </div>
-
-@if (!ViewData.ModelState.IsValid && ViewData.ModelState[string.Empty] != null)
-{
-    <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        @Html.ValidationSummary(true, "", new { @class = "mb-0" })
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-}
 
 <!-- Card del formulario -->
 <div class="card shadow-sm border-0">
@@ -68,7 +62,6 @@
                         <option value="11">Noviembre</option>
                         <option value="12">Diciembre</option>
                     </select>
-                    <span asp-validation-for="Input.Mes" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-6">
@@ -76,7 +69,6 @@
                         Año <span class="text-danger">*</span>
                     </label>
                     <input asp-for="Input.Anio" type="number" class="form-control" />
-                    <span asp-validation-for="Input.Anio" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-6">
@@ -84,7 +76,6 @@
                         Horas <span class="text-danger">*</span>
                     </label>
                     <input asp-for="Input.Horas" type="number" step="0.25" min="0" class="form-control" placeholder="0.00" />
-                    <span asp-validation-for="Input.Horas" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-6">
@@ -92,7 +83,6 @@
                         Monto <span class="text-danger">*</span>
                     </label>
                     <input asp-for="Input.Monto" id="inputMonto" type="number" step="0.01" min="0" class="form-control" placeholder="0.00" />
-                    <span asp-validation-for="Input.Monto" class="text-danger small"></span>
                 </div>
 
                 <div class="col-md-4">
@@ -117,7 +107,6 @@
                         <input asp-for="Input.PorcentajeCobro" type="number" step="0.1" min="0" max="100" class="form-control" placeholder="100" />
                         <span class="input-group-text">%</span>
                     </div>
-                    <span asp-validation-for="Input.PorcentajeCobro" class="text-danger small"></span>
                 </div>
 
                 <div class="col-12">
@@ -125,16 +114,16 @@
                         Observaciones
                     </label>
                     <textarea asp-for="Input.Observaciones" class="form-control" rows="3" placeholder="Detalle u observaciones del trabajo realizado en el mes"></textarea>
-                    <span asp-validation-for="Input.Observaciones" class="text-danger small"></span>
                 </div>
             </div>
         </form>
     </div>
 </div>
 
+<!-- Usamos el modal global definido en _Layout.cshtml -->
+
 @section Scripts {
     <link rel="stylesheet" href="~/css/Desgloses.css" asp-append-version="true" />
-    <partial name="_ValidationScriptsPartial" />
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const montoInput = document.getElementById("inputMonto");
@@ -154,4 +143,13 @@
             calcularMontos();
         });
     </script>
+
+    @if (!string.IsNullOrEmpty(erroresValidacion))
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(erroresValidacion)), 'warning');
+            });
+        </script>
+    }
 }
