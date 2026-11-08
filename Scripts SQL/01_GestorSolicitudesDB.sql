@@ -137,11 +137,14 @@ CREATE TABLE IF NOT EXISTS `Solicitudes` (
 	`FechaIngreso` DATE NOT NULL,
 	`FechaRespuesta` DATE NULL,
 	`FechaInicio` DATE NULL,
+	`VisibleExterno` BOOLEAN NOT NULL DEFAULT FALSE,
+	`FechaVencimientoPublicacion` DATE NULL,
 	`Activo` BOOLEAN NOT NULL DEFAULT TRUE,
 	`FechaCreacion` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	
 	-- Apoya el proceso automático de vencimiento y el listado por estado
 	INDEX `IX_Solicitudes_Estado_FechaIngreso` (`CodigoEstado`, `FechaIngreso`),
+	INDEX `IX_Solicitudes_VisibleExterno` (`VisibleExterno`, `FechaVencimientoPublicacion`),
 	
 	CONSTRAINT `FK_Solicitudes_Representantes`
 		FOREIGN KEY (`IdRepresentante`)
@@ -183,12 +186,18 @@ CREATE TABLE IF NOT EXISTS `Solicitudes` (
 		   `FechaIngreso` BETWEEN '2000-01-01' AND '2150-12-31'
 		   AND (`FechaRespuesta` IS NULL OR `FechaRespuesta` <= '2150-12-31')
 		   AND (`FechaInicio` IS NULL OR `FechaInicio` <= '2150-12-31')
+		   AND (`FechaVencimientoPublicacion` IS NULL OR `FechaVencimientoPublicacion` <= '2150-12-31')
 		),
 	
 	CONSTRAINT `CHK_Solicitudes_Fechas`
 		CHECK (
 		   (`FechaRespuesta` IS NULL OR `FechaRespuesta` >= `FechaIngreso`)
 		   AND (`FechaInicio` IS NULL OR `FechaInicio` >= `FechaIngreso`)
+		),
+	
+	CONSTRAINT `CHK_Solicitudes_PublicacionExterna`
+		CHECK (
+		   (`VisibleExterno` = FALSE) OR (`VisibleExterno` = TRUE AND `FechaVencimientoPublicacion` IS NOT NULL)
 		)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
