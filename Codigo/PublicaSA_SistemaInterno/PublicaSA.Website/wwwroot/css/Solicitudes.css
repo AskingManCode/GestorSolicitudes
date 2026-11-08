@@ -75,9 +75,9 @@
     color: var(--publica-primary);
 }
 
-/* Espacio para las cuatro acciones y desplazamiento en pantallas pequeñas. */
+/* Espacio para las cinco acciones y desplazamiento en pantallas pequeñas. */
 .solicitudes-table {
-    min-width: 1120px;
+    min-width: 1250px;
 }
 
 .solicitudes-table td:last-child {

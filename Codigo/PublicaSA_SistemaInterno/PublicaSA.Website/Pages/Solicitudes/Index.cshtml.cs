@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using PublicaSA.Entities;
@@ -32,7 +33,7 @@ namespace PublicaSA.Website.Pages.Solicitudes
         public async Task OnGetAsync(int pagina = 1)
         {
             PaginaActual = pagina < 1 ? 1 : pagina;
-            string usuario = User.Identity?.Name ?? "admin";
+            string usuario = HttpContext.Session.GetString("NombreUsuario") ?? User.Identity?.Name ?? "admin";
 
             var (items, total) = await _solicitudService.ObtenerPaginadoAsync(PaginaActual, RegistrosPorPagina, usuario);
             Solicitudes = items;
@@ -43,8 +44,31 @@ namespace PublicaSA.Website.Pages.Solicitudes
 
         public async Task<IActionResult> OnPostEliminarAsync(int id)
         {
-            string usuario = User.Identity?.Name ?? "admin";
+            string usuario = HttpContext.Session.GetString("NombreUsuario") ?? User.Identity?.Name ?? "admin";
             var resultado = await _solicitudService.EliminarAsync(id, usuario);
+
+            if (resultado.Exitoso)
+            {
+                MensajeExito = resultado.Mensaje;
+            }
+            else
+            {
+                MensajeError = resultado.Mensaje;
+            }
+
+            return RedirectToPage(new { pagina = PaginaActual });
+        }
+
+        public async Task<IActionResult> OnPostPublicarAsync(int idSolicitud, bool visibleExterno, DateTime? fechaVencimiento, int pagina = 1)
+        {
+            PaginaActual = pagina < 1 ? 1 : pagina;
+            string usuario = HttpContext.Session.GetString("NombreUsuario") ?? User.Identity?.Name ?? "admin";
+
+            var resultado = await _solicitudService.ActualizarPublicacionAsync(
+                idSolicitud,
+                visibleExterno,
+                fechaVencimiento,
+                usuario);
 
             if (resultado.Exitoso)
             {
