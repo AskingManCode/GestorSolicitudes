@@ -36,6 +36,7 @@ builder.Services.AddScoped<IEstadoSolicitudRepository, EstadoSolicitudRepository
 builder.Services.AddScoped<IBitacoraRepository, BitacoraRepository>();
 builder.Services.AddScoped<IDesgloseRepository, DesgloseRepository>();
 builder.Services.AddScoped<IReporteTareaRepository, ReporteTareaRepository>();
+builder.Services.AddScoped<IPropuestaRepository, PropuestaRepository>();
 
 // Inyección de dependencias - Servicios
 builder.Services.AddScoped<IReporteTareaService, ReporteTareaService>();
@@ -43,6 +44,7 @@ builder.Services.AddScoped<IBitacoraService, BitacoraService>();
 builder.Services.AddScoped<ISolicitudService, SolicitudService>();
 builder.Services.AddScoped<IDesgloseService, DesgloseService>();
 builder.Services.AddScoped<IRepresentanteService, RepresentanteService>();
+builder.Services.AddScoped<IPropuestaService, PropuestaService>();
 
 // Conecta las pantallas de TAR1 con su servicio y repositorio.
 builder.Services.AddScoped<ITareaRepository, TareaRepository>();
