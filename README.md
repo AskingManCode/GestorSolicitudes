@@ -202,4 +202,3 @@ Para desplegar la aplicación en Ples:
 - Aldo Burgos Argüello
 - Dorian Blanco Muñoz
 - Cristian Monge Raabe
-- Juan Hidalgo Muñoz
