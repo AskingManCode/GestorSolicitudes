@@ -1,7 +1,10 @@
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Threading.Tasks;
 using Dapper;
 using PublicaSA.Entities;
 using PublicaSA.Repository.Interfaces;
-using System.Data;
 
 namespace PublicaSA.Repository.Repositories
 {
@@ -118,7 +121,8 @@ namespace PublicaSA.Repository.Repositories
             const string sql = @"
                 SELECT 
                     (SELECT COUNT(1) FROM DesglosesSolicitud WHERE IdSolicitud = @Id) +
-                    (SELECT COUNT(1) FROM Tareas WHERE IdSolicitud = @Id);";
+                    (SELECT COUNT(1) FROM Tareas WHERE IdSolicitud = @Id) +
+                    (SELECT COUNT(1) FROM Propuestas WHERE IdSolicitud = @Id);";
 
             int count = await connection.ExecuteScalarAsync<int>(sql, new { Id = id });
             return count > 0;
