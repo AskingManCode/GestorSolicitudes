@@ -199,6 +199,86 @@ namespace PublicaSA.Services.Services
             }
         }
 
+        public async Task<ResultadoOperacion> ActualizarPublicacionAsync(
+            int idSolicitud,
+            bool visibleExterno,
+            DateTime? fechaVencimientoPublicacion,
+            string usuario)
+        {
+            try
+            {
+                if (idSolicitud <= 0)
+                    return ResultadoOperacion.Error("Identificador de solicitud no válido.");
+
+                var existente = await _solicitudRepository.GetByIdAsync(idSolicitud);
+                if (existente == null)
+                    return ResultadoOperacion.Error("La solicitud especificada no existe en el sistema.");
+
+                DateTime hoy = DateTimeOffset.UtcNow
+                    .ToOffset(TimeSpan.FromHours(-6)).Date;
+
+                if (visibleExterno)
+                {
+                    if (!fechaVencimientoPublicacion.HasValue)
+                    {
+                        return ResultadoOperacion.Error("Debe indicar una fecha de vencimiento para publicar la solicitud en el módulo externo.");
+                    }
+
+                    if (fechaVencimientoPublicacion.Value.Date < hoy)
+                    {
+                        return ResultadoOperacion.Error("La fecha de vencimiento no puede ser anterior a la fecha actual.");
+                    }
+                }
+                else
+                {
+                    // Si se desmarca, se limpia la fecha para consistencia
+                    fechaVencimientoPublicacion = null;
+                }
+
+                var actualizada = await _solicitudRepository.ActualizarPublicacionAsync(
+                    idSolicitud,
+                    visibleExterno,
+                    fechaVencimientoPublicacion);
+
+                if (actualizada == null)
+                {
+                    return ResultadoOperacion.Error("No se pudo actualizar el estado de publicación de la solicitud.");
+                }
+
+                // Registrar en bitácora según estándar
+                await _bitacoraService.RegistrarAccionAsync(
+                    usuario,
+                    "Publicar Solicitud",
+                    new
+                    {
+                        Accion = visibleExterno ? "Publicación de solicitud a proveedores" : "Retiro de publicación a proveedores",
+                        IdSolicitud = idSolicitud,
+                        ConsecutivoOficio = existente.ConsecutivoOficio,
+                        RegistroAnterior = new
+                        {
+                            existente.VisibleExterno,
+                            existente.FechaVencimientoPublicacion
+                        },
+                        RegistroActual = new
+                        {
+                            actualizada.VisibleExterno,
+                            actualizada.FechaVencimientoPublicacion
+                        }
+                    });
+
+                string mensaje = visibleExterno
+                    ? $"La solicitud '{existente.ConsecutivoOficio}' se publicó correctamente hasta el {fechaVencimientoPublicacion:dd/MM/yyyy}."
+                    : $"La solicitud '{existente.ConsecutivoOficio}' se retiró del módulo externo.";
+
+                return ResultadoOperacion.Exito(mensaje, actualizada);
+            }
+            catch (Exception ex)
+            {
+                await _bitacoraService.RegistrarErrorAsync(usuario, "Publicar Solicitud", ex.Message);
+                return ResultadoOperacion.Error($"Error al actualizar la publicación de la solicitud: {ex.Message}");
+            }
+        }
+
         public async Task<IEnumerable<Representante>> ObtenerRepresentantesAsync()
         {
             return await _representanteRepository.GetAllAsync();

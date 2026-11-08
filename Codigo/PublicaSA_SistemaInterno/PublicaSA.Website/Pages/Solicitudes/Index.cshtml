@@ -52,6 +52,7 @@
                         <th scope="col">Título</th>
                         <th scope="col">Representante</th>
                         <th scope="col">Estado</th>
+                        <th scope="col">Módulo Externo</th>
                         <th scope="col">F. Ingreso</th>
                         <th scope="col">F. Respuesta</th>
                         <th scope="col">F. Inicio</th>
@@ -62,7 +63,7 @@
                     @if (Model.Solicitudes == null || !Model.Solicitudes.Any())
                     {
                         <tr>
-                            <td colspan="8" class="text-center py-4 text-muted">
+                            <td colspan="9" class="text-center py-4 text-muted">
                                 No se encontraron solicitudes registradas.
                             </td>
                         </tr>
@@ -71,7 +72,6 @@
                     {
                         @foreach (var item in Model.Solicitudes)
                         {
-
                             var badgeClass = item.NombreEstado switch
                             {
                                 "Nueva" => "text-bg-primary",
@@ -100,11 +100,45 @@
                                         <i class="fas @iconClass me-1" aria-hidden="true"></i>@item.NombreEstado
                                     </span>
                                 </td>
+                                <td>
+                                    @if (!item.VisibleExterno)
+                                    {
+                                        <span class="badge rounded-pill text-bg-light border text-muted">
+                                            <i class="fas fa-eye-slash me-1" aria-hidden="true"></i>No visible
+                                        </span>
+                                    }
+                                    else if (item.EstaVisibleExternoVigente)
+                                    {
+                                        <span class="badge rounded-pill text-bg-info text-dark" title="Visible hasta @(item.FechaVencimientoPublicacion?.ToString("dd/MM/yyyy"))">
+                                            <i class="fas fa-globe me-1" aria-hidden="true"></i>Visible (@item.FechaVencimientoPublicacion?.ToString("dd/MM/yyyy"))
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge rounded-pill text-bg-secondary" title="Venció el @(item.FechaVencimientoPublicacion?.ToString("dd/MM/yyyy"))">
+                                            <i class="fas fa-history me-1" aria-hidden="true"></i>Vencida (@item.FechaVencimientoPublicacion?.ToString("dd/MM/yyyy"))
+                                        </span>
+                                    }
+                                </td>
                                 <td>@item.FechaIngreso.ToString("dd/MM/yyyy")</td>
                                 <td>@(item.FechaRespuesta.HasValue ? item.FechaRespuesta.Value.ToString("dd/MM/yyyy") : "-")</td>
                                 <td>@(item.FechaInicio.HasValue ? item.FechaInicio.Value.ToString("dd/MM/yyyy") : "-")</td>
                                 <td class="text-end pe-4">
                                     <div class="d-inline-flex gap-2">
+                                        <!-- Publicar a Proveedores -->
+                                        <button type="button"
+                                                class="btn btn-sm rounded-circle btn-accion"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalPublicar"
+                                                data-id="@item.IdSolicitud"
+                                                data-consecutivo="@item.ConsecutivoOficio"
+                                                data-titulo="@item.Titulo"
+                                                data-visible="@(item.VisibleExterno ? "true" : "false")"
+                                                data-vencimiento="@(item.FechaVencimientoPublicacion.HasValue ? item.FechaVencimientoPublicacion.Value.ToString("yyyy-MM-dd") : "")"
+                                                aria-label="Publicar @item.ConsecutivoOficio a proveedores"
+                                                title="Publicar a proveedores">
+                                            <i class="fas fa-globe fa-sm" aria-hidden="true"></i>
+                                        </button>
                                         <!-- Desglose -->
                                         <a asp-page="/Solicitudes/Desgloses/Index" asp-route-idSolicitud="@item.IdSolicitud"
                                            class="btn btn-sm rounded-circle btn-accion"
@@ -175,6 +209,63 @@
         </ul>
     </nav>
 }
+
+<!-- Modal Publicar a Proveedores -->
+<div class="modal fade" id="modalPublicar" tabindex="-1" aria-labelledby="modalPublicarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header text-white" style="background-color: #4e73df;">
+                <h5 class="modal-title" id="modalPublicarLabel">
+                    <i class="fas fa-globe me-2"></i>Publicación a Proveedores
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <form method="post" asp-page-handler="Publicar">
+                <div class="modal-body">
+                    <input type="hidden" name="idSolicitud" id="inputPublicarId" />
+                    <input type="hidden" name="pagina" value="@Model.PaginaActual" />
+
+                    <!-- Resumen de la solicitud -->
+                    <div class="mb-3 p-3 bg-light rounded border">
+                        <div class="small text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Solicitud</div>
+                        <div class="fw-bold fs-6 text-dark" id="lblPublicarConsecutivo"></div>
+                        <div class="small text-secondary" id="lblPublicarTitulo"></div>
+                    </div>
+
+                    <!-- Interruptor de visualización -->
+                    <div class="form-check form-switch mb-3 ps-5">
+                        <input class="form-check-input" type="checkbox" role="switch" id="chkVisibleExterno" name="visibleExterno" value="true">
+                        <label class="form-check-label fw-bold text-dark" for="chkVisibleExterno">
+                            Visualizar en módulo externo de proveedores
+                        </label>
+                        <div class="form-text small text-muted">
+                            Si se activa, los proveedores podrán consultar esta solicitud desde el módulo externo.
+                        </div>
+                    </div>
+
+                    <!-- Fecha de vencimiento -->
+                    <div class="mb-3" id="grupoFechaVencimiento">
+                        <label for="inputFechaVencimiento" class="form-label fw-bold text-dark mb-1" style="font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                            Fecha de Vencimiento de Visualización <span class="text-danger" id="reqAsterisco">*</span>
+                        </label>
+                        <input type="date" class="form-control" id="inputFechaVencimiento" name="fechaVencimiento" />
+                        <div class="form-text small text-muted">
+                            Pasado este período no se mostrará más la solicitud en el módulo externo.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Cancelar
+                    </button>
+                    <button type="submit" class="btn btn-primary" style="background-color: #4e73df; border-color: #4e73df;">
+                        <i class="fas fa-save me-1"></i>Guardar Cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 <!-- Modal Eliminar -->
 <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
