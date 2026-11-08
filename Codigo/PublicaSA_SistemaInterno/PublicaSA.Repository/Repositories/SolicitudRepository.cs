@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Data;
-using System.Threading.Tasks;
 using Dapper;
 using PublicaSA.Entities;
 using PublicaSA.Repository.Interfaces;
+using System.Data;
 
 namespace PublicaSA.Repository.Repositories
 {

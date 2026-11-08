@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using PublicaSA.Entities;
@@ -12,6 +13,7 @@ namespace PublicaSA.Services.Interfaces
         Task<ResultadoOperacion> CrearAsync(Solicitud solicitud, string usuario);
         Task<ResultadoOperacion> ActualizarAsync(Solicitud solicitud, string usuario);
         Task<ResultadoOperacion> EliminarAsync(int id, string usuario);
+        Task<ResultadoOperacion> ActualizarPublicacionAsync(int idSolicitud, bool visibleExterno, DateTime? fechaVencimientoPublicacion, string usuario);
         Task<IEnumerable<Representante>> ObtenerRepresentantesAsync();
         Task<IEnumerable<EstadoSolicitud>> ObtenerEstadosAsync();
     }
