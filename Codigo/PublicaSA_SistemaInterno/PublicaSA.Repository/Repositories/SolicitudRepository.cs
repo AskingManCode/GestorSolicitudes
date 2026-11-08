@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 using PublicaSA.Entities;
@@ -123,6 +124,20 @@ namespace PublicaSA.Repository.Repositories
 
             int count = await connection.ExecuteScalarAsync<int>(sql, new { Id = id });
             return count > 0;
+        }
+
+        public async Task<Solicitud?> ActualizarPublicacionAsync(int idSolicitud, bool visibleExterno, DateTime? fechaVencimientoPublicacion)
+        {
+            using var connection = _connectionFactory.CreateConnection();
+            return await connection.QueryFirstOrDefaultAsync<Solicitud>(
+                "sp_Solicitudes_ActualizarPublicacion",
+                new
+                {
+                    p_IdSolicitud = idSolicitud,
+                    p_VisibleExterno = visibleExterno,
+                    p_FechaVencimientoPublicacion = fechaVencimientoPublicacion
+                },
+                commandType: CommandType.StoredProcedure);
         }
     }
 }

@@ -13,5 +13,6 @@ namespace PublicaSA.Repository.Interfaces
         Task<bool> UpdateAsync(Solicitud solicitud);
         Task<bool> DeleteAsync(int id);
         Task<bool> HasRelatedDataAsync(int id);
+        Task<Solicitud?> ActualizarPublicacionAsync(int idSolicitud, bool visibleExterno, DateTime? fechaVencimientoPublicacion);
     }
 }
