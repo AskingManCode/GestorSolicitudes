@@ -469,13 +469,13 @@ function publicasa_render_detalle_solicitud() {
                 <div class="d-flex justify-content-between align-items-center mt-4 pt-3 border-top">
                     <!-- Botón Regresar: vuelve a la pantalla EXT2 -->
                     <a href="<?php echo esc_url($url_regresar); ?>" class="btn btn-secondary px-4 shadow-sm">
-                        <i class="fas fa-arrow-left me-1"></i> Regresar a Solicitudes
+                        <i class="fas fa-arrow-left me-1"></i> Regresar
                     </a>
 
                     <!-- Botón Participar: dirigirá a la pantalla EXT4 -->
                     <a href="<?php echo esc_url(home_url('/propuesta/?id=' . $solicitud->IdSolicitud)); ?>" 
                        class="btn text-white px-4 fw-bold shadow-sm" style="background-color: #1cc88a; border-color: #1cc88a;">
-                        <i class="fas fa-paper-plane me-1"></i> Participar en Solicitud
+                        <i class="fas fa-paper-plane me-1"></i> Participar
                     </a>
                 </div>
             <?php endif; ?>
