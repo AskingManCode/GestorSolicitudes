@@ -1,33 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
+﻿using System.Collections.Generic;
+using BusinessLogic.Services;
+using Models;
 
 namespace PublicaSA_WebService
 {
-    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "Service1" en el código, en svc y en el archivo de configuración.
-    // NOTE: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione Service1.svc o Service1.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class Service1 : IService1
     {
-        public string GetData(int value)
+        private readonly SolicitudExternaService _solicitudService;
+
+        public Service1()
         {
-            return string.Format("You entered: {0}", value);
+            _solicitudService = new SolicitudExternaService();
         }
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
+        // HU EXT2: Lista de solicitudes publicadas para proveedores
+        public List<SolicitudPublicadaDto> ObtenerSolicitudesPublicadas()
         {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
+            return _solicitudService.ObtenerSolicitudesPublicadas();
+        }
+
+        // HU EXT3: Detalle de una solicitud seleccionada
+        public SolicitudDetalleDto ObtenerDetalleSolicitud(int idSolicitud)
+        {
+            return _solicitudService.ObtenerDetalleSolicitud(idSolicitud);
         }
     }
 }
