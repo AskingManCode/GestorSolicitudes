@@ -812,7 +812,23 @@ function publicasa_render_mis_participaciones() {
         </div>
     </div>
 
-    <?php if ($consultado): ?>
+    <?php
+    // Mensajes al proveedor en el modal estándar (igual al del Sistema Interno).
+    $modal_titulo = null;
+    $modal_mensaje = null;
+
+    if ($consultado && $error) {
+        $modal_titulo = 'Advertencia';
+        $modal_mensaje = $error;
+    } elseif ($consultado && empty($participaciones)) {
+        $modal_titulo = 'Información';
+        $modal_mensaje = ($resultado && !empty($resultado->Mensaje))
+            ? $resultado->Mensaje
+            : 'Datos no encontrados.';
+    }
+    ?>
+
+    <?php if ($consultado && !$modal_mensaje): ?>
         <div class="card shadow-sm border-0 mb-4">
             <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
                 <h6 class="m-0 fw-bold" style="color: #4e73df;">
@@ -829,32 +845,6 @@ function publicasa_render_mis_participaciones() {
             </div>
 
             <div class="card-body p-0">
-                <?php if ($error): ?>
-                    <div class="p-4">
-                        <div class="alert alert-warning border-start border-4 border-warning mb-0" role="alert">
-                            <strong>
-                                <i class="fas fa-exclamation-triangle me-1"></i>
-                                Nota de conexión:
-                            </strong>
-                            <?php echo esc_html($error); ?>
-                        </div>
-                    </div>
-
-                <?php elseif (empty($participaciones)): ?>
-                    <div class="p-4">
-                        <div class="alert alert-info border-start border-4 border-info mb-0" role="alert">
-                            <i class="fas fa-info-circle me-1"></i>
-                            <?php
-                            echo esc_html(
-                                ($resultado && !empty($resultado->Mensaje))
-                                    ? $resultado->Mensaje
-                                    : 'Datos no encontrados.'
-                            );
-                            ?>
-                        </div>
-                    </div>
-
-                <?php else: ?>
                     <div class="table-responsive">
                         <table class="table table-striped table-hover align-middle mb-0 solicitudes-table">
                             <thead class="table-dark">
@@ -903,9 +893,39 @@ function publicasa_render_mis_participaciones() {
                             </tbody>
                         </table>
                     </div>
-                <?php endif; ?>
             </div>
         </div>
+    <?php endif; ?>
+
+    <?php if ($modal_mensaje): ?>
+        <!-- Modal estándar de mensajes (mismo diseño que el Sistema Interno) -->
+        <div class="modal fade" id="modalMensaje" tabindex="-1" aria-labelledby="modalMensajeLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalMensajeLabel"><?php echo esc_html($modal_titulo); ?></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body"><?php echo esc_html($modal_mensaje); ?></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <?php
+        wp_enqueue_script(
+            'publicasa-bootstrap-js',
+            'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+            array(),
+            '5.3.3',
+            true
+        );
+        wp_add_inline_script(
+            'publicasa-bootstrap-js',
+            "new bootstrap.Modal(document.getElementById('modalMensaje')).show();"
+        );
+        ?>
     <?php endif; ?>
 
     <?php
