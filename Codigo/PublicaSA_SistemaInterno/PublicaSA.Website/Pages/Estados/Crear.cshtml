@@ -1,0 +1,77 @@
+@page
+@model PublicaSA.Website.Pages.Estados.CrearModel
+@{
+    ViewData["Title"] = "Nuevo Estado";
+    var erroresValidacion = !ViewData.ModelState.IsValid
+        ? string.Join("<br/>", ViewData.ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage))
+        : null;
+}
+
+<!-- Encabezado -->
+<div class="card border-0 shadow-sm mb-4 estados-header-card">
+    <div class="card-body py-3">
+        <h1 class="h5 fw-bold mb-3">Nuevo Estado de Solicitud</h1>
+        <!-- Botones circulares: Regresar / Guardar -->
+        <div class="d-flex gap-2">
+            <a asp-page="/Estados/Index"
+               class="btn btn-accion rounded-circle"
+               aria-label="Regresar al listado"
+               title="Regresar">
+                <i class="fas fa-arrow-left" aria-hidden="true"></i>
+            </a>
+            <button type="submit"
+                    form="formEstado"
+                    class="btn btn-accion rounded-circle"
+                    aria-label="Guardar estado"
+                    title="Guardar">
+                <i class="fas fa-save" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Card del formulario -->
+<div class="card shadow-sm border-0">
+    <div class="card-body p-4">
+
+        <!-- Título -->
+        <div class="mb-4 pb-3 border-bottom">
+            <h5 class="fw-bold mb-0 estados-card-title">
+                Formulario Estado de Solicitud
+            </h5>
+        </div>
+
+        <form id="formEstado" method="post">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label asp-for="Input.CodigoEstado" class="form-label fw-bold mb-1 estados-label">
+                        Identificador <span class="text-danger">*</span>
+                    </label>
+                    <input asp-for="Input.CodigoEstado" class="form-control text-uppercase" maxlength="20"
+                           placeholder="Ej: EN_REVISION" autocomplete="off" />
+                    <div class="form-text">Letras A-Z y guion bajo, sin espacios. No se podrá cambiar después.</div>
+                </div>
+
+                <div class="col-md-8">
+                    <label asp-for="Input.Nombre" class="form-label fw-bold mb-1 estados-label">
+                        Nombre <span class="text-danger">*</span>
+                    </label>
+                    <input asp-for="Input.Nombre" class="form-control" maxlength="50" placeholder="Ej: En revisión" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/Estados.css" asp-append-version="true" />
+
+    @if (!string.IsNullOrEmpty(erroresValidacion))
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(erroresValidacion)), 'warning');
+            });
+        </script>
+    }
+}

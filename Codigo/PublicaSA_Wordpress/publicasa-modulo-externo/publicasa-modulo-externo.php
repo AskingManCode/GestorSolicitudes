@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Pública S.A. - Módulo Externo
- * Description: Módulo externo para consulta de solicitudes y detalle para proveedores (HU EXT2 y EXT3), con diseño homologado al Sistema Interno.
- * Version: 1.1
+ * Description: Módulo externo para consulta de solicitudes, detalle y participaciones de proveedores (HU EXT2, EXT3 y EXT6), con diseño homologado al Sistema Interno.
+ * Version: 1.2
  * Author: Aldo Burgos - Grupo Fuerzas Especiales Ginyu
  */
 
@@ -135,7 +135,8 @@ function publicasa_filtrar_plantilla($template) {
             $post &&
             (
                 has_shortcode($post->post_content, 'publicasa_solicitudes') ||
-                has_shortcode($post->post_content, 'publicasa_detalle')
+                has_shortcode($post->post_content, 'publicasa_detalle') ||
+                has_shortcode($post->post_content, 'publicasa_mis_participaciones')
             )
         ) {
             $custom_template = plugin_dir_path(__FILE__)
@@ -667,6 +668,245 @@ function publicasa_render_detalle_solicitud() {
             <?php endif; ?>
         </div>
     </div>
+
+    <?php
+    return ob_get_clean();
+}
+
+// ==========================================================================
+// HU EXT6: participaciones de un proveedor en solicitudes.
+// Shortcode: [publicasa_mis_participaciones]
+// ==========================================================================
+
+add_shortcode(
+    'publicasa_mis_participaciones',
+    'publicasa_render_mis_participaciones'
+);
+
+// Busca la página del listado (EXT2) para enlazar al detalle (EXT3).
+function publicasa_url_pagina_solicitudes() {
+    $paginas = get_posts(array(
+        'post_type' => 'page',
+        'post_status' => 'publish',
+        'posts_per_page' => 1,
+        's' => '[publicasa_solicitudes',
+        'fields' => 'ids',
+    ));
+
+    return !empty($paginas) ? get_permalink($paginas[0]) : '';
+}
+
+function publicasa_render_mis_participaciones() {
+    ob_start();
+
+    $cedula = isset($_GET['cedula'])
+        ? sanitize_text_field(wp_unslash($_GET['cedula']))
+        : '';
+    $consultado = isset($_GET['cedula']);
+
+    $resultado = null;
+    $participaciones = array();
+    $error = null;
+
+    if ($consultado) {
+        $wcf_url = get_option('publicasa_wcf_url', PUBLICASA_WCF_URL);
+
+        try {
+            if (!class_exists('SoapClient')) {
+                throw new Exception(
+                    'La extensión SOAP de PHP no está habilitada en el servidor.'
+                );
+            }
+
+            $client = new SoapClient(
+                $wcf_url,
+                array(
+                    'trace' => 1,
+                    'exceptions' => 1,
+                    'connection_timeout' => 8,
+                )
+            );
+
+            $response = $client->ObtenerParticipacionesProveedor(
+                array('cedulaJuridica' => $cedula)
+            );
+
+            if (isset($response->ObtenerParticipacionesProveedorResult)) {
+                $resultado = $response->ObtenerParticipacionesProveedorResult;
+
+                if (
+                    isset(
+                        $resultado->Participaciones
+                            ->ParticipacionProveedorDto
+                    )
+                ) {
+                    $data = $resultado->Participaciones
+                        ->ParticipacionProveedorDto;
+
+                    $participaciones = is_array($data) ? $data : array($data);
+                }
+            }
+        } catch (Exception $e) {
+            $error = 'No se pudo conectar con el servicio WCF: '
+                . $e->getMessage();
+        }
+    }
+
+    $url_solicitudes = publicasa_url_pagina_solicitudes();
+    ?>
+
+    <div class="card border-0 shadow-sm mb-4 solicitudes-header-card">
+        <div class="card-body py-3 d-flex justify-content-between align-items-center">
+            <h1 class="h5 fw-bold mb-0" style="color: #4e73df;">
+                <i class="fas fa-handshake me-2"></i>
+                Mis Participaciones
+            </h1>
+
+            <span
+                class="badge"
+                style="background-color: #eaecf4; color: #4e73df; font-weight: 600; font-size: 0.85rem;"
+            >
+                <i class="fas fa-globe me-1"></i>
+                Portal de Proveedores
+            </span>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+            <form method="get" action="<?php echo esc_url(get_permalink()); ?>" class="row g-3 align-items-end">
+                <?php
+                // Conserva el parámetro de página si los enlaces permanentes no están activos.
+                if (isset($_GET['page_id'])):
+                ?>
+                    <input type="hidden" name="page_id" value="<?php echo esc_attr(intval($_GET['page_id'])); ?>" />
+                <?php endif; ?>
+
+                <div class="col-md-6">
+                    <label for="publicasa-cedula" class="solicitudes-label">
+                        Cédula jurídica del proveedor
+                        <span class="text-danger">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="publicasa-cedula"
+                        name="cedula"
+                        class="form-control"
+                        value="<?php echo esc_attr($cedula); ?>"
+                        placeholder="3-101-123456 o 3101123456"
+                        maxlength="20"
+                        required
+                        pattern="(3-[0-9]{3}-[0-9]{6}|[0-9]{10})"
+                        title="La cédula debe tener 10 dígitos o el formato 3-XXX-XXXXXX."
+                    />
+                </div>
+
+                <div class="col-md-3">
+                    <button type="submit" class="btn text-white px-4 fw-bold shadow-sm w-100" style="background-color: #4e73df;">
+                        <i class="fas fa-search me-1"></i>
+                        Consultar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <?php if ($consultado): ?>
+        <div class="card shadow-sm border-0 mb-4">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <h6 class="m-0 fw-bold" style="color: #4e73df;">
+                    <i class="fas fa-table me-1"></i>
+                    Solicitudes en las que ha participado
+                </h6>
+
+                <?php if ($resultado && !empty($resultado->NombreProveedor)): ?>
+                    <small class="text-muted">
+                        <i class="fas fa-building me-1"></i>
+                        <?php echo esc_html($resultado->NombreProveedor); ?>
+                    </small>
+                <?php endif; ?>
+            </div>
+
+            <div class="card-body p-0">
+                <?php if ($error): ?>
+                    <div class="p-4">
+                        <div class="alert alert-warning border-start border-4 border-warning mb-0" role="alert">
+                            <strong>
+                                <i class="fas fa-exclamation-triangle me-1"></i>
+                                Nota de conexión:
+                            </strong>
+                            <?php echo esc_html($error); ?>
+                        </div>
+                    </div>
+
+                <?php elseif (empty($participaciones)): ?>
+                    <div class="p-4">
+                        <div class="alert alert-info border-start border-4 border-info mb-0" role="alert">
+                            <i class="fas fa-info-circle me-1"></i>
+                            <?php
+                            echo esc_html(
+                                ($resultado && !empty($resultado->Mensaje))
+                                    ? $resultado->Mensaje
+                                    : 'Datos no encontrados.'
+                            );
+                            ?>
+                        </div>
+                    </div>
+
+                <?php else: ?>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover align-middle mb-0 solicitudes-table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th scope="col" class="ps-4">
+                                        Consecutivo de Oficio
+                                    </th>
+                                    <th scope="col" class="pe-4">
+                                        Título de la Solicitud
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <?php foreach ($participaciones as $part): ?>
+                                    <tr>
+                                        <td class="ps-4 fw-bold">
+                                            <?php if ($url_solicitudes): ?>
+                                                <a
+                                                    href="<?php
+                                                    echo esc_url(
+                                                        add_query_arg(
+                                                            'id',
+                                                            (int) $part->IdSolicitud,
+                                                            $url_solicitudes
+                                                        )
+                                                    );
+                                                    ?>"
+                                                    class="text-decoration-none"
+                                                    style="color: #4e73df;"
+                                                    title="Ver detalle de la solicitud"
+                                                >
+                                                    <i class="fas fa-file-alt me-1 text-secondary"></i>
+                                                    <?php echo esc_html($part->ConsecutivoOficio); ?>
+                                                </a>
+                                            <?php else: ?>
+                                                <?php echo esc_html($part->ConsecutivoOficio); ?>
+                                            <?php endif; ?>
+                                        </td>
+
+                                        <td class="pe-4 fw-semibold text-dark">
+                                            <?php echo esc_html($part->Titulo); ?>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+    <?php endif; ?>
 
     <?php
     return ob_get_clean();

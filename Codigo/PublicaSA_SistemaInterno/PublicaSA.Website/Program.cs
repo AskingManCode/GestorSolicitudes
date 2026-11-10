@@ -45,6 +45,8 @@ builder.Services.AddScoped<ISolicitudService, SolicitudService>();
 builder.Services.AddScoped<IDesgloseService, DesgloseService>();
 builder.Services.AddScoped<IRepresentanteService, RepresentanteService>();
 builder.Services.AddScoped<IPropuestaService, PropuestaService>();
+// HU SOL4: mantenimiento de estados de solicitudes.
+builder.Services.AddScoped<IEstadoSolicitudService, EstadoSolicitudService>();
 
 // Conecta las pantallas de TAR1 con su servicio y repositorio.
 builder.Services.AddScoped<ITareaRepository, TareaRepository>();

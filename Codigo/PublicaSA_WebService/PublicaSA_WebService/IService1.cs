@@ -19,5 +19,10 @@ namespace PublicaSA_WebService
         [OperationContract]
         ResultadoRegistroPropuesta RegistrarPropuesta(
             RegistroPropuestaRequest registro);
+
+        // HU EXT6: solicitudes en las que participó un proveedor.
+        [OperationContract]
+        ResultadoParticipacionesProveedor ObtenerParticipacionesProveedor(
+            string cedulaJuridica);
     }
 }

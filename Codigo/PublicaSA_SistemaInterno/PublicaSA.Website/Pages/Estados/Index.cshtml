@@ -1,4 +1,177 @@
 ﻿@page
 @model PublicaSA.Website.Pages.Estados.IndexModel
 @{
+    ViewData["Title"] = "Estados de Solicitudes";
+}
+
+<!-- Bloque superior con borde azul -->
+<div class="card border-0 shadow-sm mb-4 estados-header-card">
+    <div class="card-body py-3">
+        <h1 class="h5 fw-bold mb-3">
+            Mantenimiento de Estados de Solicitudes
+        </h1>
+
+        <a asp-page="/Estados/Crear" class="btn btn-sm btn-nuevo">
+            <i class="fas fa-plus me-1"></i> Nuevo
+        </a>
+    </div>
+</div>
+
+<!-- Card de Información -->
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-white py-3">
+        <h5 class="h5 fw-bold mb-0 estados-card-title">
+            Información
+        </h5>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-striped table-hover align-middle mb-0 estados-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th scope="col" class="ps-4">Identificador</th>
+                        <th scope="col">Nombre</th>
+                        <th scope="col">Tipo</th>
+                        <th scope="col" class="text-end pe-4">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Estados == null || !Model.Estados.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-muted">
+                                No se encontraron estados registrados.
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model.Estados)
+                        {
+                            <tr>
+                                <td class="ps-4"><code class="estados-codigo">@item.CodigoEstado</code></td>
+                                <td class="fw-semibold">@item.Nombre</td>
+                                <td>
+                                    @if (Model.EsEstadoPorDefecto(item.CodigoEstado))
+                                    {
+                                        <span class="badge estados-badge-defecto">Por defecto</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge estados-badge-personalizado">Personalizado</span>
+                                    }
+                                </td>
+                                <td class="text-end pe-4">
+                                    <div class="d-inline-flex gap-2">
+                                        <!-- Editar -->
+                                        <a asp-page="/Estados/Editar" asp-route-codigo="@item.CodigoEstado"
+                                           class="btn btn-sm rounded-circle btn-accion"
+                                           aria-label="Editar @item.Nombre" title="Editar">
+                                            <i class="fas fa-pencil-alt fa-sm" aria-hidden="true"></i>
+                                        </a>
+                                        <!-- Eliminar -->
+                                        <button type="button"
+                                                class="btn btn-sm rounded-circle btn-accion"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#modalConfirmarEliminar"
+                                                data-codigo="@item.CodigoEstado"
+                                                data-nombre="@item.Nombre"
+                                                aria-label="Eliminar @item.Nombre"
+                                                title="Eliminar">
+                                            <i class="fas fa-trash-alt fa-sm" aria-hidden="true"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Paginación (máximo 10 elementos por página) -->
+    @if (Model.TotalPaginas > 1)
+    {
+        <div class="card-footer bg-white d-flex flex-wrap justify-content-between align-items-center gap-2 py-3">
+            <div class="small text-muted">
+                Página @Model.PaginaActual de @Model.TotalPaginas (Mostrando máximo 10 estados por página)
+            </div>
+            <nav aria-label="Paginación de estados">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item @(Model.PaginaActual <= 1 ? "disabled" : "")">
+                        <a class="page-link" asp-page="/Estados/Index" asp-route-pagina="@(Model.PaginaActual - 1)"
+                           aria-label="Anterior">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    @for (int i = 1; i <= Model.TotalPaginas; i++)
+                    {
+                        <li class="page-item @(i == Model.PaginaActual ? "active" : "")">
+                            <a class="page-link" asp-page="/Estados/Index" asp-route-pagina="@i">@i</a>
+                        </li>
+                    }
+                    <li class="page-item @(Model.PaginaActual >= Model.TotalPaginas ? "disabled" : "")">
+                        <a class="page-link" asp-page="/Estados/Index" asp-route-pagina="@(Model.PaginaActual + 1)"
+                           aria-label="Siguiente">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    }
+</div>
+
+<!-- Modal de Confirmación de Eliminación -->
+<div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalConfirmarEliminarLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Eliminación
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">¿Realmente desea eliminar el elemento seleccionado?</p>
+                <p class="fw-bold mb-0" id="lblNombreEliminar"></p>
+                <small class="text-muted">Esta acción no se puede deshacer.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-1"></i>No
+                </button>
+                <form method="post" asp-page-handler="Eliminar" asp-route-pagina="@Model.PaginaActual" class="d-inline">
+                    <input type="hidden" name="codigo" id="inputEliminarCodigo" />
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash-alt me-1"></i>Sí
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link rel="stylesheet" href="~/css/Estados.css" asp-append-version="true" />
+    <script src="~/js/Estados.js" asp-append-version="true"></script>
+
+    @if (!string.IsNullOrEmpty(Model.MensajeExito))
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Ok', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MensajeExito)), 'success');
+            });
+        </script>
+    }
+    @if (!string.IsNullOrEmpty(Model.MensajeError))
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MensajeError)), 'warning');
+            });
+        </script>
+    }
 }
