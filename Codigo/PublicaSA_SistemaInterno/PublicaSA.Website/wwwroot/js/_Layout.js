@@ -1,4 +1,24 @@
-﻿(function () {
+// Función global para mostrar el modal de mensajes definido en _Layout.cshtml
+window.mostrarMensaje = function (titulo, mensaje, tipo = 'info') {
+    const modalEl = document.getElementById('modalMensaje');
+    if (!modalEl) return;
+
+    const header = document.getElementById('modalMensajeHeader');
+    const title = document.getElementById('modalMensajeLabel');
+    const body = document.getElementById('modalMensajeBody');
+
+    title.textContent = titulo;
+    body.innerHTML = mensaje;
+
+    header.classList.remove('bg-success', 'bg-danger', 'bg-warning', 'text-white');
+    if (tipo === 'success') header.classList.add('bg-success', 'text-white');
+    else if (tipo === 'error') header.classList.add('bg-danger', 'text-white');
+    else if (tipo === 'warning') header.classList.add('bg-warning');
+
+    new bootstrap.Modal(modalEl).show();
+};
+
+(function () {
     const KEY = "sidebar-collapsed";
     const root = document.documentElement;
     const body = document.body;

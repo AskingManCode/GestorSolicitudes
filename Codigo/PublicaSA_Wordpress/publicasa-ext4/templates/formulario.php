@@ -1,7 +1,10 @@
 <?php defined('ABSPATH') || exit; ?>
 <section class="ps-ext4" aria-labelledby="ps-titulo">
-    <p class="ps-eyebrow">PÚBLICA S.A. / PARTICIPACIÓN</p>
-    <h1 id="ps-titulo">Registrar propuesta</h1>
+    <div class="ps-cabecera">
+        <h1 id="ps-titulo">Registrar propuesta</h1>
+        <span class="ps-insignia">Solicitud n.º <?php echo esc_html($id); ?></span>
+    </div>
+    <div class="ps-tarjeta">
     <p class="ps-intro">Solicitud n.º <?php echo esc_html($id); ?> · Completá los datos del proveedor y el desglose mensual de tu propuesta.</p>
     <?php
         $tipo_aviso = !empty($resultado['Exitoso']) ? 'exito'
@@ -79,4 +82,5 @@
         </div>
     </form>
     <?php endif; ?>
+    </div>
 </section>

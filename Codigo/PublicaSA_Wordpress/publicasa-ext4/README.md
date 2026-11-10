@@ -130,3 +130,21 @@ La prueba completa contra WordPress, el WSDL real y MySQL debe ejecutarse en el 
 6. Modificar los desgloses importados en EXT4 y confirmar con datos de prueba autorizados. Verificar ambas filas y la bitácora en MySQL.
 
 La prueba de lectura y validación local cubre archivos XLSX y XLS, fórmulas con resultados guardados, porcentajes, campos vacíos, rangos, duplicados y el límite de filas. La integración completa con WordPress y el WCF se verifica en el equipo del proyecto.
+
+
+## Diseño institucional — versión 0.3.0
+
+EXT4 y EXT5 utilizan una plantilla propia con la paleta de EXT2/EXT3:
+azul #4e73df, verde #1cc88a, gris de fondo #f8f9fc y tarjetas blancas.
+La cabecera, el logo institucional y el pie siguen el módulo externo.
+Los avisos mantienen sus estados verde, amarillo y rojo.
+La hoja de estilos del plugin no requiere Bootstrap ni FontAwesome para funcionar.
+La página que contiene `[publicasa_registrar_propuesta]` selecciona la plantilla
+`templates/pagina.php` automáticamente y conserva la barra de WordPress.
+El listado se obtiene de una página publicada con `[publicasa_solicitudes]`;
+se da preferencia al `page_id` de la ruta EXT3 configurada. Si no existe,
+el encabezado dirige a la portada del sitio.
+
+Los ajustes WSDL y ruta EXT3 se conservan al actualizar. No se modifican las
+validaciones, los cálculos, el contrato SOAP ni la importación de Excel.
+El logo se incluye desde el módulo externo del mismo repositorio.

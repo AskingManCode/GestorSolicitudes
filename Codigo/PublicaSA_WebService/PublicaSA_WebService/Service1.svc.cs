@@ -1,37 +1,35 @@
-﻿using BusinessLogic.Services;
-using DataAccess.Infrastructure;
-using Models;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
-using System;
+using BusinessLogic.Services;
+using DataAccess.Infrastructure;
+using Models;
 
 namespace PublicaSA_WebService
 {
-    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de clase "Service1" en el código, en svc y en el archivo de configuración.
-    // NOTE: para iniciar el Cliente de prueba WCF para probar este servicio, seleccione Service1.svc o Service1.svc.cs en el Explorador de soluciones e inicie la depuración.
     public class Service1 : IService1
     {
-        public string GetData(int value)
+        private readonly SolicitudExternaService _solicitudService;
+
+        public Service1()
         {
-            return string.Format("You entered: {0}", value);
+            _solicitudService = new SolicitudExternaService();
         }
 
-        public CompositeType GetDataUsingDataContract(CompositeType composite)
+        public List<SolicitudPublicadaDto> ObtenerSolicitudesPublicadas()
         {
-            if (composite == null)
-            {
-                throw new ArgumentNullException("composite");
-            }
-            if (composite.BoolValue)
-            {
-                composite.StringValue += "Suffix";
-            }
-            return composite;
+            return _solicitudService.ObtenerSolicitudesPublicadas();
         }
-        public ResultadoRegistroPropuesta RegistrarPropuesta(
-    RegistroPropuestaRequest registro)
+
+        public SolicitudDetalleDto ObtenerDetalleSolicitud(int idSolicitud)
         {
-            // Lee la conexión definida en Conexiones.local.config.
+            return _solicitudService.ObtenerDetalleSolicitud(idSolicitud);
+        }
+
+        public ResultadoRegistroPropuesta RegistrarPropuesta(
+            RegistroPropuestaRequest registro)
+        {
+            // La conexión continúa fuera del repositorio.
             var configuracion =
                 ConfigurationManager.ConnectionStrings["DefaultConnection"];
 
@@ -48,10 +46,8 @@ namespace PublicaSA_WebService
                 };
             }
 
-            // Delega las validaciones y el registro al servicio de negocio.
             var conexionBD = new ConexionBD(configuracion.ConnectionString);
             var servicio = new RegistroPropuestaService(conexionBD);
-
             return servicio.Registrar(registro);
         }
     }

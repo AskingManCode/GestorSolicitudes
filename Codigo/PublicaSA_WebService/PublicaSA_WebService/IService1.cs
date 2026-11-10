@@ -1,51 +1,23 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
 using Models;
 
 namespace PublicaSA_WebService
 {
-    // NOTA: puede usar el comando "Rename" del menú "Refactorizar" para cambiar el nombre de interfaz "IService1" en el código y en el archivo de configuración a la vez.
     [ServiceContract]
     public interface IService1
     {
-
+        // HU EXT2: solicitudes publicadas para proveedores.
         [OperationContract]
-        string GetData(int value);
+        List<SolicitudPublicadaDto> ObtenerSolicitudesPublicadas();
 
+        // HU EXT3: detalle de la solicitud seleccionada.
         [OperationContract]
-        CompositeType GetDataUsingDataContract(CompositeType composite);
+        SolicitudDetalleDto ObtenerDetalleSolicitud(int idSolicitud);
 
-        // Recibe los datos de la participación y devuelve el resultado.
+        // HU EXT4: registra la participación y sus desgloses.
         [OperationContract]
         ResultadoRegistroPropuesta RegistrarPropuesta(
             RegistroPropuestaRequest registro);
-    }
-
-
-    // Utilice un contrato de datos, como se ilustra en el ejemplo siguiente, para agregar tipos compuestos a las operaciones de servicio.
-    [DataContract]
-    public class CompositeType
-    {
-        bool boolValue = true;
-        string stringValue = "Hello ";
-
-        [DataMember]
-        public bool BoolValue
-        {
-            get { return boolValue; }
-            set { boolValue = value; }
-        }
-
-        [DataMember]
-        public string StringValue
-        {
-            get { return stringValue; }
-            set { stringValue = value; }
-        }
     }
 }

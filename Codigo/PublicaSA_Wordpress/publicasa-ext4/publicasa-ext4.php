@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Pública S.A. — Registro de propuestas EXT4
  * Description: Formulario de participación conectado al servicio WCF.
- * Version: 0.2.0
+ * Version: 0.3.0
  * Requires PHP: 7.4
  */
 
@@ -13,10 +13,41 @@ add_action('wp_enqueue_scripts', function () {
     global $post;
     if (is_page('registrar-propuesta') || ($post &&
         has_shortcode($post->post_content, 'publicasa_registrar_propuesta'))) {
-        wp_enqueue_style('publicasa-ext4', plugins_url('assets/formulario.css', __FILE__), array(), '0.2.0');
-        wp_enqueue_script('publicasa-ext4', plugins_url('assets/formulario.js', __FILE__), array(), '0.2.0', true);
+        wp_enqueue_style('publicasa-ext4', plugins_url('assets/formulario.css', __FILE__), array(), '0.3.0');
+        wp_enqueue_script('publicasa-ext4', plugins_url('assets/formulario.js', __FILE__), array(), '0.3.0', true);
     }
 });
+
+// Usa la misma estructura institucional en EXT4 y en la carga Excel EXT5.
+add_filter('template_include', function ($template) {
+    global $post;
+    if (is_page() && $post &&
+        has_shortcode($post->post_content, 'publicasa_registrar_propuesta')) {
+        return __DIR__ . '/templates/pagina.php';
+    }
+    return $template;
+}, 100);
+
+// Resuelve el listado desde la ruta configurada o su shortcode, sin fijar un ID local.
+function publicasa_ext4_listado_url() {
+    $ruta = get_option('publicasa_ext4_detalle', '');
+    $query = wp_parse_url($ruta, PHP_URL_QUERY);
+    $args = array();
+    if (is_string($query)) { parse_str($query, $args); }
+    if (!empty($args['page_id']) && is_scalar($args['page_id'])) {
+        $pagina = get_post((int) $args['page_id']);
+        if ($pagina && $pagina->post_status === 'publish' &&
+            has_shortcode($pagina->post_content, 'publicasa_solicitudes')) {
+            return get_permalink($pagina->ID);
+        }
+    }
+    foreach (get_pages(array('post_status' => 'publish')) as $pagina) {
+        if (has_shortcode($pagina->post_content, 'publicasa_solicitudes')) {
+            return get_permalink($pagina->ID);
+        }
+    }
+    return home_url('/');
+}
 
 // EXT3 puede usar esta función para construir el enlace de Participar.
 function publicasa_ext4_url($id_solicitud) {
