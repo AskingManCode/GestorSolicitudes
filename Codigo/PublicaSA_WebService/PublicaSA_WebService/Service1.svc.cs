@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.ServiceModel.Web;
-using System.Text;
+﻿using BusinessLogic.Services;
+using DataAccess.Infrastructure;
+using Models;
+using System.Configuration;
+using System.Diagnostics;
+using System;
 
 namespace PublicaSA_WebService
 {
@@ -28,6 +27,32 @@ namespace PublicaSA_WebService
                 composite.StringValue += "Suffix";
             }
             return composite;
+        }
+        public ResultadoRegistroPropuesta RegistrarPropuesta(
+    RegistroPropuestaRequest registro)
+        {
+            // Lee la conexión definida en Conexiones.local.config.
+            var configuracion =
+                ConfigurationManager.ConnectionStrings["DefaultConnection"];
+
+            if (configuracion == null ||
+                string.IsNullOrWhiteSpace(configuracion.ConnectionString))
+            {
+                Trace.TraceError(
+                    "No está configurada la conexión DefaultConnection.");
+
+                return new ResultadoRegistroPropuesta
+                {
+                    Exitoso = false,
+                    Mensaje = "El servicio no está disponible en este momento."
+                };
+            }
+
+            // Delega las validaciones y el registro al servicio de negocio.
+            var conexionBD = new ConexionBD(configuracion.ConnectionString);
+            var servicio = new RegistroPropuestaService(conexionBD);
+
+            return servicio.Registrar(registro);
         }
     }
 }

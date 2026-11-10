@@ -5,6 +5,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Web;
 using System.Text;
+using Models;
 
 namespace PublicaSA_WebService
 {
@@ -19,7 +20,10 @@ namespace PublicaSA_WebService
         [OperationContract]
         CompositeType GetDataUsingDataContract(CompositeType composite);
 
-        // TODO: agregue aquí sus operaciones de servicio
+        // Recibe los datos de la participación y devuelve el resultado.
+        [OperationContract]
+        ResultadoRegistroPropuesta RegistrarPropuesta(
+            RegistroPropuestaRequest registro);
     }
 
 

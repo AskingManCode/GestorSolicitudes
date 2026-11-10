@@ -493,3 +493,6 @@ $RECYCLE.BIN/
 
 # Archivos temporales de bloqueo de LibreOffice / OpenOffice
 .~lock.*#
+
+# Configuración local de la base de datos.
+Conexiones.local.config
