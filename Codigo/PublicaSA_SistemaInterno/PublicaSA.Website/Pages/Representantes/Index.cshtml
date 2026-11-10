@@ -117,11 +117,11 @@
 <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-danger text-white">
+            <div class="modal-header">
                 <h5 class="modal-title" id="modalConfirmarEliminarLabel">
-                    <i class="fas fa-exclamation-triangle me-2"></i>Confirmar Eliminación
+                    Confirmar Eliminación
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <p class="mb-2">¿Realmente desea eliminar el elemento seleccionado?</p>
@@ -134,7 +134,7 @@
                 </button>
                 <form method="post" asp-page-handler="Eliminar" class="d-inline">
                     <input type="hidden" name="id" id="inputEliminarId" />
-                    <button type="submit" class="btn btn-danger">
+                    <button type="submit" class="btn btn-primary">
                         <i class="fas fa-trash-alt me-1"></i>Sí
                     </button>
                 </form>
@@ -151,7 +151,7 @@
     {
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarMensaje('Ok', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MensajeExito)), 'success');
+                mostrarMensaje('Ok', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MensajeExito)));
             });
         </script>
     }
@@ -159,7 +159,7 @@
     {
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MensajeError)), 'warning');
+                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.MensajeError)));
             });
         </script>
     }

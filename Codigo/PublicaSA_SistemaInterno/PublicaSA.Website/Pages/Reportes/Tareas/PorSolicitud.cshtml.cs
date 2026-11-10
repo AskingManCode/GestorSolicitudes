@@ -50,8 +50,9 @@ namespace PublicaSA.Website.Pages.Reportes.Tareas
         {
             await CargarCatalogosAsync();
 
-            // Si aún no se han enviado parámetros, solo se muestra el formulario
-            if (!IdSolicitud.HasValue && !Mes.HasValue && !Anio.HasValue)
+            // Si aún no se ha enviado el formulario, solo se muestra el formulario.
+            // (Si se envía con los campos vacíos, sí se valida y se muestra el mensaje.)
+            if (Request.Query.Count == 0)
             {
                 Anio = DateTime.Today.Year;
                 ModelState.Clear();

@@ -2,6 +2,15 @@
 @model PublicaSA.Website.Pages.Reportes.Tareas.IndexModel
 @{
     ViewData["Title"] = "Reporte de Tareas por Usuario";
+    // Errores en el mismo orden de los campos del formulario, para mostrarlos en el modal.
+    var ordenCampos = new[] { "IdUsuario", "Mes", "Anio" };
+    var erroresValidacion = !ViewData.ModelState.IsValid
+        ? string.Join("<br/>", ViewData.ModelState
+            .OrderBy(e => Array.IndexOf(ordenCampos, e.Key) < 0 ? int.MaxValue : Array.IndexOf(ordenCampos, e.Key))
+            .SelectMany(e => e.Value!.Errors)
+            .Select(e => e.ErrorMessage)
+            .Distinct())
+        : null;
 }
 
 <div class="reporte-tareas-page">
@@ -28,7 +37,6 @@
                         <select asp-for="IdUsuario" asp-items="Model.UsuariosSelectList" class="form-select">
                             <option value="">-- Seleccione un usuario --</option>
                         </select>
-                        <span asp-validation-for="IdUsuario" class="text-danger small"></span>
                     </div>
 
                     <div class="col-md-3">
@@ -38,7 +46,6 @@
                         <select asp-for="Mes" asp-items="Model.MesesSelectList" class="form-select">
                             <option value="">-- Seleccione un mes --</option>
                         </select>
-                        <span asp-validation-for="Mes" class="text-danger small"></span>
                     </div>
 
                     <div class="col-md-2">
@@ -46,7 +53,6 @@
                             Año <span class="text-danger">*</span>
                         </label>
                         <input asp-for="Anio" type="number" class="form-control" />
-                        <span asp-validation-for="Anio" class="text-danger small"></span>
                     </div>
 
                     <div class="col-md-3 d-grid">
@@ -120,4 +126,22 @@
 
 @section Scripts {
     <link rel="stylesheet" href="~/css/ReposrteTareas.css" asp-append-version="true" />
+
+    @* Los mensajes al usuario se muestran en el modal global (_Layout.cshtml). *@
+    @if (!string.IsNullOrEmpty(erroresValidacion))
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(erroresValidacion)));
+            });
+        </script>
+    }
+    else if (Model.ReporteGenerado && !Model.Tareas.Any())
+    {
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                mostrarMensaje('Información', 'No se encontraron tareas para los parámetros seleccionados.');
+            });
+        </script>
+    }
 }
