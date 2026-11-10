@@ -15,7 +15,9 @@ namespace DataAccess.Repository
 
         public SolicitudExternaRepository()
         {
-            var config = ConfigurationManager.ConnectionStrings["GestorSolicitudesConnection"];
+            // Usa la misma conexión local de EXT4. Conserva compatibilidad con EXT2/EXT3.
+            var config = ConfigurationManager.ConnectionStrings["DefaultConnection"]
+                ?? ConfigurationManager.ConnectionStrings["GestorSolicitudesConnection"];
             _connectionString = config != null ? config.ConnectionString : "";
         }
 

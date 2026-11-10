@@ -1,0 +1,81 @@
+/* Paleta institucional de EXT2/EXT3: SB Admin 2. */
+body.ps-portal{margin:0;background:#f8f9fc!important;color:#5a5c69;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column}
+body.ps-portal.admin-bar{min-height:calc(100vh - 32px)}
+.ps-portal *{box-sizing:border-box}
+.ps-portal-contenedor{width:100%;max-width:1140px;margin:0 auto;padding:0 12px}
+.ps-portal-barra{background:#4e73df;box-shadow:0 .15rem 1.75rem #3a3b4526;color:#fff}
+.ps-portal-nav{display:flex;align-items:center;gap:16px;min-height:58px;flex-wrap:wrap;padding-top:8px;padding-bottom:8px}
+.ps-portal-marca{display:flex;align-items:center;gap:8px;color:#fff!important;text-decoration:none;font-size:1.15rem;font-weight:800;letter-spacing:.5px}
+.ps-portal-marca img{width:36px;height:36px;object-fit:cover;border-radius:50%;background:#fff;padding:2px;border:1px solid #ffffff66}
+.ps-portal-etiqueta{background:#ffffff33;color:#fff;border-radius:.35rem;padding:.3rem .6rem;font-size:.75rem;font-weight:600;letter-spacing:.3px}
+.ps-portal-listado{margin-left:auto;color:#fff!important;text-decoration:none;font-size:14px;font-weight:700}
+.ps-portal-listado:hover{text-decoration:underline}
+.ps-portal-principal{flex:1;padding-top:24px;padding-bottom:48px}
+.ps-portal-pie{background:#fff;border-top:1px solid #e3e6f0;text-align:center;padding:24px 0;color:#858796;font-size:.85rem}
+.ps-portal-pie strong{display:block;color:#5a5c69;margin-bottom:4px}
+.ps-portal-pie small{font-size:.85em}
+.ps-ext4{--ps-azul:#4e73df;--ps-verde:#1cc88a;--ps-borde:#e3e6f0;width:100%;max-width:1120px;margin:0 auto;color:#5a5c69;font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;box-sizing:border-box}
+.ps-ext4 *{box-sizing:border-box}
+.ps-ext4 .ps-cabecera{display:flex;justify-content:space-between;align-items:center;gap:16px;background:#fff;border-left:4px solid var(--ps-azul);border-radius:.35rem;box-shadow:0 .125rem .25rem #00000013;padding:16px 20px;margin-bottom:24px}
+.ps-ext4 .ps-cabecera h1{font-size:20px;line-height:1.4;font-weight:700;color:var(--ps-azul);margin:0}
+.ps-ext4 .ps-insignia{background:#eaecf4;color:var(--ps-azul);font-size:14px;font-weight:700;padding:6px 12px;border-radius:.35rem;white-space:nowrap}
+.ps-ext4 .ps-tarjeta{background:#fff;border-radius:.35rem;box-shadow:0 .125rem .25rem #00000013;padding:24px}
+.ps-ext4 .ps-intro{color:#5a5c69;margin:0 0 24px;padding-bottom:20px;border-bottom:1px solid var(--ps-borde);font-size:14px}
+.ps-ext4 fieldset{border:0;padding:0;margin:0 0 28px;min-width:0}
+.ps-ext4 legend{display:block;width:100%;font-size:18px;font-weight:700;padding:0 0 12px;margin-bottom:16px;color:var(--ps-azul);border-bottom:1px solid var(--ps-borde);float:none}
+.ps-ext4 .ps-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.ps-ext4 .ps-tres{grid-template-columns:repeat(3,minmax(0,1fr))}
+.ps-ext4 .ps-cuatro{grid-template-columns:repeat(4,minmax(0,1fr))}
+.ps-ext4 label{display:block;font-size:13px;font-weight:700;color:#5a5c69}
+.ps-ext4 input,.ps-ext4 select,.ps-ext4 textarea{display:block;width:100%;margin:7px 0 0;padding:9px 12px;border:1px solid #d1d3e2;border-radius:.35rem;background:#fff;color:#3a3b45;font:400 14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;min-height:40px;box-shadow:none}
+.ps-ext4 textarea{resize:vertical}
+.ps-ext4 input[readonly]{background:#eaecf4;color:#5a5c69}
+.ps-ext4 input:focus,.ps-ext4 select:focus,.ps-ext4 textarea:focus{border-color:#bac8f3}
+.ps-ext4 :focus-visible,.ps-portal-nav a:focus-visible{outline:3px solid #4e73df66;outline-offset:3px}
+.ps-portal-nav a:focus-visible{outline-color:#fff}
+.ps-ext4 .ps-ayuda{font-size:13px;font-weight:400;color:#6e707e;margin:16px 0}
+.ps-ext4 .ps-fila{background:#f8f9fc;border:1px solid var(--ps-borde);border-radius:.35rem;padding:20px;margin:0 0 16px}
+.ps-ext4 .ps-fila>.ps-grid{margin-bottom:16px}
+.ps-ext4 .ps-fila-cabecera{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.ps-ext4 h2{font-size:16px;font-weight:700;margin:0;color:var(--ps-azul)}
+.ps-ext4 button,.ps-ext4 .ps-boton{display:inline-flex;justify-content:center;align-items:center;min-height:40px;border:1px solid var(--ps-verde);border-radius:.35rem;padding:8px 18px;background:var(--ps-verde);color:#fff;font:600 14px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;text-decoration:none;cursor:pointer;box-shadow:0 .125rem .25rem #00000013}
+.ps-ext4 button:hover,.ps-ext4 .ps-boton:hover{background:#17a673;border-color:#169b6b;color:#fff}
+.ps-ext4 .ps-secundario{background:#858796;border-color:#858796;color:#fff}
+.ps-ext4 .ps-secundario:hover{background:#717384;border-color:#6b6d7d}
+.ps-ext4 .ps-herramientas .ps-secundario{background:#4e73df;border-color:#4e73df}
+.ps-ext4 .ps-herramientas .ps-secundario:hover{background:#2e59d9;border-color:#2653d4}
+.ps-ext4 .ps-quitar{border:0;box-shadow:none;background:transparent;color:#e74a3b;padding:4px 0;min-height:32px}
+.ps-ext4 .ps-quitar:hover{background:transparent;color:#be2617;text-decoration:underline}
+.ps-ext4 button:disabled{opacity:.45;cursor:default}
+.ps-ext4 .ps-herramientas,.ps-ext4 .ps-acciones{display:flex;gap:12px;flex-wrap:wrap}
+.ps-ext4 .ps-acciones{justify-content:flex-end;border-top:1px solid var(--ps-borde);padding-top:24px}
+.ps-ext4 a:not(.ps-boton){color:var(--ps-azul)}
+.ps-ext4 [hidden]{display:none!important}
+/* Avisos accesibles: se conservan los estados y el comportamiento del diálogo. */
+.ps-ext4 .ps-modal{padding:0;border:0;border-radius:.35rem;width:min(500px,calc(100vw - 32px));max-width:none;max-height:calc(100dvh - 32px);margin:auto;overflow:auto;background:#fff;color:#212529;box-shadow:0 12px 42px #0004;font:16px/1.5 system-ui,sans-serif}
+.ps-ext4 .ps-modal::backdrop{background:rgba(0,0,0,.5)}
+.ps-ext4 .ps-modal-cabecera{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:15px 16px;background:#198754;color:#fff}
+.ps-ext4 .ps-modal-aviso .ps-modal-cabecera{background:#ffc107;color:#212529}
+.ps-ext4 .ps-modal-error .ps-modal-cabecera{background:#dc3545;color:#fff}
+.ps-ext4 .ps-modal h2{font:700 20px/1.4 system-ui,sans-serif;color:inherit;margin:0}
+.ps-ext4 .ps-modal .ps-modal-cerrar{min-width:32px;min-height:32px;padding:0;border:0;box-shadow:none;background:transparent;color:inherit;font:30px/1 system-ui,sans-serif}
+.ps-ext4 .ps-modal-contenido{padding:20px 16px;overflow-wrap:anywhere}
+.ps-ext4 .ps-modal-contenido p{margin:0 0 8px}
+.ps-ext4 .ps-modal-contenido p:last-child{margin-bottom:0}
+.ps-ext4 .ps-modal-pie{display:flex;justify-content:flex-end;padding:16px;border-top:1px solid #dee2e6}
+.ps-ext4 .ps-modal-pie button{background:#4e73df;border-color:#4e73df;min-height:38px;padding:7px 14px;border-radius:.35rem;color:#fff}
+.ps-ext4 .ps-modal-pie button:hover{background:#2e59d9;border-color:#2e59d9}
+.ps-ext4 .ps-modal :focus-visible{outline:3px solid #212529;outline-offset:3px}
+.ps-ext4 [data-vista-excel] h2{font-size:18px;margin:0 0 16px;padding-bottom:12px;border-bottom:1px solid var(--ps-borde)}
+.ps-ext4 .ps-excel-columnas{font-size:14px;font-weight:600;background:#f8f9fc;color:#3a3b45;padding:16px;border:1px solid var(--ps-borde);border-radius:.35rem}
+.ps-ext4 .ps-excel-hoja{margin-top:18px}
+.ps-ext4 [data-archivo-excel]{height:auto}
+.ps-ext4 [data-estado-excel]{min-height:22px}
+@media(min-width:1200px){.ps-portal-contenedor{max-width:1140px}}
+@media(min-width:992px) and (max-width:1199px){.ps-portal-contenedor{max-width:960px}}
+@media(min-width:768px) and (max-width:991px){.ps-portal-contenedor{max-width:720px}}
+@media(min-width:576px) and (max-width:767px){.ps-portal-contenedor{max-width:540px}}
+@media(max-width:800px){.ps-ext4 .ps-cuatro,.ps-ext4 .ps-tres{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:782px){body.ps-portal.admin-bar{min-height:calc(100vh - 46px)}}
+@media(max-width:575px){.ps-portal-etiqueta{display:none}.ps-portal-nav{gap:10px}.ps-portal-listado{font-size:12px}.ps-portal-marca{font-size:16px}.ps-ext4 .ps-tarjeta{padding:18px}.ps-ext4 .ps-cabecera{padding:14px}.ps-ext4 .ps-cabecera h1{font-size:18px}.ps-ext4 .ps-insignia{font-size:12px}}
+@media(max-width:520px){.ps-ext4 .ps-grid{grid-template-columns:1fr}.ps-ext4 .ps-fila{padding:14px}.ps-ext4 .ps-acciones>*{width:100%}.ps-ext4 .ps-cabecera{flex-wrap:wrap}.ps-ext4 .ps-herramientas>*{flex:1}.ps-portal-principal{padding-top:18px}}
