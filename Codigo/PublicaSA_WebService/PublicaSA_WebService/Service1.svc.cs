@@ -50,5 +50,42 @@ namespace PublicaSA_WebService
             var servicio = new RegistroPropuestaService(conexionBD);
             return servicio.Registrar(registro);
         }
+
+        public ResultadoParticipacionesProveedor ObtenerParticipacionesProveedor(
+            string cedulaJuridica)
+        {
+            var configuracion =
+                ConfigurationManager.ConnectionStrings["DefaultConnection"];
+
+            if (configuracion == null ||
+                string.IsNullOrWhiteSpace(configuracion.ConnectionString))
+            {
+                Trace.TraceError(
+                    "No está configurada la conexión DefaultConnection.");
+
+                return new ResultadoParticipacionesProveedor
+                {
+                    Exitoso = false,
+                    Mensaje = "El servicio no está disponible en este momento."
+                };
+            }
+
+            try
+            {
+                var conexionBD = new ConexionBD(configuracion.ConnectionString);
+                var servicio = new ParticipacionProveedorService(conexionBD);
+                return servicio.Consultar(cedulaJuridica);
+            }
+            catch (System.Exception ex)
+            {
+                Trace.TraceError("Error en EXT6: " + ex);
+
+                return new ResultadoParticipacionesProveedor
+                {
+                    Exitoso = false,
+                    Mensaje = "No se pudo consultar las participaciones en este momento."
+                };
+            }
+        }
     }
 }

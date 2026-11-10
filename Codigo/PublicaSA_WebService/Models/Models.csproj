@@ -51,6 +51,8 @@
     <Compile Include="ResultadoRegistroPropuesta.cs" />
     <Compile Include="SolicitudPublicadaDto.cs" />
     <Compile Include="SolicitudDetalleDto.cs" />
+    <Compile Include="ParticipacionProveedorDto.cs" />
+    <Compile Include="ResultadoParticipacionesProveedor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
