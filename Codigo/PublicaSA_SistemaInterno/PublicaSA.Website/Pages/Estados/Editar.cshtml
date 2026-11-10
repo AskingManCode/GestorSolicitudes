@@ -71,7 +71,7 @@
     {
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(erroresValidacion)), 'warning');
+                mostrarMensaje('Advertencia', @Html.Raw(System.Text.Json.JsonSerializer.Serialize(erroresValidacion)));
             });
         </script>
     }
